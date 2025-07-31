@@ -1,0 +1,43 @@
+{
+    "name": "conedevelopment/simplepay-client",
+    "description": "The SimplePay PHP Client.",
+    "keywords": [
+        "openapi",
+        "php",
+        "sdk",
+        "api"
+    ],
+    "homepage": "https://conedevelopment.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cone Development",
+            "homepage": "https://conedevelopment.com"
+        },
+        {
+            "name": "Szépe Viktor",
+            "homepage": "https://www.szepe.net"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^7.3",
+        "guzzlehttp/psr7": "^2.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cone\\SimplePay\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cone\\SimplePay\\Test\\" : "test/"
+        }
+    }
+}

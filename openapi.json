@@ -1,0 +1,178 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SimplePay API v2",
+        "description": "This is a SimplePay API v2 documentation.",
+        "termsOfService": "#",
+        "contact": {
+            "name": "Cone Development",
+            "url": "https://conedevelopment.com",
+            "email": "hello@conedevelopment.com"
+        },
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://secure.simplepay.hu/payment/v2",
+            "description": "The Production SimplePay API"
+        },
+        {
+            "url": "sandbox://sandbox.simplepay.hu/payment/v2",
+            "description": "The Test SimplePay API"
+        }
+    ],
+    "paths": {
+        "/start": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Start a transaction",
+                "description": "Start a transaction using the given parameters",
+                "operationId": "ListBankAccount",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "The transaction object you would like to start.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BankAccount"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "description": "Request limit per minute.",
+                                "schema": {
+                                    "type": "integer",
+                                    "format": "int32"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BankAccountList"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "402": {
+                        "$ref": "#/components/responses/PaymentRequired"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Transaction": {
+                "required": [
+                    "currency"
+                ],
+                "properties": {
+                    "customer": {
+                        "type": "string"
+                    },
+                    "customerEmail": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currency"
+                    },
+                    "maySelectInvoice": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "twoStep": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "onlyCardReg": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    },
+                    "discount": {
+                        "type": "number",
+                        "default": 0
+                    },
+                    "shippingCost": {
+                        "type": "number",
+                        "default": 0
+                    },
+                    "total": {
+                        "type": "number",
+                        "default": 0
+                    },
+                    "delivery": {
+                        "type": "object",
+                        "properties": {}
+                    },
+                    "invoice": {
+                        "type": "object",
+                        "properties": {}
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {}
+                    },
+                    "methods": {
+                        "type": "array",
+                        "description": "Possible valies: CARD, WIRE or EAM."
+                    },
+                    "timeout": {
+                        "type": "string",
+                        "description": "The ISO 8601 format of the timeout date.",
+                        "example": "2004-02-12T15:19:21+00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "Currency": {
+                "type": "string",
+                "enum": [
+                    "EUR",
+                    "HUF",
+                    "USD"
+                ]
+            }
+        }
+    }
+}
