@@ -17,7 +17,7 @@
             "description": "The Production SimplePay API"
         },
         {
-            "url": "sandbox://sandbox.simplepay.hu/payment/v2",
+            "url": "https://sandbox.simplepay.hu/payment/v2",
             "description": "The Test SimplePay API"
         }
     ],
@@ -29,25 +29,14 @@
                 ],
                 "summary": "Start a transaction",
                 "description": "Start a transaction using the given parameters",
-                "operationId": "ListBankAccount",
-                "parameters": [
-                    {
-                        "name": "page",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": "1"
-                        }
-                    }
-                ],
+                "operationId": "start",
                 "requestBody": {
                     "description": "The transaction object you would like to start.",
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/BankAccount"
+                                "$ref": "#/components/schemas/Transaction"
                             }
                         }
                     }
@@ -57,38 +46,61 @@
                         "description": "Success response",
                         "headers": {
                             "Signature": {
-                                "description": "Request limit per minute.",
+                                "description": "The signature created by the SimplePay back-end.",
                                 "schema": {
-                                    "type": "integer",
-                                    "format": "int32"
+                                    "type": "string"
                                 }
                             }
                         },
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/BankAccountList"
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "type": "string",
+                                            "example": "101010515680292482600"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "transactionId": {
+                                            "type": "number",
+                                            "example": "99844942"
+                                        },
+                                        "timeout": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the timeout date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": "25.0"
+                                        },
+                                        "paymentUrl": {
+                                            "type": "string",
+                                            "example": "https://sandbox.simplepay.hu/pay/pay/pspHU/8f4oKRec5R1B696xlxbOcj1jRhhABA2pwSLQDPW60zoGSDWzDU",
+                                            "description": "The payment interface URL."
+                                        },
+                                        "tokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
+                                            },
+                                            "description": "The recurring payment tokens. Provided only for the inital recurring payment."
+                                        }
+                                    }
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Unauthorized"
-                    },
-                    "402": {
-                        "$ref": "#/components/responses/PaymentRequired"
-                    },
-                    "422": {
-                        "$ref": "#/components/responses/UnprocessableEntity"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/ServerError"
                     }
                 }
             }
@@ -102,7 +114,8 @@
                 ],
                 "properties": {
                     "customer": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "Guillaume Tell"
                     },
                     "customerEmail": {
                         "type": "string",
@@ -115,6 +128,17 @@
                         "type": "boolean",
                         "default": false
                     },
+                    "maySelectEmail": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "maySelectDelivery": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "HU"
+                        }
+                    },
                     "twoStep": {
                         "type": "boolean",
                         "default": false
@@ -124,10 +148,32 @@
                         "default": false
                     },
                     "url": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "https://sdk.simplepay.hu/capture.php"
+                    },
+                    "urls": {
+                        "type": "object",
+                        "properties": {
+                            "success": {
+                                "type": "string",
+                                "example": "https://sdk.simplepay.hu/success.php"
+                            },
+                            "fail": {
+                                "type": "string",
+                                "example": "https://sdk.simplepay.hu/fail.php"
+                            },
+                            "cancel": {
+                                "type": "string",
+                                "example": "https://sdk.simplepay.hu/cancel.php"
+                            },
+                            "timeout": {
+                                "type": "string",
+                                "example": "https://sdk.simplepay.hu/timeout.php"
+                            }
+                        }
                     },
                     "language": {
-                        "type": "string"
+                        "$ref": "#/components/schemas/Language"
                     },
                     "discount": {
                         "type": "number",
@@ -142,19 +188,22 @@
                         "default": 0
                     },
                     "delivery": {
-                        "type": "object",
-                        "properties": {}
+                        "$ref": "#/components/schemas/Delivery"
                     },
                     "invoice": {
-                        "type": "object",
-                        "properties": {}
+                        "$ref": "#/components/schemas/Invoice"
                     },
                     "items": {
                         "type": "array",
-                        "items": {}
+                        "items": {
+                            "$ref": "#/components/schemas/Item"
+                        }
                     },
                     "methods": {
                         "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Method"
+                        },
                         "description": "Possible valies: CARD, WIRE or EAM."
                     },
                     "timeout": {
@@ -165,13 +214,109 @@
                 },
                 "type": "object"
             },
+            "Method": {
+                "type": "string",
+                "enum": [
+                    "CARD", "EAM", "WIRE"
+                ]
+            },
             "Currency": {
                 "type": "string",
                 "enum": [
-                    "EUR",
-                    "HUF",
-                    "USD"
+                    "EUR", "HUF", "USD"
                 ]
+            },
+            "Language": {
+                "type": "string",
+                "enum": [
+                    "AR", "BG", "CS", "DE", "EN", "ES", "FR", "IT", "HR", "HU", "PL", "RO", "RU", "SK", "TR", "ZH"
+                ]
+            },
+            "Item": {
+                "type": "object",
+                "required": [
+                    "ref",
+                    "title",
+                    "amount",
+                    "price"
+                ],
+                "properties": {
+                    "ref": {
+                        "type": "string",
+                        "example": "SKU123"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Sample Product"
+                    },
+                    "desc": {
+                        "type": "string",
+                        "example": "A sample product description.",
+                        "nullable": true
+                    },
+                    "amount": {
+                        "type": "number",
+                        "exclusiveMinimum": true,
+                        "minimum": 0,
+                        "example": 1
+                    },
+                    "price": {
+                        "type": "number",
+                        "exclusiveMinimum": true,
+                        "minimum": 0,
+                        "example": 25.0
+                    },
+                    "tax": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Invoice": {
+                "type": "object",
+                "properties": {
+                    "city": {
+                        "type": "string",
+                        "example": "Budapest"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+36701234567"
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "BE"
+                    },
+                    "zip": {
+                        "type": "string",
+                        "example": "1000"
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Cone Development"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "HU",
+                        "description": "The ISO 3166-1 alpha-2 format of the country."
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Üllői út 1."
+                    },
+                    "address2": {
+                        "type": "string",
+                        "example": "II/B",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Guillaume Tell"
+                    }
+                }
+            },
+            "Delivery": {
+                "type": "object",
+                "properties": {}
             }
         }
     }
