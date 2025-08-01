@@ -316,7 +316,46 @@
             },
             "Delivery": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                    "city": {
+                        "type": "string",
+                        "example": "Budapest"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+36701234567"
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "BE"
+                    },
+                    "zip": {
+                        "type": "string",
+                        "example": "1000"
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Cone Development"
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "HU",
+                        "description": "The ISO 3166-1 alpha-2 format of the country."
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Üllői út 1."
+                    },
+                    "address2": {
+                        "type": "string",
+                        "example": "II/B",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Guillaume Tell"
+                    }
+                }
             }
         }
     }
