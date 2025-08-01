@@ -30,6 +30,11 @@
                 "summary": "Start a transaction",
                 "description": "Start a transaction using the given parameters",
                 "operationId": "start",
+                "headers": {
+                    "Signature": {
+                        "$ref": "#/components/headers/Signature"
+                    }
+                },
                 "requestBody": {
                     "description": "The transaction object you would like to start.",
                     "required": true,
@@ -46,10 +51,7 @@
                         "description": "Success response",
                         "headers": {
                             "Signature": {
-                                "description": "The signature created by the SimplePay back-end.",
-                                "schema": {
-                                    "type": "string"
-                                }
+                                "$ref": "#/components/headers/Signature"
                             }
                         },
                         "content": {
@@ -104,9 +106,24 @@
                     }
                 }
             }
+        },
+        "/finish": {
+            "post": {}
         }
     },
     "components": {
+        "headers": {
+            "Signature": {
+                "description": "The signature created by the SimplePay back-end.",
+                "schema": {
+                    "type": "string",
+                    "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"
+                }
+            }
+        },
+        "parameters": {
+
+        },
         "schemas": {
             "Transaction": {
                 "required": [
