@@ -15,9 +15,13 @@ class Client
     public function __construct(
         protected string $merchantId,
         protected string $secretKey,
-        protected bool $sandbox = false
+        protected ?Environment $env = null
     ) {
-        // $this->config()->setApiKey('X-API-KEY', $apiKey);
+        $this->config()->setHost(match ($env) {
+            $env::SANDBOX => 'https://sandbox.simplepay.hu/payment/v2',
+            $env::SECURE => 'https://secure.simplepay.hu/payment/v2',
+            default => 'https://secure.simplepay.hu/payment/v2'
+        });
     }
 
     /**

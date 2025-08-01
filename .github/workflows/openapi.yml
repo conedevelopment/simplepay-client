@@ -3,9 +3,6 @@
 name: "OpenAPI"
 
 on:
-    schedule:
-    # Update Monday
-    - cron: "31 04 * * 1"
     workflow_dispatch: null
 
 permissions:
@@ -54,11 +51,10 @@ jobs:
                 echo "version=${VERSION}" >>"${GITHUB_OUTPUT}"
         -
             name: "Determine latest spec version"
-            id: "billingo_spec"
+            id: "simple_pay"
             run: |
                 VERSION="$(
-                    wget -qO- "https://api.swaggerhub.com/apis/Billingo/Billingo/settings/default" \
-                        | jq -r '."version"'
+                    jq -r '."version"' ./openapi.json
                 )"
                 echo "version=${VERSION}" >>"${GITHUB_OUTPUT}"
         -
@@ -66,11 +62,6 @@ jobs:
             run: |
                 wget -O "${{ runner.temp }}/openapi-generator-cli.jar" \
                     "https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/${{ steps.openapi_cli.outputs.version }}/openapi-generator-cli-${{ steps.openapi_cli.outputs.version }}.jar"
-        -
-            name: "Download spec"
-            run: |
-                wget -O "${{ runner.temp }}/spec.json" \
-                    "https://api.swaggerhub.com/apis/Billingo/Billingo/${{ steps.billingo_spec.outputs.version }}?resolved=false&flatten=false"
         -
             name: "Clean up previously generated files"
             run: |
@@ -81,11 +72,11 @@ jobs:
                 PHP_POST_PROCESS_FILE: "php-cs-fixer fix --allow-risky yes"
             run: |
                 java -jar "${{ runner.temp }}/openapi-generator-cli.jar" generate \
-                    --input-spec "${{ runner.temp }}/spec.json" \
+                    --input-spec ./openapi.json \
                     --generator-name php-nextgen \
                     --output ./ \
                     --enable-post-process-file \
-                    --additional-properties 'invokerPackage=Cone\Billingo,variableNamingConvention=camelCase,srcBasePath=src'
+                    --additional-properties 'invokerPackage=Cone\SimplePay,variableNamingConvention=camelCase,srcBasePath=src'
         -
             name: "Check difference to repository"
             run: |
@@ -100,7 +91,7 @@ jobs:
                 add-paths: "./"
                 branch: "php-client"
                 commit-message: "Upgrade client"
-                title: "Upgrade PHP client to ${{ steps.billingo_spec.outputs.version }}"
+                title: "Upgrade PHP client to ${{ steps.simple_pay.outputs.version }}"
                 body: |
                     Automated changes by running `openapi-generator-cli.jar generate`.
                 delete-branch: true
