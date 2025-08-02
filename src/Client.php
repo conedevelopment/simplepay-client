@@ -32,8 +32,8 @@ class Client
         protected ?Environment $env = null
     ) {
         $this->config()->setHost(match ($env) {
-            $env::SANDBOX => 'https://sandbox.simplepay.hu/payment/v2',
-            $env::SECURE => 'https://secure.simplepay.hu/payment/v2',
+            Environment::SANDBOX => 'https://sandbox.simplepay.hu/payment/v2',
+            Environment::SECURE => 'https://secure.simplepay.hu/payment/v2',
             default => 'https://secure.simplepay.hu/payment/v2'
         });
     }
@@ -71,25 +71,20 @@ class Client
     {
         $stack = HandlerStack::create();
 
-        $stack->push(function (callable $next): Closure {
+        $stack->before('prepare_body', function (callable $next): Closure {
             return function (RequestInterface $request, array $options) use ($next): PromiseInterface {
-                $modify = [
-                    'body' => [
-                        'merchant' => $this->merchant,
-                        'salt' => substr(str_shuffle(md5(microtime())), 0, 32),
-                        'sdkVersion' => 'Cone OTP SimplePay PHP Client:' . static::VERSION,
-                    ],
-                ];
+                $data = json_decode((string) $request->getBody(), true) ?? [];
 
-                return $next(Utils::modifyRequest($request, $modify), $options);
-            };
-        });
+                $data = array_merge($data, [
+                    'merchant' => $this->merchant,
+                    'salt' => substr(str_shuffle(md5(microtime())), 0, 32),
+                    'sdkVersion' => 'Cone OTP SimplePay PHP Client:' . static::VERSION,
+                ]);
 
-        $stack->push(function (callable $next): Closure {
-            return function (RequestInterface $request, array $options) use ($next): PromiseInterface {
                 $modify = [
+                    'body' => Utils::streamFor($data = json_encode($data)),
                     'set_headers' => [
-                        'Signature' => $this->sign($request->getBody()->getContents()),
+                        'Signature' => $this->sign($data),
                     ],
                 ];
 
