@@ -201,19 +201,22 @@
                         "type": "number",
                         "default": 0,
                         "exclusiveMinimum": false,
-                        "minimum": 0
+                        "minimum": 0,
+                        "example": 10.0
                     },
                     "shippingCost": {
                         "type": "number",
                         "default": 0,
                         "exclusiveMinimum": false,
-                        "minimum": 0
+                        "minimum": 0,
+                        "example": 10.0
                     },
                     "total": {
                         "type": "number",
                         "default": 0,
                         "exclusiveMinimum": true,
-                        "minimum": 0
+                        "minimum": 0,
+                        "example": 25.0
                     },
                     "delivery": {
                         "$ref": "#/components/schemas/Delivery"
@@ -283,10 +286,10 @@
                         "nullable": true
                     },
                     "amount": {
-                        "type": "number",
-                        "exclusiveMinimum": true,
-                        "minimum": 0,
-                        "example": 1
+                        "type": "integer",
+                        "exclusiveMinimum": false,
+                        "minimum": 1,
+                        "description": "The quantity."
                     },
                     "price": {
                         "type": "number",

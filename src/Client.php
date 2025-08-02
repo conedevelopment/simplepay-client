@@ -4,12 +4,15 @@ namespace Cone\SimplePay;
 
 use Closure;
 use Cone\SimplePay\Api\TransactionApi;
+use Exception;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class Client
 {
@@ -91,6 +94,27 @@ class Client
                 return $next(Utils::modifyRequest($request, $modify), $options);
             };
         });
+
+        $stack->push(Middleware::mapResponse(function (ResponseInterface $response): ResponseInterface {
+            $body = (string) $response->getBody();
+
+            if (! $this->validateSignature($response->getHeader('Signature')[0] ?? '', $body)) {
+                throw new ApiException('Invalid Signature.', 999, $response->getHeaders(), $response->getBody());
+            }
+
+            $body = json_decode($body, true) ?? [];
+
+            if (! empty($body['errorCodes'] ?? [])) {
+                throw new ApiException(
+                    'SimplePay error.',
+                    (int) $body['errorCodes'][0] ?? 999,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            return $response;
+        }));
 
         return new Http([
             'handler' => $stack,
