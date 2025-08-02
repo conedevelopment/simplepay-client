@@ -348,7 +348,7 @@
             },
             "TransactionId": {
                 "type": "number",
-                "example": "99844942"
+                "example": 99844942
             },
             "Method": {
                 "type": "string",
