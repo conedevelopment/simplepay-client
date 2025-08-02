@@ -32,8 +32,7 @@
                 "operationId": "start",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/Signature",
-                        "required": true
+                        "$ref": "#/components/parameters/Signature"
                     }
                 ],
                 "requestBody": {
@@ -123,6 +122,7 @@
                 "name": "Signature",
                 "in": "header",
                 "description": "The signature.",
+                "required": true,
                 "schema": {
                     "type": "string",
                     "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"
