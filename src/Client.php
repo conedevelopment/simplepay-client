@@ -67,7 +67,7 @@ class Client
     {
         $stack = HandlerStack::create();
 
-        // Siganture Header middleware
+        // Signature Header middleware
         // Form data middleware
 
         $client = new Http([
