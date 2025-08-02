@@ -97,7 +97,7 @@
                                                 "type": "string",
                                                 "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
                                             },
-                                            "description": "The recurring payment tokens. Provided only for the inital recurring payment."
+                                            "description": "The recurring payment tokens. Provided only for the initial recurring payment."
                                         }
                                     }
                                 }
@@ -232,7 +232,7 @@
                         "items": {
                             "$ref": "#/components/schemas/Method"
                         },
-                        "description": "Possible valies: CARD, WIRE or EAM."
+                        "description": "Possible values: CARD, WIRE or EAM."
                     },
                     "timeout": {
                         "type": "string",
