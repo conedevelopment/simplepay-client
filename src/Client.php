@@ -2,12 +2,21 @@
 
 namespace Cone\SimplePay;
 
+use Cone\SimplePay\Api\TransactionApi;
+use GuzzleHttp\Client as Http;
+use GuzzleHttp\ClientInterface;
+
 class Client
 {
     /**
      * The client version.
      */
     public const VERSION = '1.0.0';
+
+    /**
+     * The transaction API instance.
+     */
+    protected ?TransactionApi $transactions = null;
 
     /**
      * Create a new SimplePay Client instance.
@@ -48,5 +57,32 @@ class Client
     public function config(): Configuration
     {
         return Configuration::getDefaultConfiguration();
+    }
+
+    /**
+     * Create a new Guzzle Client instance.
+     */
+    public function client(): ClientInterface
+    {
+        $client = new Http();
+
+        //
+
+        return $client;
+    }
+
+    /**
+     * Get the transaction API.
+     */
+    public function transactions(): TransactionApi
+    {
+        if (is_null($this->transactions)) {
+            $this->transactions = new TransactionApi(
+                $this->client(),
+                $this->config()
+            );
+        }
+
+        return $this->transactions;
     }
 }
