@@ -54,7 +54,7 @@ jobs:
             id: "simple_pay"
             run: |
                 VERSION="$(
-                    jq -r '."version"' ./openapi.json
+                    jq -r '."info.version"' ./openapi.json
                 )"
                 echo "version=${VERSION}" >>"${GITHUB_OUTPUT}"
         -
