@@ -69,6 +69,18 @@ class TransactionApiTest extends TestCase
     }
 
     /**
+     * Test case for finish
+     *
+     * Finish a two-step transaction.
+     *
+     */
+    public function testFinish()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+
+    /**
      * Test case for start
      *
      * Start a transaction.
