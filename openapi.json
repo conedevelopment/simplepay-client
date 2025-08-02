@@ -52,10 +52,7 @@
                         "description": "Success response",
                         "headers": {
                             "Signature": {
-                                "schema": {
-                                    "type": "string",
-                                    "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"
-                                }
+                                "$ref": "#/components/headers/Signature"
                             }
                         },
                         "content": {
@@ -88,7 +85,7 @@
                                         },
                                         "total": {
                                             "type": "number",
-                                            "example": "25.0"
+                                            "example": 25.0
                                         },
                                         "paymentUrl": {
                                             "type": "string",
@@ -113,6 +110,14 @@
         }
     },
     "components": {
+        "headers": {
+            "Signature": {
+                "schema": {
+                    "type": "string",
+                    "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"
+                }
+            }
+        },
         "parameters": {
             "Signature": {
                 "name": "Signature",
@@ -194,15 +199,21 @@
                     },
                     "discount": {
                         "type": "number",
-                        "default": 0
+                        "default": 0,
+                        "exclusiveMinimum": false,
+                        "minimum": 0
                     },
                     "shippingCost": {
                         "type": "number",
-                        "default": 0
+                        "default": 0,
+                        "exclusiveMinimum": false,
+                        "minimum": 0
                     },
                     "total": {
                         "type": "number",
-                        "default": 0
+                        "default": 0,
+                        "exclusiveMinimum": true,
+                        "minimum": 0
                     },
                     "delivery": {
                         "$ref": "#/components/schemas/Delivery"
