@@ -32,7 +32,9 @@
                 "operationId": "start",
                 "parameters": [
                     {
-                        "$ref": "#/components/parameters/Signature",
+                        "allOf": {
+                            "$ref": "#/components/parameters/Signature",
+                        },
                         "required": true
                     }
                 ],
