@@ -4,8 +4,10 @@ src/ApiException.php
 src/Configuration.php
 src/FormDataProcessor.php
 src/HeaderSelector.php
+src/Model/AuthorizedTransaction.php
 src/Model/Currency.php
 src/Model/Delivery.php
+src/Model/Finish200Response.php
 src/Model/Invoice.php
 src/Model/Item.php
 src/Model/Language.php
@@ -16,8 +18,10 @@ src/Model/Transaction.php
 src/Model/TransactionUrls.php
 src/ObjectSerializer.php
 tests/Api/TransactionApiTest.php
+tests/Model/AuthorizedTransactionTest.php
 tests/Model/CurrencyTest.php
 tests/Model/DeliveryTest.php
+tests/Model/Finish200ResponseTest.php
 tests/Model/InvoiceTest.php
 tests/Model/ItemTest.php
 tests/Model/LanguageTest.php

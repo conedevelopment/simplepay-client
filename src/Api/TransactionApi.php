@@ -74,6 +74,9 @@ class TransactionApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
+        'finish' => [
+            'application/json',
+        ],
         'start' => [
             'application/json',
         ],
@@ -126,12 +129,307 @@ class TransactionApi
     }
 
     /**
+     * Operation finish
+     *
+     * Finish a two-step transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction The authorized transaction object you would like to finish. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['finish'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Finish200Response
+     */
+    public function finish(
+        string $signature,
+        \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction,
+        string $contentType = self::contentTypes['finish'][0]
+    ): \Cone\SimplePay\Model\Finish200Response {
+        list($response) = $this->finishWithHttpInfo($signature, $authorizedTransaction, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation finishWithHttpInfo
+     *
+     * Finish a two-step transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction The authorized transaction object you would like to finish. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['finish'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Finish200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function finishWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction,
+        string $contentType = self::contentTypes['finish'][0]
+    ): array {
+        $request = $this->finishRequest($signature, $authorizedTransaction, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Finish200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Finish200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Finish200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation finishAsync
+     *
+     * Finish a two-step transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction The authorized transaction object you would like to finish. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['finish'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function finishAsync(
+        string $signature,
+        \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction,
+        string $contentType = self::contentTypes['finish'][0]
+    ): PromiseInterface {
+        return $this->finishAsyncWithHttpInfo($signature, $authorizedTransaction, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation finishAsyncWithHttpInfo
+     *
+     * Finish a two-step transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction The authorized transaction object you would like to finish. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['finish'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function finishAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction,
+        string $contentType = self::contentTypes['finish'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Finish200Response';
+        $request = $this->finishRequest($signature, $authorizedTransaction, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'finish'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction The authorized transaction object you would like to finish. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['finish'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function finishRequest(
+        string $signature,
+        \Cone\SimplePay\Model\AuthorizedTransaction $authorizedTransaction,
+        string $contentType = self::contentTypes['finish'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling finish'
+            );
+        }
+
+        // verify the required parameter 'authorizedTransaction' is set
+        if ($authorizedTransaction === null || (is_array($authorizedTransaction) && count($authorizedTransaction) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $authorizedTransaction when calling finish'
+            );
+        }
+
+
+        $resourcePath = '/finish';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($authorizedTransaction)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($authorizedTransaction));
+            } else {
+                $httpBody = $authorizedTransaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation start
      *
      * Start a transaction
      *
+     * @param  string $signature The signature. (required)
      * @param  \Cone\SimplePay\Model\Transaction $transaction The transaction object you would like to start. (required)
-     * @param  string|null $signature The signature. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['start'] to see the possible values for this operation
      *
      * @throws ApiException on non-2xx response or if the response body is not in the expected format
@@ -139,11 +437,11 @@ class TransactionApi
      * @return \Cone\SimplePay\Model\Start200Response
      */
     public function start(
+        string $signature,
         \Cone\SimplePay\Model\Transaction $transaction,
-        ?string $signature = null,
         string $contentType = self::contentTypes['start'][0]
     ): \Cone\SimplePay\Model\Start200Response {
-        list($response) = $this->startWithHttpInfo($transaction, $signature, $contentType);
+        list($response) = $this->startWithHttpInfo($signature, $transaction, $contentType);
         return $response;
     }
 
@@ -152,8 +450,8 @@ class TransactionApi
      *
      * Start a transaction
      *
+     * @param  string $signature The signature. (required)
      * @param  \Cone\SimplePay\Model\Transaction $transaction The transaction object you would like to start. (required)
-     * @param  string|null $signature The signature. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['start'] to see the possible values for this operation
      *
      * @throws ApiException on non-2xx response or if the response body is not in the expected format
@@ -161,11 +459,11 @@ class TransactionApi
      * @return array of \Cone\SimplePay\Model\Start200Response, HTTP status code, HTTP response headers (array of strings)
      */
     public function startWithHttpInfo(
+        string $signature,
         \Cone\SimplePay\Model\Transaction $transaction,
-        ?string $signature = null,
         string $contentType = self::contentTypes['start'][0]
     ): array {
-        $request = $this->startRequest($transaction, $signature, $contentType);
+        $request = $this->startRequest($signature, $transaction, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -238,19 +536,19 @@ class TransactionApi
      *
      * Start a transaction
      *
+     * @param  string $signature The signature. (required)
      * @param  \Cone\SimplePay\Model\Transaction $transaction The transaction object you would like to start. (required)
-     * @param  string|null $signature The signature. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['start'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return PromiseInterface
      */
     public function startAsync(
+        string $signature,
         \Cone\SimplePay\Model\Transaction $transaction,
-        ?string $signature = null,
         string $contentType = self::contentTypes['start'][0]
     ): PromiseInterface {
-        return $this->startAsyncWithHttpInfo($transaction, $signature, $contentType)
+        return $this->startAsyncWithHttpInfo($signature, $transaction, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -263,20 +561,20 @@ class TransactionApi
      *
      * Start a transaction
      *
+     * @param  string $signature The signature. (required)
      * @param  \Cone\SimplePay\Model\Transaction $transaction The transaction object you would like to start. (required)
-     * @param  string|null $signature The signature. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['start'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return PromiseInterface
      */
     public function startAsyncWithHttpInfo(
+        string $signature,
         \Cone\SimplePay\Model\Transaction $transaction,
-        ?string $signature = null,
         string $contentType = self::contentTypes['start'][0]
     ): PromiseInterface {
         $returnType = '\Cone\SimplePay\Model\Start200Response';
-        $request = $this->startRequest($transaction, $signature, $contentType);
+        $request = $this->startRequest($signature, $transaction, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -317,18 +615,25 @@ class TransactionApi
     /**
      * Create request for operation 'start'
      *
+     * @param  string $signature The signature. (required)
      * @param  \Cone\SimplePay\Model\Transaction $transaction The transaction object you would like to start. (required)
-     * @param  string|null $signature The signature. (optional)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['start'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
     public function startRequest(
+        string $signature,
         \Cone\SimplePay\Model\Transaction $transaction,
-        ?string $signature = null,
         string $contentType = self::contentTypes['start'][0]
     ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling start'
+            );
+        }
 
         // verify the required parameter 'transaction' is set
         if ($transaction === null || (is_array($transaction) && count($transaction) === 0)) {
@@ -336,7 +641,6 @@ class TransactionApi
                 'Missing the required parameter $transaction when calling start'
             );
         }
-
 
 
         $resourcePath = '/start';

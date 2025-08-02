@@ -61,7 +61,7 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
         'ref' => 'string',
         'title' => 'string',
         'desc' => 'string',
-        'amount' => 'float',
+        'amount' => 'int',
         'price' => 'float',
         'tax' => 'float',
     ];
@@ -316,8 +316,8 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
         if ($this->container['amount'] === null) {
             $invalidProperties[] = "'amount' can't be null";
         }
-        if (($this->container['amount'] <= 0)) {
-            $invalidProperties[] = "invalid value for 'amount', must be bigger than 0.";
+        if (($this->container['amount'] < 1)) {
+            $invalidProperties[] = "invalid value for 'amount', must be bigger than or equal to 1.";
         }
 
         if ($this->container['price'] === null) {
@@ -433,9 +433,9 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
     /**
      * Gets amount
      *
-     * @return float
+     * @return int
      */
-    public function getAmount(): float
+    public function getAmount(): int
     {
         return $this->container['amount'];
     }
@@ -443,18 +443,18 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
     /**
      * Sets amount
      *
-     * @param float $amount amount
+     * @param int $amount The quantity.
      *
      * @return $this
      */
-    public function setAmount(float $amount): static
+    public function setAmount(int $amount): static
     {
         if (is_null($amount)) {
             throw new InvalidArgumentException('non-nullable amount cannot be null');
         }
 
-        if (($amount <= 0)) {
-            throw new InvalidArgumentException('invalid value for $amount when calling Item., must be bigger than 0.');
+        if (($amount < 1)) {
+            throw new InvalidArgumentException('invalid value for $amount when calling Item., must be bigger than or equal to 1.');
         }
 
         $this->container['amount'] = $amount;

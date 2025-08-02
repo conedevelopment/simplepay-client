@@ -915,7 +915,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
     /**
      * Sets methods
      *
-     * @param \Cone\SimplePay\Model\Method[]|null $methods Possible valies: CARD, WIRE or EAM.
+     * @param \Cone\SimplePay\Model\Method[]|null $methods Possible values: CARD, WIRE or EAM.
      *
      * @return $this
      */

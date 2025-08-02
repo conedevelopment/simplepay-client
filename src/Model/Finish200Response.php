@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Start200Response
+ * Finish200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Start200Response Class Doc Comment
+ * Finish200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'start_200_response';
+    protected static string $openAPIModelName = 'finish_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -63,10 +63,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'string',
         'currency' => '\Cone\SimplePay\Model\Currency',
         'transactionId' => 'float',
-        'timeout' => 'string',
         'total' => 'float',
-        'paymentUrl' => 'string',
-        'tokens' => 'string[]',
     ];
 
     /**
@@ -80,10 +77,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => null,
         'currency' => null,
         'transactionId' => null,
-        'timeout' => null,
         'total' => null,
-        'paymentUrl' => null,
-        'tokens' => null,
     ];
 
     /**
@@ -97,10 +91,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => false,
         'currency' => false,
         'transactionId' => false,
-        'timeout' => false,
         'total' => false,
-        'paymentUrl' => false,
-        'tokens' => false,
     ];
 
     /**
@@ -194,10 +185,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'orderRef',
         'currency' => 'currency',
         'transactionId' => 'transactionId',
-        'timeout' => 'timeout',
         'total' => 'total',
-        'paymentUrl' => 'paymentUrl',
-        'tokens' => 'tokens',
     ];
 
     /**
@@ -211,10 +199,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'setOrderRef',
         'currency' => 'setCurrency',
         'transactionId' => 'setTransactionId',
-        'timeout' => 'setTimeout',
         'total' => 'setTotal',
-        'paymentUrl' => 'setPaymentUrl',
-        'tokens' => 'setTokens',
     ];
 
     /**
@@ -228,10 +213,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'getOrderRef',
         'currency' => 'getCurrency',
         'transactionId' => 'getTransactionId',
-        'timeout' => 'getTimeout',
         'total' => 'getTotal',
-        'paymentUrl' => 'getPaymentUrl',
-        'tokens' => 'getTokens',
     ];
 
     /**
@@ -295,10 +277,7 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
         $this->setIfExists('orderRef', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
         $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('timeout', $data ?? [], null);
         $this->setIfExists('total', $data ?? [], null);
-        $this->setIfExists('paymentUrl', $data ?? [], null);
-        $this->setIfExists('tokens', $data ?? [], null);
     }
 
     /**
@@ -479,33 +458,6 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
     }
 
     /**
-     * Gets timeout
-     *
-     * @return string|null
-     */
-    public function getTimeout(): ?string
-    {
-        return $this->container['timeout'];
-    }
-
-    /**
-     * Sets timeout
-     *
-     * @param string|null $timeout The ISO 8601 format of the timeout date.
-     *
-     * @return $this
-     */
-    public function setTimeout(?string $timeout): static
-    {
-        if (is_null($timeout)) {
-            throw new InvalidArgumentException('non-nullable timeout cannot be null');
-        }
-        $this->container['timeout'] = $timeout;
-
-        return $this;
-    }
-
-    /**
      * Gets total
      *
      * @return float|null
@@ -528,60 +480,6 @@ class Start200Response implements ModelInterface, ArrayAccess, JsonSerializable
             throw new InvalidArgumentException('non-nullable total cannot be null');
         }
         $this->container['total'] = $total;
-
-        return $this;
-    }
-
-    /**
-     * Gets paymentUrl
-     *
-     * @return string|null
-     */
-    public function getPaymentUrl(): ?string
-    {
-        return $this->container['paymentUrl'];
-    }
-
-    /**
-     * Sets paymentUrl
-     *
-     * @param string|null $paymentUrl The payment interface URL.
-     *
-     * @return $this
-     */
-    public function setPaymentUrl(?string $paymentUrl): static
-    {
-        if (is_null($paymentUrl)) {
-            throw new InvalidArgumentException('non-nullable paymentUrl cannot be null');
-        }
-        $this->container['paymentUrl'] = $paymentUrl;
-
-        return $this;
-    }
-
-    /**
-     * Gets tokens
-     *
-     * @return string[]|null
-     */
-    public function getTokens(): ?array
-    {
-        return $this->container['tokens'];
-    }
-
-    /**
-     * Sets tokens
-     *
-     * @param string[]|null $tokens The recurring payment tokens. Provided only for the initial recurring payment.
-     *
-     * @return $this
-     */
-    public function setTokens(?array $tokens): static
-    {
-        if (is_null($tokens)) {
-            throw new InvalidArgumentException('non-nullable tokens cannot be null');
-        }
-        $this->container['tokens'] = $tokens;
 
         return $this;
     }
