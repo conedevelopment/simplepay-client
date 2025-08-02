@@ -2,10 +2,14 @@
 
 namespace Cone\SimplePay;
 
+use Closure;
 use Cone\SimplePay\Api\TransactionApi;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Message\RequestInterface;
 
 class Client
 {
@@ -67,14 +71,35 @@ class Client
     {
         $stack = HandlerStack::create();
 
-        // Siganture Header middleware
-        // Form data middleware
+        $stack->push(function (callable $next): Closure {
+            return function (RequestInterface $request, array $options) use ($next): PromiseInterface {
+                $modify = [
+                    'body' => [
+                        'merchant' => $this->merchant,
+                        'salt' => substr(str_shuffle(md5(microtime())), 0, 32),
+                        'sdkVersion' => 'Cone OTP SimplePay PHP Client:' . static::VERSION,
+                    ],
+                ];
 
-        $client = new Http([
+                return $next(Utils::modifyRequest($request, $modify), $options);
+            };
+        });
+
+        $stack->push(function (callable $next): Closure {
+            return function (RequestInterface $request, array $options) use ($next): PromiseInterface {
+                $modify = [
+                    'set_headers' => [
+                        'Signature' => $this->sign($request->getBody()->getContents()),
+                    ],
+                ];
+
+                return $next(Utils::modifyRequest($request, $modify), $options);
+            };
+        });
+
+        return new Http([
             'handler' => $stack,
         ]);
-
-        return $client;
     }
 
     /**
