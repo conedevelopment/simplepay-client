@@ -2,7 +2,7 @@
 
 This provides an OpenAPI schema and an auto-generated PHP client as a composer package.
 
-> [!NOTE]  
+> [!NOTE]
 > This is not an official package.
 
 ## Requirements
@@ -17,10 +17,11 @@ This provides an OpenAPI schema and an auto-generated PHP client as a composer p
 
 ## Configuration
 
-- SimplePay API key
+- SimplePay Merchant ID
+- SimplePay Secret Key
 
 ## Usage
 
 ```php
-$client = new Cone\SimplePay\Client(...
+$client = new Cone\SimplePay\Client('MERCHANT', 'SECRET_KEY');
 ```

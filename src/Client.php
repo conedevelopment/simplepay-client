@@ -23,7 +23,7 @@ class Client
      * Create a new SimplePay Client instance.
      */
     public function __construct(
-        protected string $merchantId,
+        protected string $merchant,
         protected string $secretKey,
         protected ?Environment $env = null
     ) {
