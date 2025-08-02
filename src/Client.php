@@ -5,6 +5,7 @@ namespace Cone\SimplePay;
 use Cone\SimplePay\Api\TransactionApi;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\HandlerStack;
 
 class Client
 {
@@ -64,9 +65,14 @@ class Client
      */
     public function client(): ClientInterface
     {
-        $client = new Http();
+        $stack = HandlerStack::create();
 
-        //
+        // Siganture Header middleware
+        // Form data middleware
+
+        $client = new Http([
+            'handler' => $stack,
+        ]);
 
         return $client;
     }
