@@ -2,6 +2,9 @@
     "name": "conedevelopment/simplepay-client",
     "description": "The SimplePay PHP Client.",
     "keywords": [
+        "simplepay",
+        "otpmobil",
+        "payment",
         "openapi",
         "php",
         "sdk",
