@@ -4,7 +4,6 @@ namespace Cone\SimplePay;
 
 use Closure;
 use Cone\SimplePay\Api\TransactionApi;
-use Exception;
 use GuzzleHttp\Client as Http;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;

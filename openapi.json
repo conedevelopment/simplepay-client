@@ -67,15 +67,13 @@
                                             "example": "PUBLICTESTHUF"
                                         },
                                         "orderRef": {
-                                            "type": "string",
-                                            "example": "101010515680292482600"
+                                            "$ref": "#/components/schemas/OrderRef"
                                         },
                                         "currency": {
                                             "$ref": "#/components/schemas/Currency"
                                         },
                                         "transactionId": {
-                                            "type": "number",
-                                            "example": "99844942"
+                                            "$ref": "#/components/schemas/TransactionId"
                                         },
                                         "timeout": {
                                             "type": "string",
@@ -98,6 +96,71 @@
                                                 "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
                                             },
                                             "description": "The recurring payment tokens. Provided only for the initial recurring payment."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/finish": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Finish a two-step transaction",
+                "description": "Finish an authorized two-step transaction.",
+                "operationId": "finish",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The authorized transaction object you would like to finish.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthorizedTransaction"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
                                         }
                                     }
                                 }
@@ -244,6 +307,48 @@
                     }
                 },
                 "type": "object"
+            },
+            "AuthorizedTransaction": {
+                "type": "object",
+                "required": [
+                    "originalTotal",
+                    "approveTotal",
+                    "currency",
+                    "orderRef",
+                    "transactionId"
+                ],
+                "properties": {
+                    "originalTotal": {
+                        "type": "number",
+                        "default": 0,
+                        "exclusiveMinimum": true,
+                        "minimum": 0,
+                        "example": 25.0
+                    },
+                    "approveTotal": {
+                        "type": "number",
+                        "exclusiveMinimum": false,
+                        "minimum": 0,
+                        "example": 25.0
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currency"
+                    },
+                    "orderRef": {
+                        "$ref": "#/components/schemas/OrderRef"
+                    },
+                    "transactionId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    }
+                }
+            },
+            "OrderRef": {
+                "type": "string",
+                "example": "101010515680292482600"
+            },
+            "TransactionId": {
+                "type": "number",
+                "example": "99844942"
             },
             "Method": {
                 "type": "string",
