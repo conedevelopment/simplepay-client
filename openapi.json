@@ -442,7 +442,15 @@
                     }
                 }
             }
-        }
+        },
+        "/transactioncancel": {},
+        "/do": {},
+        "/dorecurring": {},
+        "/cardcancel": {},
+        "/tokencancel": {},
+        "/starteam": {},
+        "/startapplepay": {},
+        "/doapplepay": {}
     },
     "components": {
         "headers": {
