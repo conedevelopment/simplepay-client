@@ -443,7 +443,67 @@
                 }
             }
         },
-        "/transactioncancel": {},
+        "/transactioncancel": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Cancel a transaction",
+                "description": "Cancel an init-ed transaction.",
+                "operationId": "transactioncancel",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The cancel object.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TransactionCancel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "status": {
+                                            "$ref": "#/components/schemas/Status"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/do": {},
         "/dorecurring": {},
         "/cardcancel": {},
@@ -643,6 +703,21 @@
                     },
                     "orderRef": {
                         "$ref": "#/components/schemas/OrderRef"
+                    }
+                }
+            },
+            "TransactionCancel": {
+                "type": "object",
+                "required": [
+                    "transactionId",
+                    "currency"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currency"
                     }
                 }
             },
