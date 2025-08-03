@@ -92,8 +92,7 @@
                                         "tokens": {
                                             "type": "array",
                                             "items": {
-                                                "type": "string",
-                                                "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
+                                                "$ref": "#/components/schemas/Token"
                                             },
                                             "description": "The recurring payment tokens. Provided only for the initial recurring payment."
                                         }
@@ -912,6 +911,41 @@
                         "example": "Guillaume Tell"
                     }
                 }
+            },
+            "Token": {
+                "type": "string",
+                "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
+            },
+            "TokenTransaction": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Transaction"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "threeDSReqAuthMethod": {
+                                "type": "string",
+                                "example": "02"
+                            },
+                            "type": {
+                                "type": "string",
+                                "example": "MIT"
+                            },
+                            "token": {
+                                "$ref": "#/components/schemas/Token"
+                            },
+                            "total": {
+                                "type": "number",
+                                "default": 0,
+                                "exclusiveMinimum": true,
+                                "minimum": 0,
+                                "example": 25.0
+                            }
+                        }
+                    }
+                ]
             }
         }
     }
