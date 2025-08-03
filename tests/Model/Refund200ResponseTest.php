@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Finish200ResponseTest
+ * Refund200ResponseTest
  *
  * PHP version 8.1
  *
@@ -31,13 +31,13 @@ namespace Cone\SimplePay\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Finish200ResponseTest Class Doc Comment
+ * Refund200ResponseTest Class Doc Comment
  *
- * @description Finish200Response
+ * @description Refund200Response
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class Finish200ResponseTest extends TestCase
+class Refund200ResponseTest extends TestCase
 {
     /**
      * Setup before running any test case
@@ -68,9 +68,9 @@ class Finish200ResponseTest extends TestCase
     }
 
     /**
-     * Test "Finish200Response"
+     * Test "Refund200Response"
      */
-    public function testFinish200Response()
+    public function testRefund200Response()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
@@ -122,9 +122,27 @@ class Finish200ResponseTest extends TestCase
     }
 
     /**
-     * Test attribute "approveTotal"
+     * Test attribute "refundTransactionId"
      */
-    public function testPropertyApproveTotal()
+    public function testPropertyRefundTransactionId()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "refundTotal"
+     */
+    public function testPropertyRefundTotal()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "remainingTotal"
+     */
+    public function testPropertyRemainingTotal()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
