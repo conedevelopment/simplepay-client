@@ -241,6 +241,195 @@
                     }
                 }
             }
+        },
+        "/query": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Query a set transactions",
+                "description": "Get the given transactions.",
+                "operationId": "query",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The query parameters.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Query"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "transactions": {
+                                            "type": "array",
+                                            "items": {
+                                                "salt": {
+                                                    "type": "string",
+                                                    "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                                },
+                                                "merchant": {
+                                                    "type": "string",
+                                                    "example": "PUBLICTESTHUF"
+                                                },
+                                                "orderRef": {
+                                                    "$ref": "#/components/schemas/OrderRef"
+                                                },
+                                                "currecy": {
+                                                    "$ref": "#/components/schemas/Currency"
+                                                },
+                                                "currecyEnum": {
+                                                    "$ref": "#/components/schemas/Currency"
+                                                },
+                                                "customer": {
+                                                    "type": "string",
+                                                    "example": "Guillaume Tell"
+                                                },
+                                                "customerEmail": {
+                                                    "type": "string",
+                                                    "format": "email"
+                                                },
+                                                "language": {
+                                                    "$ref": "#/components/schemas/Language"
+                                                },
+                                                "twoStep": {
+                                                    "type": "boolean",
+                                                    "default": false
+                                                },
+                                                "total": {
+                                                    "type": "number",
+                                                    "example": 25.0
+                                                },
+                                                "items": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "ref": {
+                                                            "type": "string",
+                                                            "example": "SKU123"
+                                                        },
+                                                        "title": {
+                                                            "type": "string",
+                                                            "example": "Sample Product"
+                                                        },
+                                                        "amount": {
+                                                            "type": "integer",
+                                                            "description": "The quantity."
+                                                        },
+                                                        "price": {
+                                                            "type": "number",
+                                                            "example": 25.0
+                                                        },
+                                                        "tax": {
+                                                            "type": "number",
+                                                            "minimum": 0
+                                                        },
+                                                        "grossUnitPrice": {
+                                                            "type": "number",
+                                                            "example": 25.0
+                                                        },
+                                                        "rowTotal": {
+                                                            "type": "number",
+                                                            "example": 25.0
+                                                        }
+                                                    }
+                                                },
+                                                "discount": {
+                                                    "type": "number",
+                                                    "example": 10.0
+                                                },
+                                                "shippingCost": {
+                                                    "type": "number",
+                                                    "example": 10.0
+                                                },
+                                                "invoice": {
+                                                    "$ref": "#/components/schemas/Invoice"
+                                                },
+                                                "delivery": {
+                                                    "$ref": "#/components/schemas/Delivery"
+                                                },
+                                                "transactionId": {
+                                                    "$ref": "#/components/schemas/TransactionId"
+                                                },
+                                                "status": {
+                                                    "$ref": "#/components/schemas/Status"
+                                                },
+                                                "resultCode": {
+                                                    "type": "string",
+                                                    "example": "OK"
+                                                },
+                                                "refundStatus": {
+                                                    "$ref": "#/components/schemas/RefundStatus"
+                                                },
+                                                "refunds": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "transactionId": {
+                                                            "$ref": "#/components/schemas/TransactionId"
+                                                        },
+                                                        "refundTotal": {
+                                                            "type": "number",
+                                                            "example": 25.0
+                                                        },
+                                                        "refundDate": {
+                                                            "type": "string",
+                                                            "description": "The ISO 8601 format of the refund date.",
+                                                            "example": "2004-02-12T15:19:21+00:00"
+                                                        },
+                                                        "status": {
+                                                            "$ref": "#/components/schemas/Status"
+                                                        }
+                                                    }
+                                                },
+                                                "remainingTotal": {
+                                                    "type": "number",
+                                                    "example": 25.0
+                                                },
+                                                "paymentDate": {
+                                                    "type": "string",
+                                                    "description": "The ISO 8601 format of the payment date.",
+                                                    "example": "2004-02-12T15:19:21+00:00"
+                                                },
+                                                "method": {
+                                                    "$ref": "#/components/schemas/Method"
+                                                }
+                                            }
+                                        },
+                                        "totalCount": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -437,6 +626,34 @@
                     }
                 }
             },
+            "Query": {
+                "type": "object",
+                "required": [
+                    "transactionIds"
+                ],
+                "properties": {
+                    "transactionIds": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionId"
+                        }
+                    },
+                    "orderRefs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderRef"
+                        }
+                    },
+                    "detailed": {
+                        "type": "boolean",
+                        "default": false
+                    },
+                    "refunds": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                }
+            },
             "OrderRef": {
                 "type": "string",
                 "example": "101010515680292482600"
@@ -449,6 +666,18 @@
                 "type": "string",
                 "enum": [
                     "CARD", "EAM", "WIRE"
+                ]
+            },
+            "Status": {
+                "type": "string",
+                "enum": [
+                    "INIT", "TIMEOUT", "CANCELLED", "NOTAUTHORIZED", "INPAYMENT", "INFRAUD", "AUTHORIZED", "REVERSED", "FINISHED"
+                ]
+            },
+            "RefundStatus": {
+                "type": "string",
+                "enum": [
+                    "PARTIAL", "FULL"
                 ]
             },
             "Currency": {
@@ -498,7 +727,8 @@
                         "example": 25.0
                     },
                     "tax": {
-                        "type": "number"
+                        "type": "number",
+                        "minimum": 0
                     }
                 }
             },
