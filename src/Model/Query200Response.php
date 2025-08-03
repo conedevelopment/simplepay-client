@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Finish200Response
+ * Query200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Finish200Response Class Doc Comment
+ * Query200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class Query200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'finish_200_response';
+    protected static string $openAPIModelName = 'query_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,10 +60,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'orderRef' => 'string',
-        'currency' => '\Cone\SimplePay\Model\Currency',
-        'transactionId' => 'float',
-        'approveTotal' => 'float',
+        'transactions' => '\Cone\SimplePay\Model\Query200ResponseTransactionsInner[]',
+        'totalCount' => 'int',
     ];
 
     /**
@@ -74,10 +72,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'orderRef' => null,
-        'currency' => null,
-        'transactionId' => null,
-        'approveTotal' => null,
+        'transactions' => null,
+        'totalCount' => null,
     ];
 
     /**
@@ -88,10 +84,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'orderRef' => false,
-        'currency' => false,
-        'transactionId' => false,
-        'approveTotal' => false,
+        'transactions' => false,
+        'totalCount' => false,
     ];
 
     /**
@@ -182,10 +176,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'orderRef' => 'orderRef',
-        'currency' => 'currency',
-        'transactionId' => 'transactionId',
-        'approveTotal' => 'approveTotal',
+        'transactions' => 'transactions',
+        'totalCount' => 'totalCount',
     ];
 
     /**
@@ -196,10 +188,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'orderRef' => 'setOrderRef',
-        'currency' => 'setCurrency',
-        'transactionId' => 'setTransactionId',
-        'approveTotal' => 'setApproveTotal',
+        'transactions' => 'setTransactions',
+        'totalCount' => 'setTotalCount',
     ];
 
     /**
@@ -210,10 +200,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'orderRef' => 'getOrderRef',
-        'currency' => 'getCurrency',
-        'transactionId' => 'getTransactionId',
-        'approveTotal' => 'getApproveTotal',
+        'transactions' => 'getTransactions',
+        'totalCount' => 'getTotalCount',
     ];
 
     /**
@@ -274,10 +262,8 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('orderRef', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('approveTotal', $data ?? [], null);
+        $this->setIfExists('transactions', $data ?? [], null);
+        $this->setIfExists('totalCount', $data ?? [], null);
     }
 
     /**
@@ -377,109 +363,55 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     }
 
     /**
-     * Gets orderRef
+     * Gets transactions
      *
-     * @return string|null
+     * @return \Cone\SimplePay\Model\Query200ResponseTransactionsInner[]|null
      */
-    public function getOrderRef(): ?string
+    public function getTransactions(): ?array
     {
-        return $this->container['orderRef'];
+        return $this->container['transactions'];
     }
 
     /**
-     * Sets orderRef
+     * Sets transactions
      *
-     * @param string|null $orderRef orderRef
+     * @param \Cone\SimplePay\Model\Query200ResponseTransactionsInner[]|null $transactions transactions
      *
      * @return $this
      */
-    public function setOrderRef(?string $orderRef): static
+    public function setTransactions(?array $transactions): static
     {
-        if (is_null($orderRef)) {
-            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
+        if (is_null($transactions)) {
+            throw new InvalidArgumentException('non-nullable transactions cannot be null');
         }
-        $this->container['orderRef'] = $orderRef;
+        $this->container['transactions'] = $transactions;
 
         return $this;
     }
 
     /**
-     * Gets currency
+     * Gets totalCount
      *
-     * @return \Cone\SimplePay\Model\Currency|null
+     * @return int|null
      */
-    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
+    public function getTotalCount(): ?int
     {
-        return $this->container['currency'];
+        return $this->container['totalCount'];
     }
 
     /**
-     * Sets currency
+     * Sets totalCount
      *
-     * @param \Cone\SimplePay\Model\Currency|null $currency currency
+     * @param int|null $totalCount totalCount
      *
      * @return $this
      */
-    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
+    public function setTotalCount(?int $totalCount): static
     {
-        if (is_null($currency)) {
-            throw new InvalidArgumentException('non-nullable currency cannot be null');
+        if (is_null($totalCount)) {
+            throw new InvalidArgumentException('non-nullable totalCount cannot be null');
         }
-        $this->container['currency'] = $currency;
-
-        return $this;
-    }
-
-    /**
-     * Gets transactionId
-     *
-     * @return float|null
-     */
-    public function getTransactionId(): ?float
-    {
-        return $this->container['transactionId'];
-    }
-
-    /**
-     * Sets transactionId
-     *
-     * @param float|null $transactionId transactionId
-     *
-     * @return $this
-     */
-    public function setTransactionId(?float $transactionId): static
-    {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
-        }
-        $this->container['transactionId'] = $transactionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets approveTotal
-     *
-     * @return float|null
-     */
-    public function getApproveTotal(): ?float
-    {
-        return $this->container['approveTotal'];
-    }
-
-    /**
-     * Sets approveTotal
-     *
-     * @param float|null $approveTotal approveTotal
-     *
-     * @return $this
-     */
-    public function setApproveTotal(?float $approveTotal): static
-    {
-        if (is_null($approveTotal)) {
-            throw new InvalidArgumentException('non-nullable approveTotal cannot be null');
-        }
-        $this->container['approveTotal'] = $approveTotal;
+        $this->container['totalCount'] = $totalCount;
 
         return $this;
     }

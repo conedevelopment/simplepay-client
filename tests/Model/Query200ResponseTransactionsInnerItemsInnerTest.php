@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Finish200ResponseTest
+ * Query200ResponseTransactionsInnerItemsInnerTest
  *
  * PHP version 8.1
  *
@@ -31,13 +31,13 @@ namespace Cone\SimplePay\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Finish200ResponseTest Class Doc Comment
+ * Query200ResponseTransactionsInnerItemsInnerTest Class Doc Comment
  *
- * @description Finish200Response
+ * @description Query200ResponseTransactionsInnerItemsInner
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class Finish200ResponseTest extends TestCase
+class Query200ResponseTransactionsInnerItemsInnerTest extends TestCase
 {
     /**
      * Setup before running any test case
@@ -68,63 +68,72 @@ class Finish200ResponseTest extends TestCase
     }
 
     /**
-     * Test "Finish200Response"
+     * Test "Query200ResponseTransactionsInnerItemsInner"
      */
-    public function testFinish200Response()
+    public function testQuery200ResponseTransactionsInnerItemsInner()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "salt"
+     * Test attribute "ref"
      */
-    public function testPropertySalt()
+    public function testPropertyRef()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "merchant"
+     * Test attribute "title"
      */
-    public function testPropertyMerchant()
+    public function testPropertyTitle()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "orderRef"
+     * Test attribute "amount"
      */
-    public function testPropertyOrderRef()
+    public function testPropertyAmount()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "currency"
+     * Test attribute "price"
      */
-    public function testPropertyCurrency()
+    public function testPropertyPrice()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "transactionId"
+     * Test attribute "tax"
      */
-    public function testPropertyTransactionId()
+    public function testPropertyTax()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');
     }
 
     /**
-     * Test attribute "approveTotal"
+     * Test attribute "grossUnitPrice"
      */
-    public function testPropertyApproveTotal()
+    public function testPropertyGrossUnitPrice()
+    {
+        // TODO: implement
+        self::markTestIncomplete('Not implemented');
+    }
+
+    /**
+     * Test attribute "rowTotal"
+     */
+    public function testPropertyRowTotal()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');

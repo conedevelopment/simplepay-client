@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Finish200Response
+ * Refund200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Finish200Response Class Doc Comment
+ * Refund200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class Refund200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'finish_200_response';
+    protected static string $openAPIModelName = 'refund_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -63,7 +63,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'string',
         'currency' => '\Cone\SimplePay\Model\Currency',
         'transactionId' => 'float',
-        'approveTotal' => 'float',
+        'refundTransactionId' => 'float',
+        'refundTotal' => 'float',
+        'remainingTotal' => 'float',
     ];
 
     /**
@@ -77,7 +79,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => null,
         'currency' => null,
         'transactionId' => null,
-        'approveTotal' => null,
+        'refundTransactionId' => null,
+        'refundTotal' => null,
+        'remainingTotal' => null,
     ];
 
     /**
@@ -91,7 +95,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => false,
         'currency' => false,
         'transactionId' => false,
-        'approveTotal' => false,
+        'refundTransactionId' => false,
+        'refundTotal' => false,
+        'remainingTotal' => false,
     ];
 
     /**
@@ -185,7 +191,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'orderRef',
         'currency' => 'currency',
         'transactionId' => 'transactionId',
-        'approveTotal' => 'approveTotal',
+        'refundTransactionId' => 'refundTransactionId',
+        'refundTotal' => 'refundTotal',
+        'remainingTotal' => 'remainingTotal',
     ];
 
     /**
@@ -199,7 +207,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'setOrderRef',
         'currency' => 'setCurrency',
         'transactionId' => 'setTransactionId',
-        'approveTotal' => 'setApproveTotal',
+        'refundTransactionId' => 'setRefundTransactionId',
+        'refundTotal' => 'setRefundTotal',
+        'remainingTotal' => 'setRemainingTotal',
     ];
 
     /**
@@ -213,7 +223,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         'orderRef' => 'getOrderRef',
         'currency' => 'getCurrency',
         'transactionId' => 'getTransactionId',
-        'approveTotal' => 'getApproveTotal',
+        'refundTransactionId' => 'getRefundTransactionId',
+        'refundTotal' => 'getRefundTotal',
+        'remainingTotal' => 'getRemainingTotal',
     ];
 
     /**
@@ -277,7 +289,9 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
         $this->setIfExists('orderRef', $data ?? [], null);
         $this->setIfExists('currency', $data ?? [], null);
         $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('approveTotal', $data ?? [], null);
+        $this->setIfExists('refundTransactionId', $data ?? [], null);
+        $this->setIfExists('refundTotal', $data ?? [], null);
+        $this->setIfExists('remainingTotal', $data ?? [], null);
     }
 
     /**
@@ -458,28 +472,82 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     }
 
     /**
-     * Gets approveTotal
+     * Gets refundTransactionId
      *
      * @return float|null
      */
-    public function getApproveTotal(): ?float
+    public function getRefundTransactionId(): ?float
     {
-        return $this->container['approveTotal'];
+        return $this->container['refundTransactionId'];
     }
 
     /**
-     * Sets approveTotal
+     * Sets refundTransactionId
      *
-     * @param float|null $approveTotal approveTotal
+     * @param float|null $refundTransactionId refundTransactionId
      *
      * @return $this
      */
-    public function setApproveTotal(?float $approveTotal): static
+    public function setRefundTransactionId(?float $refundTransactionId): static
     {
-        if (is_null($approveTotal)) {
-            throw new InvalidArgumentException('non-nullable approveTotal cannot be null');
+        if (is_null($refundTransactionId)) {
+            throw new InvalidArgumentException('non-nullable refundTransactionId cannot be null');
         }
-        $this->container['approveTotal'] = $approveTotal;
+        $this->container['refundTransactionId'] = $refundTransactionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets refundTotal
+     *
+     * @return float|null
+     */
+    public function getRefundTotal(): ?float
+    {
+        return $this->container['refundTotal'];
+    }
+
+    /**
+     * Sets refundTotal
+     *
+     * @param float|null $refundTotal refundTotal
+     *
+     * @return $this
+     */
+    public function setRefundTotal(?float $refundTotal): static
+    {
+        if (is_null($refundTotal)) {
+            throw new InvalidArgumentException('non-nullable refundTotal cannot be null');
+        }
+        $this->container['refundTotal'] = $refundTotal;
+
+        return $this;
+    }
+
+    /**
+     * Gets remainingTotal
+     *
+     * @return float|null
+     */
+    public function getRemainingTotal(): ?float
+    {
+        return $this->container['remainingTotal'];
+    }
+
+    /**
+     * Sets remainingTotal
+     *
+     * @param float|null $remainingTotal remainingTotal
+     *
+     * @return $this
+     */
+    public function setRemainingTotal(?float $remainingTotal): static
+    {
+        if (is_null($remainingTotal)) {
+            throw new InvalidArgumentException('non-nullable remainingTotal cannot be null');
+        }
+        $this->container['remainingTotal'] = $remainingTotal;
 
         return $this;
     }

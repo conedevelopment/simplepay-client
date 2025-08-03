@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Finish200Response
+ * Query200ResponseTransactionsInnerItemsInner
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Finish200Response Class Doc Comment
+ * Query200ResponseTransactionsInnerItemsInner Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class Query200ResponseTransactionsInnerItemsInner implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'finish_200_response';
+    protected static string $openAPIModelName = 'query_200_response_transactions_inner_items_inner';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,12 +58,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'salt' => 'string',
-        'merchant' => 'string',
-        'orderRef' => 'string',
-        'currency' => '\Cone\SimplePay\Model\Currency',
-        'transactionId' => 'float',
-        'approveTotal' => 'float',
+        'ref' => 'string',
+        'title' => 'string',
+        'amount' => 'int',
+        'price' => 'float',
+        'tax' => 'float',
+        'grossUnitPrice' => 'float',
+        'rowTotal' => 'float',
     ];
 
     /**
@@ -72,12 +73,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'salt' => null,
-        'merchant' => null,
-        'orderRef' => null,
-        'currency' => null,
-        'transactionId' => null,
-        'approveTotal' => null,
+        'ref' => null,
+        'title' => null,
+        'amount' => null,
+        'price' => null,
+        'tax' => null,
+        'grossUnitPrice' => null,
+        'rowTotal' => null,
     ];
 
     /**
@@ -86,12 +88,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'salt' => false,
-        'merchant' => false,
-        'orderRef' => false,
-        'currency' => false,
-        'transactionId' => false,
-        'approveTotal' => false,
+        'ref' => false,
+        'title' => false,
+        'amount' => false,
+        'price' => false,
+        'tax' => false,
+        'grossUnitPrice' => false,
+        'rowTotal' => false,
     ];
 
     /**
@@ -180,12 +183,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'salt' => 'salt',
-        'merchant' => 'merchant',
-        'orderRef' => 'orderRef',
-        'currency' => 'currency',
-        'transactionId' => 'transactionId',
-        'approveTotal' => 'approveTotal',
+        'ref' => 'ref',
+        'title' => 'title',
+        'amount' => 'amount',
+        'price' => 'price',
+        'tax' => 'tax',
+        'grossUnitPrice' => 'grossUnitPrice',
+        'rowTotal' => 'rowTotal',
     ];
 
     /**
@@ -194,12 +198,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $setters = [
-        'salt' => 'setSalt',
-        'merchant' => 'setMerchant',
-        'orderRef' => 'setOrderRef',
-        'currency' => 'setCurrency',
-        'transactionId' => 'setTransactionId',
-        'approveTotal' => 'setApproveTotal',
+        'ref' => 'setRef',
+        'title' => 'setTitle',
+        'amount' => 'setAmount',
+        'price' => 'setPrice',
+        'tax' => 'setTax',
+        'grossUnitPrice' => 'setGrossUnitPrice',
+        'rowTotal' => 'setRowTotal',
     ];
 
     /**
@@ -208,12 +213,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $getters = [
-        'salt' => 'getSalt',
-        'merchant' => 'getMerchant',
-        'orderRef' => 'getOrderRef',
-        'currency' => 'getCurrency',
-        'transactionId' => 'getTransactionId',
-        'approveTotal' => 'getApproveTotal',
+        'ref' => 'getRef',
+        'title' => 'getTitle',
+        'amount' => 'getAmount',
+        'price' => 'getPrice',
+        'tax' => 'getTax',
+        'grossUnitPrice' => 'getGrossUnitPrice',
+        'rowTotal' => 'getRowTotal',
     ];
 
     /**
@@ -272,12 +278,13 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('salt', $data ?? [], null);
-        $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('orderRef', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('approveTotal', $data ?? [], null);
+        $this->setIfExists('ref', $data ?? [], null);
+        $this->setIfExists('title', $data ?? [], null);
+        $this->setIfExists('amount', $data ?? [], null);
+        $this->setIfExists('price', $data ?? [], null);
+        $this->setIfExists('tax', $data ?? [], null);
+        $this->setIfExists('grossUnitPrice', $data ?? [], null);
+        $this->setIfExists('rowTotal', $data ?? [], null);
     }
 
     /**
@@ -307,6 +314,10 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
     {
         $invalidProperties = [];
 
+        if (!is_null($this->container['tax']) && ($this->container['tax'] < 0)) {
+            $invalidProperties[] = "invalid value for 'tax', must be bigger than or equal to 0.";
+        }
+
         return $invalidProperties;
     }
 
@@ -323,163 +334,195 @@ class Finish200Response implements ModelInterface, ArrayAccess, JsonSerializable
 
 
     /**
-     * Gets salt
+     * Gets ref
      *
      * @return string|null
      */
-    public function getSalt(): ?string
+    public function getRef(): ?string
     {
-        return $this->container['salt'];
+        return $this->container['ref'];
     }
 
     /**
-     * Sets salt
+     * Sets ref
      *
-     * @param string|null $salt salt
+     * @param string|null $ref ref
      *
      * @return $this
      */
-    public function setSalt(?string $salt): static
+    public function setRef(?string $ref): static
     {
-        if (is_null($salt)) {
-            throw new InvalidArgumentException('non-nullable salt cannot be null');
+        if (is_null($ref)) {
+            throw new InvalidArgumentException('non-nullable ref cannot be null');
         }
-        $this->container['salt'] = $salt;
+        $this->container['ref'] = $ref;
 
         return $this;
     }
 
     /**
-     * Gets merchant
+     * Gets title
      *
      * @return string|null
      */
-    public function getMerchant(): ?string
+    public function getTitle(): ?string
     {
-        return $this->container['merchant'];
+        return $this->container['title'];
     }
 
     /**
-     * Sets merchant
+     * Sets title
      *
-     * @param string|null $merchant merchant
+     * @param string|null $title title
      *
      * @return $this
      */
-    public function setMerchant(?string $merchant): static
+    public function setTitle(?string $title): static
     {
-        if (is_null($merchant)) {
-            throw new InvalidArgumentException('non-nullable merchant cannot be null');
+        if (is_null($title)) {
+            throw new InvalidArgumentException('non-nullable title cannot be null');
         }
-        $this->container['merchant'] = $merchant;
+        $this->container['title'] = $title;
 
         return $this;
     }
 
     /**
-     * Gets orderRef
+     * Gets amount
      *
-     * @return string|null
+     * @return int|null
      */
-    public function getOrderRef(): ?string
+    public function getAmount(): ?int
     {
-        return $this->container['orderRef'];
+        return $this->container['amount'];
     }
 
     /**
-     * Sets orderRef
+     * Sets amount
      *
-     * @param string|null $orderRef orderRef
+     * @param int|null $amount The quantity.
      *
      * @return $this
      */
-    public function setOrderRef(?string $orderRef): static
+    public function setAmount(?int $amount): static
     {
-        if (is_null($orderRef)) {
-            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
+        if (is_null($amount)) {
+            throw new InvalidArgumentException('non-nullable amount cannot be null');
         }
-        $this->container['orderRef'] = $orderRef;
+        $this->container['amount'] = $amount;
 
         return $this;
     }
 
     /**
-     * Gets currency
-     *
-     * @return \Cone\SimplePay\Model\Currency|null
-     */
-    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
-    {
-        return $this->container['currency'];
-    }
-
-    /**
-     * Sets currency
-     *
-     * @param \Cone\SimplePay\Model\Currency|null $currency currency
-     *
-     * @return $this
-     */
-    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
-    {
-        if (is_null($currency)) {
-            throw new InvalidArgumentException('non-nullable currency cannot be null');
-        }
-        $this->container['currency'] = $currency;
-
-        return $this;
-    }
-
-    /**
-     * Gets transactionId
+     * Gets price
      *
      * @return float|null
      */
-    public function getTransactionId(): ?float
+    public function getPrice(): ?float
     {
-        return $this->container['transactionId'];
+        return $this->container['price'];
     }
 
     /**
-     * Sets transactionId
+     * Sets price
      *
-     * @param float|null $transactionId transactionId
+     * @param float|null $price price
      *
      * @return $this
      */
-    public function setTransactionId(?float $transactionId): static
+    public function setPrice(?float $price): static
     {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        if (is_null($price)) {
+            throw new InvalidArgumentException('non-nullable price cannot be null');
         }
-        $this->container['transactionId'] = $transactionId;
+        $this->container['price'] = $price;
 
         return $this;
     }
 
     /**
-     * Gets approveTotal
+     * Gets tax
      *
      * @return float|null
      */
-    public function getApproveTotal(): ?float
+    public function getTax(): ?float
     {
-        return $this->container['approveTotal'];
+        return $this->container['tax'];
     }
 
     /**
-     * Sets approveTotal
+     * Sets tax
      *
-     * @param float|null $approveTotal approveTotal
+     * @param float|null $tax tax
      *
      * @return $this
      */
-    public function setApproveTotal(?float $approveTotal): static
+    public function setTax(?float $tax): static
     {
-        if (is_null($approveTotal)) {
-            throw new InvalidArgumentException('non-nullable approveTotal cannot be null');
+        if (is_null($tax)) {
+            throw new InvalidArgumentException('non-nullable tax cannot be null');
         }
-        $this->container['approveTotal'] = $approveTotal;
+
+        if (($tax < 0)) {
+            throw new InvalidArgumentException('invalid value for $tax when calling Query200ResponseTransactionsInnerItemsInner., must be bigger than or equal to 0.');
+        }
+
+        $this->container['tax'] = $tax;
+
+        return $this;
+    }
+
+    /**
+     * Gets grossUnitPrice
+     *
+     * @return float|null
+     */
+    public function getGrossUnitPrice(): ?float
+    {
+        return $this->container['grossUnitPrice'];
+    }
+
+    /**
+     * Sets grossUnitPrice
+     *
+     * @param float|null $grossUnitPrice grossUnitPrice
+     *
+     * @return $this
+     */
+    public function setGrossUnitPrice(?float $grossUnitPrice): static
+    {
+        if (is_null($grossUnitPrice)) {
+            throw new InvalidArgumentException('non-nullable grossUnitPrice cannot be null');
+        }
+        $this->container['grossUnitPrice'] = $grossUnitPrice;
+
+        return $this;
+    }
+
+    /**
+     * Gets rowTotal
+     *
+     * @return float|null
+     */
+    public function getRowTotal(): ?float
+    {
+        return $this->container['rowTotal'];
+    }
+
+    /**
+     * Sets rowTotal
+     *
+     * @param float|null $rowTotal rowTotal
+     *
+     * @return $this
+     */
+    public function setRowTotal(?float $rowTotal): static
+    {
+        if (is_null($rowTotal)) {
+            throw new InvalidArgumentException('non-nullable rowTotal cannot be null');
+        }
+        $this->container['rowTotal'] = $rowTotal;
 
         return $this;
     }

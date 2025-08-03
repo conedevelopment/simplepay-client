@@ -327,6 +327,10 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
             $invalidProperties[] = "invalid value for 'price', must be bigger than 0.";
         }
 
+        if (!is_null($this->container['tax']) && ($this->container['tax'] < 0)) {
+            $invalidProperties[] = "invalid value for 'tax', must be bigger than or equal to 0.";
+        }
+
         return $invalidProperties;
     }
 
@@ -516,6 +520,11 @@ class Item implements ModelInterface, ArrayAccess, JsonSerializable
         if (is_null($tax)) {
             throw new InvalidArgumentException('non-nullable tax cannot be null');
         }
+
+        if (($tax < 0)) {
+            throw new InvalidArgumentException('invalid value for $tax when calling Item., must be bigger than or equal to 0.');
+        }
+
         $this->container['tax'] = $tax;
 
         return $this;
