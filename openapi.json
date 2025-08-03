@@ -158,7 +158,79 @@
                                         "transactionId": {
                                             "$ref": "#/components/schemas/TransactionId"
                                         },
-                                        "total": {
+                                        "approveTotal": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/refund": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Refund a transaction",
+                "description": "Refund a transaction fully or partially.",
+                "operationId": "refund",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The refund object.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Refund"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "refundTransactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "refundTotal": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        },
+                                        "remainingTotal": {
                                             "type": "number",
                                             "example": 25.0
                                         }
@@ -339,6 +411,29 @@
                     },
                     "transactionId": {
                         "$ref": "#/components/schemas/TransactionId"
+                    }
+                }
+            },
+            "Refund": {
+                "type": "object",
+                "required": [
+                    "refundTotal",
+                    "currency",
+                    "orderRef"
+                ],
+                "properties": {
+                    "refundTotal": {
+                        "type": "number",
+                        "default": 0,
+                        "exclusiveMinimum": true,
+                        "minimum": 0,
+                        "example": 25.0
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currency"
+                    },
+                    "orderRef": {
+                        "$ref": "#/components/schemas/OrderRef"
                     }
                 }
             },
