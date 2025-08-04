@@ -2,7 +2,7 @@
 
 This provides an OpenAPI schema and an auto-generated PHP client as a composer package.
 
-> [!NOTE]
+> [!WARNING]
 > This is not an official package.
 
 ## Requirements
@@ -49,10 +49,18 @@ $client->api()->doApplePay(...);
 
 SimplePay responses with `HTTP 200` even if the operation is failed or an error occured. The handle this properly the Client has a built-in middleware that checks whether the response contains any errors, if so, it throws an `ApiException`.
 
+The message holds the error code and the error message to make easier debugging.
+
 ```php
+use Cone\SimplePay\ApiException;
+
 try {
     $client->api()->start(...);
 } catch (ApiException $exception) {
-    Log::info()
+    // Log the message (starting with the error code)
+    Log::info($exception->getMessage());
+
+    // Log the error code only
+    Log::info($exception->getCode());
 }
 ```
