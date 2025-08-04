@@ -3,6 +3,5 @@
 /.gitignore export-ignore
 /.openapi-generator/ export-ignore
 /.openapi-generator-ignore export-ignore
-/openapi.json export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /.phplint.yml export-ignore
