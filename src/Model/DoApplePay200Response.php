@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tokenquery200Response
+ * DoApplePay200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Tokenquery200Response Class Doc Comment
+ * DoApplePay200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class DoApplePay200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'tokenquery_200_response';
+    protected static string $openAPIModelName = 'doApplePay_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,9 +60,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'token' => 'string',
-        'status' => '\Cone\SimplePay\Model\TokenStatus',
-        'expiry' => 'string',
+        'orderRef' => 'string',
+        'transactionId' => 'float',
+        'currency' => '\Cone\SimplePay\Model\Currency',
+        'total' => 'float',
+        'applePayStatus' => 'string',
     ];
 
     /**
@@ -73,9 +75,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'token' => null,
-        'status' => null,
-        'expiry' => null,
+        'orderRef' => null,
+        'transactionId' => null,
+        'currency' => null,
+        'total' => null,
+        'applePayStatus' => null,
     ];
 
     /**
@@ -86,9 +90,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'token' => false,
-        'status' => false,
-        'expiry' => false,
+        'orderRef' => false,
+        'transactionId' => false,
+        'currency' => false,
+        'total' => false,
+        'applePayStatus' => false,
     ];
 
     /**
@@ -179,9 +185,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'token' => 'token',
-        'status' => 'status',
-        'expiry' => 'expiry',
+        'orderRef' => 'orderRef',
+        'transactionId' => 'transactionId',
+        'currency' => 'currency',
+        'total' => 'total',
+        'applePayStatus' => 'applePayStatus',
     ];
 
     /**
@@ -192,9 +200,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'token' => 'setToken',
-        'status' => 'setStatus',
-        'expiry' => 'setExpiry',
+        'orderRef' => 'setOrderRef',
+        'transactionId' => 'setTransactionId',
+        'currency' => 'setCurrency',
+        'total' => 'setTotal',
+        'applePayStatus' => 'setApplePayStatus',
     ];
 
     /**
@@ -205,9 +215,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'token' => 'getToken',
-        'status' => 'getStatus',
-        'expiry' => 'getExpiry',
+        'orderRef' => 'getOrderRef',
+        'transactionId' => 'getTransactionId',
+        'currency' => 'getCurrency',
+        'total' => 'getTotal',
+        'applePayStatus' => 'getApplePayStatus',
     ];
 
     /**
@@ -268,9 +280,11 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('token', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('expiry', $data ?? [], null);
+        $this->setIfExists('orderRef', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('currency', $data ?? [], null);
+        $this->setIfExists('total', $data ?? [], null);
+        $this->setIfExists('applePayStatus', $data ?? [], null);
     }
 
     /**
@@ -370,82 +384,136 @@ class Tokenquery200Response implements ModelInterface, ArrayAccess, JsonSerializ
     }
 
     /**
-     * Gets token
+     * Gets orderRef
      *
      * @return string|null
      */
-    public function getToken(): ?string
+    public function getOrderRef(): ?string
     {
-        return $this->container['token'];
+        return $this->container['orderRef'];
     }
 
     /**
-     * Sets token
+     * Sets orderRef
      *
-     * @param string|null $token token
+     * @param string|null $orderRef orderRef
      *
      * @return $this
      */
-    public function setToken(?string $token): static
+    public function setOrderRef(?string $orderRef): static
     {
-        if (is_null($token)) {
-            throw new InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($orderRef)) {
+            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['orderRef'] = $orderRef;
 
         return $this;
     }
 
     /**
-     * Gets status
+     * Gets transactionId
      *
-     * @return \Cone\SimplePay\Model\TokenStatus|null
+     * @return float|null
      */
-    public function getStatus(): ?\Cone\SimplePay\Model\TokenStatus
+    public function getTransactionId(): ?float
     {
-        return $this->container['status'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets status
+     * Sets transactionId
      *
-     * @param \Cone\SimplePay\Model\TokenStatus|null $status status
+     * @param float|null $transactionId transactionId
      *
      * @return $this
      */
-    public function setStatus(?\Cone\SimplePay\Model\TokenStatus $status): static
+    public function setTransactionId(?float $transactionId): static
     {
-        if (is_null($status)) {
-            throw new InvalidArgumentException('non-nullable status cannot be null');
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['status'] = $status;
+        $this->container['transactionId'] = $transactionId;
 
         return $this;
     }
 
     /**
-     * Gets expiry
+     * Gets currency
      *
-     * @return string|null
+     * @return \Cone\SimplePay\Model\Currency|null
      */
-    public function getExpiry(): ?string
+    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
     {
-        return $this->container['expiry'];
+        return $this->container['currency'];
     }
 
     /**
-     * Sets expiry
+     * Sets currency
      *
-     * @param string|null $expiry The ISO 8601 format of the token expiry date.
+     * @param \Cone\SimplePay\Model\Currency|null $currency currency
      *
      * @return $this
      */
-    public function setExpiry(?string $expiry): static
+    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
     {
-        if (is_null($expiry)) {
-            throw new InvalidArgumentException('non-nullable expiry cannot be null');
+        if (is_null($currency)) {
+            throw new InvalidArgumentException('non-nullable currency cannot be null');
         }
-        $this->container['expiry'] = $expiry;
+        $this->container['currency'] = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Gets total
+     *
+     * @return float|null
+     */
+    public function getTotal(): ?float
+    {
+        return $this->container['total'];
+    }
+
+    /**
+     * Sets total
+     *
+     * @param float|null $total total
+     *
+     * @return $this
+     */
+    public function setTotal(?float $total): static
+    {
+        if (is_null($total)) {
+            throw new InvalidArgumentException('non-nullable total cannot be null');
+        }
+        $this->container['total'] = $total;
+
+        return $this;
+    }
+
+    /**
+     * Gets applePayStatus
+     *
+     * @return string|null
+     */
+    public function getApplePayStatus(): ?string
+    {
+        return $this->container['applePayStatus'];
+    }
+
+    /**
+     * Sets applePayStatus
+     *
+     * @param string|null $applePayStatus applePayStatus
+     *
+     * @return $this
+     */
+    public function setApplePayStatus(?string $applePayStatus): static
+    {
+        if (is_null($applePayStatus)) {
+            throw new InvalidArgumentException('non-nullable applePayStatus cannot be null');
+        }
+        $this->container['applePayStatus'] = $applePayStatus;
 
         return $this;
     }

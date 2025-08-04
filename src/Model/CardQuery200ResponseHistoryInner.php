@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Starteam200Response
+ * CardQuery200ResponseHistoryInner
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Starteam200Response Class Doc Comment
+ * CardQuery200ResponseHistoryInner Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class CardQuery200ResponseHistoryInner implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'starteam_200_response';
+    protected static string $openAPIModelName = 'cardQuery_200_response_history_inner';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,15 +58,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'salt' => 'string',
-        'merchant' => 'string',
-        'orderRef' => 'string',
-        'currency' => '\Cone\SimplePay\Model\Currency',
+        'orerRef' => 'string',
         'transactionId' => 'float',
-        'timeout' => 'string',
-        'total' => 'float',
-        'eam' => 'string',
-        'tokens' => 'string[]',
+        'status' => '\Cone\SimplePay\Model\TransactionStatus',
+        'paymentDate' => 'string',
+        'finishDate' => 'string',
     ];
 
     /**
@@ -75,15 +71,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'salt' => null,
-        'merchant' => null,
-        'orderRef' => null,
-        'currency' => null,
+        'orerRef' => null,
         'transactionId' => null,
-        'timeout' => null,
-        'total' => null,
-        'eam' => null,
-        'tokens' => null,
+        'status' => null,
+        'paymentDate' => null,
+        'finishDate' => null,
     ];
 
     /**
@@ -92,15 +84,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'salt' => false,
-        'merchant' => false,
-        'orderRef' => false,
-        'currency' => false,
+        'orerRef' => false,
         'transactionId' => false,
-        'timeout' => false,
-        'total' => false,
-        'eam' => false,
-        'tokens' => false,
+        'status' => false,
+        'paymentDate' => false,
+        'finishDate' => false,
     ];
 
     /**
@@ -189,15 +177,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'salt' => 'salt',
-        'merchant' => 'merchant',
-        'orderRef' => 'orderRef',
-        'currency' => 'currency',
+        'orerRef' => 'orerRef',
         'transactionId' => 'transactionId',
-        'timeout' => 'timeout',
-        'total' => 'total',
-        'eam' => 'eam',
-        'tokens' => 'tokens',
+        'status' => 'status',
+        'paymentDate' => 'paymentDate',
+        'finishDate' => 'finishDate',
     ];
 
     /**
@@ -206,15 +190,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, string>
      */
     protected static array $setters = [
-        'salt' => 'setSalt',
-        'merchant' => 'setMerchant',
-        'orderRef' => 'setOrderRef',
-        'currency' => 'setCurrency',
+        'orerRef' => 'setOrerRef',
         'transactionId' => 'setTransactionId',
-        'timeout' => 'setTimeout',
-        'total' => 'setTotal',
-        'eam' => 'setEam',
-        'tokens' => 'setTokens',
+        'status' => 'setStatus',
+        'paymentDate' => 'setPaymentDate',
+        'finishDate' => 'setFinishDate',
     ];
 
     /**
@@ -223,15 +203,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      * @var array<string, string>
      */
     protected static array $getters = [
-        'salt' => 'getSalt',
-        'merchant' => 'getMerchant',
-        'orderRef' => 'getOrderRef',
-        'currency' => 'getCurrency',
+        'orerRef' => 'getOrerRef',
         'transactionId' => 'getTransactionId',
-        'timeout' => 'getTimeout',
-        'total' => 'getTotal',
-        'eam' => 'getEam',
-        'tokens' => 'getTokens',
+        'status' => 'getStatus',
+        'paymentDate' => 'getPaymentDate',
+        'finishDate' => 'getFinishDate',
     ];
 
     /**
@@ -290,15 +266,11 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('salt', $data ?? [], null);
-        $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('orderRef', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
+        $this->setIfExists('orerRef', $data ?? [], null);
         $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('timeout', $data ?? [], null);
-        $this->setIfExists('total', $data ?? [], null);
-        $this->setIfExists('eam', $data ?? [], null);
-        $this->setIfExists('tokens', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('paymentDate', $data ?? [], null);
+        $this->setIfExists('finishDate', $data ?? [], null);
     }
 
     /**
@@ -344,109 +316,28 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
 
 
     /**
-     * Gets salt
+     * Gets orerRef
      *
      * @return string|null
      */
-    public function getSalt(): ?string
+    public function getOrerRef(): ?string
     {
-        return $this->container['salt'];
+        return $this->container['orerRef'];
     }
 
     /**
-     * Sets salt
+     * Sets orerRef
      *
-     * @param string|null $salt salt
+     * @param string|null $orerRef orerRef
      *
      * @return $this
      */
-    public function setSalt(?string $salt): static
+    public function setOrerRef(?string $orerRef): static
     {
-        if (is_null($salt)) {
-            throw new InvalidArgumentException('non-nullable salt cannot be null');
+        if (is_null($orerRef)) {
+            throw new InvalidArgumentException('non-nullable orerRef cannot be null');
         }
-        $this->container['salt'] = $salt;
-
-        return $this;
-    }
-
-    /**
-     * Gets merchant
-     *
-     * @return string|null
-     */
-    public function getMerchant(): ?string
-    {
-        return $this->container['merchant'];
-    }
-
-    /**
-     * Sets merchant
-     *
-     * @param string|null $merchant merchant
-     *
-     * @return $this
-     */
-    public function setMerchant(?string $merchant): static
-    {
-        if (is_null($merchant)) {
-            throw new InvalidArgumentException('non-nullable merchant cannot be null');
-        }
-        $this->container['merchant'] = $merchant;
-
-        return $this;
-    }
-
-    /**
-     * Gets orderRef
-     *
-     * @return string|null
-     */
-    public function getOrderRef(): ?string
-    {
-        return $this->container['orderRef'];
-    }
-
-    /**
-     * Sets orderRef
-     *
-     * @param string|null $orderRef orderRef
-     *
-     * @return $this
-     */
-    public function setOrderRef(?string $orderRef): static
-    {
-        if (is_null($orderRef)) {
-            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
-        }
-        $this->container['orderRef'] = $orderRef;
-
-        return $this;
-    }
-
-    /**
-     * Gets currency
-     *
-     * @return \Cone\SimplePay\Model\Currency|null
-     */
-    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
-    {
-        return $this->container['currency'];
-    }
-
-    /**
-     * Sets currency
-     *
-     * @param \Cone\SimplePay\Model\Currency|null $currency currency
-     *
-     * @return $this
-     */
-    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
-    {
-        if (is_null($currency)) {
-            throw new InvalidArgumentException('non-nullable currency cannot be null');
-        }
-        $this->container['currency'] = $currency;
+        $this->container['orerRef'] = $orerRef;
 
         return $this;
     }
@@ -479,109 +370,82 @@ class Starteam200Response implements ModelInterface, ArrayAccess, JsonSerializab
     }
 
     /**
-     * Gets timeout
+     * Gets status
+     *
+     * @return \Cone\SimplePay\Model\TransactionStatus|null
+     */
+    public function getStatus(): ?\Cone\SimplePay\Model\TransactionStatus
+    {
+        return $this->container['status'];
+    }
+
+    /**
+     * Sets status
+     *
+     * @param \Cone\SimplePay\Model\TransactionStatus|null $status status
+     *
+     * @return $this
+     */
+    public function setStatus(?\Cone\SimplePay\Model\TransactionStatus $status): static
+    {
+        if (is_null($status)) {
+            throw new InvalidArgumentException('non-nullable status cannot be null');
+        }
+        $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets paymentDate
      *
      * @return string|null
      */
-    public function getTimeout(): ?string
+    public function getPaymentDate(): ?string
     {
-        return $this->container['timeout'];
+        return $this->container['paymentDate'];
     }
 
     /**
-     * Sets timeout
+     * Sets paymentDate
      *
-     * @param string|null $timeout The ISO 8601 format of the timeout date.
+     * @param string|null $paymentDate The ISO 8601 format of the payment date.
      *
      * @return $this
      */
-    public function setTimeout(?string $timeout): static
+    public function setPaymentDate(?string $paymentDate): static
     {
-        if (is_null($timeout)) {
-            throw new InvalidArgumentException('non-nullable timeout cannot be null');
+        if (is_null($paymentDate)) {
+            throw new InvalidArgumentException('non-nullable paymentDate cannot be null');
         }
-        $this->container['timeout'] = $timeout;
+        $this->container['paymentDate'] = $paymentDate;
 
         return $this;
     }
 
     /**
-     * Gets total
-     *
-     * @return float|null
-     */
-    public function getTotal(): ?float
-    {
-        return $this->container['total'];
-    }
-
-    /**
-     * Sets total
-     *
-     * @param float|null $total total
-     *
-     * @return $this
-     */
-    public function setTotal(?float $total): static
-    {
-        if (is_null($total)) {
-            throw new InvalidArgumentException('non-nullable total cannot be null');
-        }
-        $this->container['total'] = $total;
-
-        return $this;
-    }
-
-    /**
-     * Gets eam
+     * Gets finishDate
      *
      * @return string|null
      */
-    public function getEam(): ?string
+    public function getFinishDate(): ?string
     {
-        return $this->container['eam'];
+        return $this->container['finishDate'];
     }
 
     /**
-     * Sets eam
+     * Sets finishDate
      *
-     * @param string|null $eam The deeplink.
+     * @param string|null $finishDate The ISO 8601 format of the finish date.
      *
      * @return $this
      */
-    public function setEam(?string $eam): static
+    public function setFinishDate(?string $finishDate): static
     {
-        if (is_null($eam)) {
-            throw new InvalidArgumentException('non-nullable eam cannot be null');
+        if (is_null($finishDate)) {
+            throw new InvalidArgumentException('non-nullable finishDate cannot be null');
         }
-        $this->container['eam'] = $eam;
-
-        return $this;
-    }
-
-    /**
-     * Gets tokens
-     *
-     * @return string[]|null
-     */
-    public function getTokens(): ?array
-    {
-        return $this->container['tokens'];
-    }
-
-    /**
-     * Sets tokens
-     *
-     * @param string[]|null $tokens The recurring payment tokens. Provided only for the initial recurring payment.
-     *
-     * @return $this
-     */
-    public function setTokens(?array $tokens): static
-    {
-        if (is_null($tokens)) {
-            throw new InvalidArgumentException('non-nullable tokens cannot be null');
-        }
-        $this->container['tokens'] = $tokens;
+        $this->container['finishDate'] = $finishDate;
 
         return $this;
     }

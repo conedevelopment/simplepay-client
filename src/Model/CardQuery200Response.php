@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tokencancel200Response
+ * CardQuery200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Tokencancel200Response Class Doc Comment
+ * CardQuery200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class CardQuery200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'tokencancel_200_response';
+    protected static string $openAPIModelName = 'cardQuery_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,9 +60,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'token' => 'string',
-        'status' => '\Cone\SimplePay\Model\TokenStatus',
+        'cardId' => 'float',
+        'status' => '\Cone\SimplePay\Model\CardStatus',
         'expiry' => 'string',
+        'history' => '\Cone\SimplePay\Model\CardQuery200ResponseHistoryInner[]',
     ];
 
     /**
@@ -73,9 +74,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'token' => null,
+        'cardId' => null,
         'status' => null,
         'expiry' => null,
+        'history' => null,
     ];
 
     /**
@@ -86,9 +88,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'token' => false,
+        'cardId' => false,
         'status' => false,
         'expiry' => false,
+        'history' => false,
     ];
 
     /**
@@ -179,9 +182,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'token' => 'token',
+        'cardId' => 'cardId',
         'status' => 'status',
         'expiry' => 'expiry',
+        'history' => 'history',
     ];
 
     /**
@@ -192,9 +196,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'token' => 'setToken',
+        'cardId' => 'setCardId',
         'status' => 'setStatus',
         'expiry' => 'setExpiry',
+        'history' => 'setHistory',
     ];
 
     /**
@@ -205,9 +210,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'token' => 'getToken',
+        'cardId' => 'getCardId',
         'status' => 'getStatus',
         'expiry' => 'getExpiry',
+        'history' => 'getHistory',
     ];
 
     /**
@@ -268,9 +274,10 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('token', $data ?? [], null);
+        $this->setIfExists('cardId', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
         $this->setIfExists('expiry', $data ?? [], null);
+        $this->setIfExists('history', $data ?? [], null);
     }
 
     /**
@@ -370,28 +377,28 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     }
 
     /**
-     * Gets token
+     * Gets cardId
      *
-     * @return string|null
+     * @return float|null
      */
-    public function getToken(): ?string
+    public function getCardId(): ?float
     {
-        return $this->container['token'];
+        return $this->container['cardId'];
     }
 
     /**
-     * Sets token
+     * Sets cardId
      *
-     * @param string|null $token token
+     * @param float|null $cardId cardId
      *
      * @return $this
      */
-    public function setToken(?string $token): static
+    public function setCardId(?float $cardId): static
     {
-        if (is_null($token)) {
-            throw new InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($cardId)) {
+            throw new InvalidArgumentException('non-nullable cardId cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['cardId'] = $cardId;
 
         return $this;
     }
@@ -399,9 +406,9 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     /**
      * Gets status
      *
-     * @return \Cone\SimplePay\Model\TokenStatus|null
+     * @return \Cone\SimplePay\Model\CardStatus|null
      */
-    public function getStatus(): ?\Cone\SimplePay\Model\TokenStatus
+    public function getStatus(): ?\Cone\SimplePay\Model\CardStatus
     {
         return $this->container['status'];
     }
@@ -409,11 +416,11 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
     /**
      * Sets status
      *
-     * @param \Cone\SimplePay\Model\TokenStatus|null $status status
+     * @param \Cone\SimplePay\Model\CardStatus|null $status status
      *
      * @return $this
      */
-    public function setStatus(?\Cone\SimplePay\Model\TokenStatus $status): static
+    public function setStatus(?\Cone\SimplePay\Model\CardStatus $status): static
     {
         if (is_null($status)) {
             throw new InvalidArgumentException('non-nullable status cannot be null');
@@ -446,6 +453,33 @@ class Tokencancel200Response implements ModelInterface, ArrayAccess, JsonSeriali
             throw new InvalidArgumentException('non-nullable expiry cannot be null');
         }
         $this->container['expiry'] = $expiry;
+
+        return $this;
+    }
+
+    /**
+     * Gets history
+     *
+     * @return \Cone\SimplePay\Model\CardQuery200ResponseHistoryInner[]|null
+     */
+    public function getHistory(): ?array
+    {
+        return $this->container['history'];
+    }
+
+    /**
+     * Sets history
+     *
+     * @param \Cone\SimplePay\Model\CardQuery200ResponseHistoryInner[]|null $history history
+     *
+     * @return $this
+     */
+    public function setHistory(?array $history): static
+    {
+        if (is_null($history)) {
+            throw new InvalidArgumentException('non-nullable history cannot be null');
+        }
+        $this->container['history'] = $history;
 
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cardquery200Response
+ * StartApplePay200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Cardquery200Response Class Doc Comment
+ * StartApplePay200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class StartApplePay200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'cardquery_200_response';
+    protected static string $openAPIModelName = 'startApplePay_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,10 +60,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'cardId' => 'float',
-        'status' => '\Cone\SimplePay\Model\CardStatus',
-        'expiry' => 'string',
-        'history' => '\Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]',
+        'transactionId' => 'float',
+        'timeout' => 'string',
+        'total' => 'float',
+        'applePaySession' => '\Cone\SimplePay\Model\StartApplePay200ResponseApplePaySession',
     ];
 
     /**
@@ -74,10 +74,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'cardId' => null,
-        'status' => null,
-        'expiry' => null,
-        'history' => null,
+        'transactionId' => null,
+        'timeout' => null,
+        'total' => null,
+        'applePaySession' => null,
     ];
 
     /**
@@ -88,10 +88,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'cardId' => false,
-        'status' => false,
-        'expiry' => false,
-        'history' => false,
+        'transactionId' => false,
+        'timeout' => false,
+        'total' => false,
+        'applePaySession' => false,
     ];
 
     /**
@@ -182,10 +182,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'cardId' => 'cardId',
-        'status' => 'status',
-        'expiry' => 'expiry',
-        'history' => 'history',
+        'transactionId' => 'transactionId',
+        'timeout' => 'timeout',
+        'total' => 'total',
+        'applePaySession' => 'applePaySession',
     ];
 
     /**
@@ -196,10 +196,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'cardId' => 'setCardId',
-        'status' => 'setStatus',
-        'expiry' => 'setExpiry',
-        'history' => 'setHistory',
+        'transactionId' => 'setTransactionId',
+        'timeout' => 'setTimeout',
+        'total' => 'setTotal',
+        'applePaySession' => 'setApplePaySession',
     ];
 
     /**
@@ -210,10 +210,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'cardId' => 'getCardId',
-        'status' => 'getStatus',
-        'expiry' => 'getExpiry',
-        'history' => 'getHistory',
+        'transactionId' => 'getTransactionId',
+        'timeout' => 'getTimeout',
+        'total' => 'getTotal',
+        'applePaySession' => 'getApplePaySession',
     ];
 
     /**
@@ -274,10 +274,10 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('cardId', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('expiry', $data ?? [], null);
-        $this->setIfExists('history', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('total', $data ?? [], null);
+        $this->setIfExists('applePaySession', $data ?? [], null);
     }
 
     /**
@@ -377,109 +377,109 @@ class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializa
     }
 
     /**
-     * Gets cardId
+     * Gets transactionId
      *
      * @return float|null
      */
-    public function getCardId(): ?float
+    public function getTransactionId(): ?float
     {
-        return $this->container['cardId'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets cardId
+     * Sets transactionId
      *
-     * @param float|null $cardId cardId
+     * @param float|null $transactionId transactionId
      *
      * @return $this
      */
-    public function setCardId(?float $cardId): static
+    public function setTransactionId(?float $transactionId): static
     {
-        if (is_null($cardId)) {
-            throw new InvalidArgumentException('non-nullable cardId cannot be null');
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['cardId'] = $cardId;
+        $this->container['transactionId'] = $transactionId;
 
         return $this;
     }
 
     /**
-     * Gets status
-     *
-     * @return \Cone\SimplePay\Model\CardStatus|null
-     */
-    public function getStatus(): ?\Cone\SimplePay\Model\CardStatus
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status
-     *
-     * @param \Cone\SimplePay\Model\CardStatus|null $status status
-     *
-     * @return $this
-     */
-    public function setStatus(?\Cone\SimplePay\Model\CardStatus $status): static
-    {
-        if (is_null($status)) {
-            throw new InvalidArgumentException('non-nullable status cannot be null');
-        }
-        $this->container['status'] = $status;
-
-        return $this;
-    }
-
-    /**
-     * Gets expiry
+     * Gets timeout
      *
      * @return string|null
      */
-    public function getExpiry(): ?string
+    public function getTimeout(): ?string
     {
-        return $this->container['expiry'];
+        return $this->container['timeout'];
     }
 
     /**
-     * Sets expiry
+     * Sets timeout
      *
-     * @param string|null $expiry The ISO 8601 format of the card expiry date.
+     * @param string|null $timeout The ISO 8601 format of the timeout date.
      *
      * @return $this
      */
-    public function setExpiry(?string $expiry): static
+    public function setTimeout(?string $timeout): static
     {
-        if (is_null($expiry)) {
-            throw new InvalidArgumentException('non-nullable expiry cannot be null');
+        if (is_null($timeout)) {
+            throw new InvalidArgumentException('non-nullable timeout cannot be null');
         }
-        $this->container['expiry'] = $expiry;
+        $this->container['timeout'] = $timeout;
 
         return $this;
     }
 
     /**
-     * Gets history
+     * Gets total
      *
-     * @return \Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]|null
+     * @return float|null
      */
-    public function getHistory(): ?array
+    public function getTotal(): ?float
     {
-        return $this->container['history'];
+        return $this->container['total'];
     }
 
     /**
-     * Sets history
+     * Sets total
      *
-     * @param \Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]|null $history history
+     * @param float|null $total total
      *
      * @return $this
      */
-    public function setHistory(?array $history): static
+    public function setTotal(?float $total): static
     {
-        if (is_null($history)) {
-            throw new InvalidArgumentException('non-nullable history cannot be null');
+        if (is_null($total)) {
+            throw new InvalidArgumentException('non-nullable total cannot be null');
         }
-        $this->container['history'] = $history;
+        $this->container['total'] = $total;
+
+        return $this;
+    }
+
+    /**
+     * Gets applePaySession
+     *
+     * @return \Cone\SimplePay\Model\StartApplePay200ResponseApplePaySession|null
+     */
+    public function getApplePaySession(): ?\Cone\SimplePay\Model\StartApplePay200ResponseApplePaySession
+    {
+        return $this->container['applePaySession'];
+    }
+
+    /**
+     * Sets applePaySession
+     *
+     * @param \Cone\SimplePay\Model\StartApplePay200ResponseApplePaySession|null $applePaySession applePaySession
+     *
+     * @return $this
+     */
+    public function setApplePaySession(?\Cone\SimplePay\Model\StartApplePay200ResponseApplePaySession $applePaySession): static
+    {
+        if (is_null($applePaySession)) {
+            throw new InvalidArgumentException('non-nullable applePaySession cannot be null');
+        }
+        $this->container['applePaySession'] = $applePaySession;
 
         return $this;
     }

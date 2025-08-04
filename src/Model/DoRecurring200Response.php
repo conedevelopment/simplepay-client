@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Startapplepay200Response
+ * DoRecurring200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Startapplepay200Response Class Doc Comment
+ * DoRecurring200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class DoRecurring200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'startapplepay_200_response';
+    protected static string $openAPIModelName = 'doRecurring_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -61,9 +61,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => 'string',
         'merchant' => 'string',
         'transactionId' => 'float',
-        'timeout' => 'string',
+        'orderRef' => 'string',
+        'currency' => '\Cone\SimplePay\Model\Currency',
         'total' => 'float',
-        'applePaySession' => '\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession',
     ];
 
     /**
@@ -75,9 +75,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => null,
         'merchant' => null,
         'transactionId' => null,
-        'timeout' => null,
+        'orderRef' => null,
+        'currency' => null,
         'total' => null,
-        'applePaySession' => null,
     ];
 
     /**
@@ -89,9 +89,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => false,
         'merchant' => false,
         'transactionId' => false,
-        'timeout' => false,
+        'orderRef' => false,
+        'currency' => false,
         'total' => false,
-        'applePaySession' => false,
     ];
 
     /**
@@ -183,9 +183,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => 'salt',
         'merchant' => 'merchant',
         'transactionId' => 'transactionId',
-        'timeout' => 'timeout',
+        'orderRef' => 'orderRef',
+        'currency' => 'currency',
         'total' => 'total',
-        'applePaySession' => 'applePaySession',
     ];
 
     /**
@@ -197,9 +197,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
         'transactionId' => 'setTransactionId',
-        'timeout' => 'setTimeout',
+        'orderRef' => 'setOrderRef',
+        'currency' => 'setCurrency',
         'total' => 'setTotal',
-        'applePaySession' => 'setApplePaySession',
     ];
 
     /**
@@ -211,9 +211,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
         'transactionId' => 'getTransactionId',
-        'timeout' => 'getTimeout',
+        'orderRef' => 'getOrderRef',
+        'currency' => 'getCurrency',
         'total' => 'getTotal',
-        'applePaySession' => 'getApplePaySession',
     ];
 
     /**
@@ -275,9 +275,9 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
         $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('orderRef', $data ?? [], null);
+        $this->setIfExists('currency', $data ?? [], null);
         $this->setIfExists('total', $data ?? [], null);
-        $this->setIfExists('applePaySession', $data ?? [], null);
     }
 
     /**
@@ -404,28 +404,55 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
     }
 
     /**
-     * Gets timeout
+     * Gets orderRef
      *
      * @return string|null
      */
-    public function getTimeout(): ?string
+    public function getOrderRef(): ?string
     {
-        return $this->container['timeout'];
+        return $this->container['orderRef'];
     }
 
     /**
-     * Sets timeout
+     * Sets orderRef
      *
-     * @param string|null $timeout The ISO 8601 format of the timeout date.
+     * @param string|null $orderRef orderRef
      *
      * @return $this
      */
-    public function setTimeout(?string $timeout): static
+    public function setOrderRef(?string $orderRef): static
     {
-        if (is_null($timeout)) {
-            throw new InvalidArgumentException('non-nullable timeout cannot be null');
+        if (is_null($orderRef)) {
+            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
         }
-        $this->container['timeout'] = $timeout;
+        $this->container['orderRef'] = $orderRef;
+
+        return $this;
+    }
+
+    /**
+     * Gets currency
+     *
+     * @return \Cone\SimplePay\Model\Currency|null
+     */
+    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
+    {
+        return $this->container['currency'];
+    }
+
+    /**
+     * Sets currency
+     *
+     * @param \Cone\SimplePay\Model\Currency|null $currency currency
+     *
+     * @return $this
+     */
+    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
+    {
+        if (is_null($currency)) {
+            throw new InvalidArgumentException('non-nullable currency cannot be null');
+        }
+        $this->container['currency'] = $currency;
 
         return $this;
     }
@@ -453,33 +480,6 @@ class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSeria
             throw new InvalidArgumentException('non-nullable total cannot be null');
         }
         $this->container['total'] = $total;
-
-        return $this;
-    }
-
-    /**
-     * Gets applePaySession
-     *
-     * @return \Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession|null
-     */
-    public function getApplePaySession(): ?\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession
-    {
-        return $this->container['applePaySession'];
-    }
-
-    /**
-     * Sets applePaySession
-     *
-     * @param \Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession|null $applePaySession applePaySession
-     *
-     * @return $this
-     */
-    public function setApplePaySession(?\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession $applePaySession): static
-    {
-        if (is_null($applePaySession)) {
-            throw new InvalidArgumentException('non-nullable applePaySession cannot be null');
-        }
-        $this->container['applePaySession'] = $applePaySession;
 
         return $this;
     }
