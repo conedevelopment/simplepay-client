@@ -791,8 +791,132 @@
                 }
             }
         },
-        "/tokenquery": {},
-        "/tokencancel": {},
+        "/tokenquery": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Query a saved token",
+                "description": "Get the info about a saved token",
+                "operationId": "tokenquery",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The token object you would query.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenQuery"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "token": {
+                                            "$ref": "#/components/schemas/Token"
+                                        },
+                                        "status": {
+                                            "$ref": "#/components/schemas/TokenStatus"
+                                        },
+                                        "expiry": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the token expiry date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tokencancel": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Cancel a saved token",
+                "description": "Cancel a saved token",
+                "operationId": "tokencancel",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The token object you would cancel.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenCancel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "token": {
+                                            "$ref": "#/components/schemas/Token"
+                                        },
+                                        "status": {
+                                            "$ref": "#/components/schemas/TokenStatus"
+                                        },
+                                        "expiry": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the card expiry date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/starteam": {},
         "/startapplepay": {},
         "/doapplepay": {}
@@ -1339,6 +1463,10 @@
                 "type": "string",
                 "enum": ["CIT", "MIT"]
             },
+            "TokenStatus": {
+                "type": "string",
+                "enum": ["active", "used", "cancelled"]
+            },
             "CardStatus": {
                 "type": "string",
                 "enum": ["ACTIVE", "DISABLED"]
@@ -1365,6 +1493,28 @@
                 ],
                 "properties": {
                     "cardId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    }
+                }
+            },
+            "TokenQuery": {
+                "type": "object",
+                "required": [
+                    "token"
+                ],
+                "properties": {
+                    "token": {
+                        "$ref": "#/components/schemas/Token"
+                    }
+                }
+            },
+            "TokenCancel": {
+                "type": "object",
+                "required": [
+                    "token"
+                ],
+                "properties": {
+                    "token": {
                         "$ref": "#/components/schemas/TransactionId"
                     }
                 }

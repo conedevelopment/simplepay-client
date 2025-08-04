@@ -1,6 +1,7 @@
 composer.phar
 /composer.lock
 /vendor/
+/tests/
 
 # php-cs-fixer cache
 .php_cs.cache
