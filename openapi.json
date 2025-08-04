@@ -917,7 +917,88 @@
                 }
             }
         },
-        "/starteam": {},
+        "/starteam": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Start an EAM transaction",
+                "description": "Start an EAM transaction using the given parameters",
+                "operationId": "starteam",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The EAM transaction object you would like to start.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EamTransaciton"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "timeout": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the timeout date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        },
+                                        "eam": {
+                                            "type": "string",
+                                            "example": "https://sandbox.simplepay.hu/pay/pay/pspHU/8f4oKRec5R1B696xlxbOcj1jRhhABA2pwSLQDPW60zoGSDWzDU",
+                                            "description": "The deeplink."
+                                        },
+                                        "tokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Token"
+                                            },
+                                            "description": "The recurring payment tokens. Provided only for the initial recurring payment."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/startapplepay": {},
         "/doapplepay": {}
     },
@@ -1515,9 +1596,29 @@
                 ],
                 "properties": {
                     "token": {
-                        "$ref": "#/components/schemas/TransactionId"
+                        "$ref": "#/components/schemas/Token"
                     }
                 }
+            },
+            "EamTransaciton": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Transaction"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "eamType"
+                        ],
+                        "properties": {
+                            "eamType": {
+                                "type": "integer",
+                                "enum": [1, 2, 3, 4, 5, 6, 7],
+                                "description": "1: QR, 2: Deeplink, 3: NFC, 4: QR+ Deeplink, 5: QR+NFC, 6: Deeplink +NFC, 7: QR+DL+NFC"
+                            }
+                        }
+                    }
+                ]
             }
         }
     }
