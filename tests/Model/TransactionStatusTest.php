@@ -1,7 +1,7 @@
 <?php
 
 /**
- * StatusTest
+ * TransactionStatusTest
  *
  * PHP version 8.1
  *
@@ -31,13 +31,13 @@ namespace Cone\SimplePay\Test\Model;
 use PHPUnit\Framework\TestCase;
 
 /**
- * StatusTest Class Doc Comment
+ * TransactionStatusTest Class Doc Comment
  *
- * @description Status
+ * @description TransactionStatus
  * @author      OpenAPI Generator team
  * @link        https://openapi-generator.tech
  */
-class StatusTest extends TestCase
+class TransactionStatusTest extends TestCase
 {
     /**
      * Setup before running any test case
@@ -68,9 +68,9 @@ class StatusTest extends TestCase
     }
 
     /**
-     * Test "Status"
+     * Test "TransactionStatus"
      */
-    public function testStatus()
+    public function testTransactionStatus()
     {
         // TODO: implement
         self::markTestIncomplete('Not implemented');

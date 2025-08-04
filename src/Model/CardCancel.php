@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Query200ResponseTransactionsInnerRefundsInner
+ * CardCancel
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Query200ResponseTransactionsInnerRefundsInner Class Doc Comment
+ * CardCancel Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, ArrayAccess, JsonSerializable
+class CardCancel implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'query_200_response_transactions_inner_refunds_inner';
+    protected static string $openAPIModelName = 'CardCancel';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,10 +58,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'transactionId' => 'float',
-        'refundTotal' => 'float',
-        'refundDate' => 'string',
-        'status' => '\Cone\SimplePay\Model\TransactionStatus',
+        'cardId' => 'float',
     ];
 
     /**
@@ -70,10 +67,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'transactionId' => null,
-        'refundTotal' => null,
-        'refundDate' => null,
-        'status' => null,
+        'cardId' => null,
     ];
 
     /**
@@ -82,10 +76,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'transactionId' => false,
-        'refundTotal' => false,
-        'refundDate' => false,
-        'status' => false,
+        'cardId' => false,
     ];
 
     /**
@@ -174,10 +165,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'transactionId' => 'transactionId',
-        'refundTotal' => 'refundTotal',
-        'refundDate' => 'refundDate',
-        'status' => 'status',
+        'cardId' => 'cardId',
     ];
 
     /**
@@ -186,10 +174,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $setters = [
-        'transactionId' => 'setTransactionId',
-        'refundTotal' => 'setRefundTotal',
-        'refundDate' => 'setRefundDate',
-        'status' => 'setStatus',
+        'cardId' => 'setCardId',
     ];
 
     /**
@@ -198,10 +183,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $getters = [
-        'transactionId' => 'getTransactionId',
-        'refundTotal' => 'getRefundTotal',
-        'refundDate' => 'getRefundDate',
-        'status' => 'getStatus',
+        'cardId' => 'getCardId',
     ];
 
     /**
@@ -260,10 +242,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('refundTotal', $data ?? [], null);
-        $this->setIfExists('refundDate', $data ?? [], null);
-        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('cardId', $data ?? [], null);
     }
 
     /**
@@ -293,6 +272,9 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
     {
         $invalidProperties = [];
 
+        if ($this->container['cardId'] === null) {
+            $invalidProperties[] = "'cardId' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -309,109 +291,28 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
 
 
     /**
-     * Gets transactionId
+     * Gets cardId
      *
-     * @return float|null
+     * @return float
      */
-    public function getTransactionId(): ?float
+    public function getCardId(): float
     {
-        return $this->container['transactionId'];
+        return $this->container['cardId'];
     }
 
     /**
-     * Sets transactionId
+     * Sets cardId
      *
-     * @param float|null $transactionId transactionId
+     * @param float $cardId cardId
      *
      * @return $this
      */
-    public function setTransactionId(?float $transactionId): static
+    public function setCardId(float $cardId): static
     {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        if (is_null($cardId)) {
+            throw new InvalidArgumentException('non-nullable cardId cannot be null');
         }
-        $this->container['transactionId'] = $transactionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets refundTotal
-     *
-     * @return float|null
-     */
-    public function getRefundTotal(): ?float
-    {
-        return $this->container['refundTotal'];
-    }
-
-    /**
-     * Sets refundTotal
-     *
-     * @param float|null $refundTotal refundTotal
-     *
-     * @return $this
-     */
-    public function setRefundTotal(?float $refundTotal): static
-    {
-        if (is_null($refundTotal)) {
-            throw new InvalidArgumentException('non-nullable refundTotal cannot be null');
-        }
-        $this->container['refundTotal'] = $refundTotal;
-
-        return $this;
-    }
-
-    /**
-     * Gets refundDate
-     *
-     * @return string|null
-     */
-    public function getRefundDate(): ?string
-    {
-        return $this->container['refundDate'];
-    }
-
-    /**
-     * Sets refundDate
-     *
-     * @param string|null $refundDate The ISO 8601 format of the refund date.
-     *
-     * @return $this
-     */
-    public function setRefundDate(?string $refundDate): static
-    {
-        if (is_null($refundDate)) {
-            throw new InvalidArgumentException('non-nullable refundDate cannot be null');
-        }
-        $this->container['refundDate'] = $refundDate;
-
-        return $this;
-    }
-
-    /**
-     * Gets status
-     *
-     * @return \Cone\SimplePay\Model\TransactionStatus|null
-     */
-    public function getStatus(): ?\Cone\SimplePay\Model\TransactionStatus
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status
-     *
-     * @param \Cone\SimplePay\Model\TransactionStatus|null $status status
-     *
-     * @return $this
-     */
-    public function setStatus(?\Cone\SimplePay\Model\TransactionStatus $status): static
-    {
-        if (is_null($status)) {
-            throw new InvalidArgumentException('non-nullable status cannot be null');
-        }
-        $this->container['status'] = $status;
+        $this->container['cardId'] = $cardId;
 
         return $this;
     }

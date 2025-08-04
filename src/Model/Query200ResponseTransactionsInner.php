@@ -74,7 +74,7 @@ class Query200ResponseTransactionsInner implements ModelInterface, ArrayAccess, 
         'invoice' => '\Cone\SimplePay\Model\Invoice',
         'delivery' => '\Cone\SimplePay\Model\Delivery',
         'transactionId' => 'float',
-        'status' => '\Cone\SimplePay\Model\Status',
+        'status' => '\Cone\SimplePay\Model\TransactionStatus',
         'resultCode' => 'string',
         'refundStatus' => '\Cone\SimplePay\Model\RefundStatus',
         'refunds' => '\Cone\SimplePay\Model\Query200ResponseTransactionsInnerRefundsInner[]',
@@ -876,9 +876,9 @@ class Query200ResponseTransactionsInner implements ModelInterface, ArrayAccess, 
     /**
      * Gets status
      *
-     * @return \Cone\SimplePay\Model\Status|null
+     * @return \Cone\SimplePay\Model\TransactionStatus|null
      */
-    public function getStatus(): ?\Cone\SimplePay\Model\Status
+    public function getStatus(): ?\Cone\SimplePay\Model\TransactionStatus
     {
         return $this->container['status'];
     }
@@ -886,11 +886,11 @@ class Query200ResponseTransactionsInner implements ModelInterface, ArrayAccess, 
     /**
      * Sets status
      *
-     * @param \Cone\SimplePay\Model\Status|null $status status
+     * @param \Cone\SimplePay\Model\TransactionStatus|null $status status
      *
      * @return $this
      */
-    public function setStatus(?\Cone\SimplePay\Model\Status $status): static
+    public function setStatus(?\Cone\SimplePay\Model\TransactionStatus $status): static
     {
         if (is_null($status)) {
             throw new InvalidArgumentException('non-nullable status cannot be null');

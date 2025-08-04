@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Query200ResponseTransactionsInnerRefundsInner
+ * Cardquery200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Query200ResponseTransactionsInnerRefundsInner Class Doc Comment
+ * Cardquery200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, ArrayAccess, JsonSerializable
+class Cardquery200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'query_200_response_transactions_inner_refunds_inner';
+    protected static string $openAPIModelName = 'cardquery_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,10 +58,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'transactionId' => 'float',
-        'refundTotal' => 'float',
-        'refundDate' => 'string',
-        'status' => '\Cone\SimplePay\Model\TransactionStatus',
+        'salt' => 'string',
+        'merchant' => 'string',
+        'cardId' => 'float',
+        'status' => '\Cone\SimplePay\Model\CardStatus',
+        'expiry' => 'string',
+        'history' => '\Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]',
     ];
 
     /**
@@ -70,10 +72,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'transactionId' => null,
-        'refundTotal' => null,
-        'refundDate' => null,
+        'salt' => null,
+        'merchant' => null,
+        'cardId' => null,
         'status' => null,
+        'expiry' => null,
+        'history' => null,
     ];
 
     /**
@@ -82,10 +86,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'transactionId' => false,
-        'refundTotal' => false,
-        'refundDate' => false,
+        'salt' => false,
+        'merchant' => false,
+        'cardId' => false,
         'status' => false,
+        'expiry' => false,
+        'history' => false,
     ];
 
     /**
@@ -174,10 +180,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'transactionId' => 'transactionId',
-        'refundTotal' => 'refundTotal',
-        'refundDate' => 'refundDate',
+        'salt' => 'salt',
+        'merchant' => 'merchant',
+        'cardId' => 'cardId',
         'status' => 'status',
+        'expiry' => 'expiry',
+        'history' => 'history',
     ];
 
     /**
@@ -186,10 +194,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $setters = [
-        'transactionId' => 'setTransactionId',
-        'refundTotal' => 'setRefundTotal',
-        'refundDate' => 'setRefundDate',
+        'salt' => 'setSalt',
+        'merchant' => 'setMerchant',
+        'cardId' => 'setCardId',
         'status' => 'setStatus',
+        'expiry' => 'setExpiry',
+        'history' => 'setHistory',
     ];
 
     /**
@@ -198,10 +208,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      * @var array<string, string>
      */
     protected static array $getters = [
-        'transactionId' => 'getTransactionId',
-        'refundTotal' => 'getRefundTotal',
-        'refundDate' => 'getRefundDate',
+        'salt' => 'getSalt',
+        'merchant' => 'getMerchant',
+        'cardId' => 'getCardId',
         'status' => 'getStatus',
+        'expiry' => 'getExpiry',
+        'history' => 'getHistory',
     ];
 
     /**
@@ -260,10 +272,12 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('refundTotal', $data ?? [], null);
-        $this->setIfExists('refundDate', $data ?? [], null);
+        $this->setIfExists('salt', $data ?? [], null);
+        $this->setIfExists('merchant', $data ?? [], null);
+        $this->setIfExists('cardId', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('expiry', $data ?? [], null);
+        $this->setIfExists('history', $data ?? [], null);
     }
 
     /**
@@ -309,82 +323,82 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
 
 
     /**
-     * Gets transactionId
-     *
-     * @return float|null
-     */
-    public function getTransactionId(): ?float
-    {
-        return $this->container['transactionId'];
-    }
-
-    /**
-     * Sets transactionId
-     *
-     * @param float|null $transactionId transactionId
-     *
-     * @return $this
-     */
-    public function setTransactionId(?float $transactionId): static
-    {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
-        }
-        $this->container['transactionId'] = $transactionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets refundTotal
-     *
-     * @return float|null
-     */
-    public function getRefundTotal(): ?float
-    {
-        return $this->container['refundTotal'];
-    }
-
-    /**
-     * Sets refundTotal
-     *
-     * @param float|null $refundTotal refundTotal
-     *
-     * @return $this
-     */
-    public function setRefundTotal(?float $refundTotal): static
-    {
-        if (is_null($refundTotal)) {
-            throw new InvalidArgumentException('non-nullable refundTotal cannot be null');
-        }
-        $this->container['refundTotal'] = $refundTotal;
-
-        return $this;
-    }
-
-    /**
-     * Gets refundDate
+     * Gets salt
      *
      * @return string|null
      */
-    public function getRefundDate(): ?string
+    public function getSalt(): ?string
     {
-        return $this->container['refundDate'];
+        return $this->container['salt'];
     }
 
     /**
-     * Sets refundDate
+     * Sets salt
      *
-     * @param string|null $refundDate The ISO 8601 format of the refund date.
+     * @param string|null $salt salt
      *
      * @return $this
      */
-    public function setRefundDate(?string $refundDate): static
+    public function setSalt(?string $salt): static
     {
-        if (is_null($refundDate)) {
-            throw new InvalidArgumentException('non-nullable refundDate cannot be null');
+        if (is_null($salt)) {
+            throw new InvalidArgumentException('non-nullable salt cannot be null');
         }
-        $this->container['refundDate'] = $refundDate;
+        $this->container['salt'] = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Gets merchant
+     *
+     * @return string|null
+     */
+    public function getMerchant(): ?string
+    {
+        return $this->container['merchant'];
+    }
+
+    /**
+     * Sets merchant
+     *
+     * @param string|null $merchant merchant
+     *
+     * @return $this
+     */
+    public function setMerchant(?string $merchant): static
+    {
+        if (is_null($merchant)) {
+            throw new InvalidArgumentException('non-nullable merchant cannot be null');
+        }
+        $this->container['merchant'] = $merchant;
+
+        return $this;
+    }
+
+    /**
+     * Gets cardId
+     *
+     * @return float|null
+     */
+    public function getCardId(): ?float
+    {
+        return $this->container['cardId'];
+    }
+
+    /**
+     * Sets cardId
+     *
+     * @param float|null $cardId cardId
+     *
+     * @return $this
+     */
+    public function setCardId(?float $cardId): static
+    {
+        if (is_null($cardId)) {
+            throw new InvalidArgumentException('non-nullable cardId cannot be null');
+        }
+        $this->container['cardId'] = $cardId;
 
         return $this;
     }
@@ -392,9 +406,9 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
     /**
      * Gets status
      *
-     * @return \Cone\SimplePay\Model\TransactionStatus|null
+     * @return \Cone\SimplePay\Model\CardStatus|null
      */
-    public function getStatus(): ?\Cone\SimplePay\Model\TransactionStatus
+    public function getStatus(): ?\Cone\SimplePay\Model\CardStatus
     {
         return $this->container['status'];
     }
@@ -402,16 +416,70 @@ class Query200ResponseTransactionsInnerRefundsInner implements ModelInterface, A
     /**
      * Sets status
      *
-     * @param \Cone\SimplePay\Model\TransactionStatus|null $status status
+     * @param \Cone\SimplePay\Model\CardStatus|null $status status
      *
      * @return $this
      */
-    public function setStatus(?\Cone\SimplePay\Model\TransactionStatus $status): static
+    public function setStatus(?\Cone\SimplePay\Model\CardStatus $status): static
     {
         if (is_null($status)) {
             throw new InvalidArgumentException('non-nullable status cannot be null');
         }
         $this->container['status'] = $status;
+
+        return $this;
+    }
+
+    /**
+     * Gets expiry
+     *
+     * @return string|null
+     */
+    public function getExpiry(): ?string
+    {
+        return $this->container['expiry'];
+    }
+
+    /**
+     * Sets expiry
+     *
+     * @param string|null $expiry The ISO 8601 format of the card expiry date.
+     *
+     * @return $this
+     */
+    public function setExpiry(?string $expiry): static
+    {
+        if (is_null($expiry)) {
+            throw new InvalidArgumentException('non-nullable expiry cannot be null');
+        }
+        $this->container['expiry'] = $expiry;
+
+        return $this;
+    }
+
+    /**
+     * Gets history
+     *
+     * @return \Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]|null
+     */
+    public function getHistory(): ?array
+    {
+        return $this->container['history'];
+    }
+
+    /**
+     * Sets history
+     *
+     * @param \Cone\SimplePay\Model\Cardquery200ResponseHistoryInner[]|null $history history
+     *
+     * @return $this
+     */
+    public function setHistory(?array $history): static
+    {
+        if (is_null($history)) {
+            throw new InvalidArgumentException('non-nullable history cannot be null');
+        }
+        $this->container['history'] = $history;
 
         return $this;
     }
