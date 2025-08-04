@@ -382,7 +382,7 @@
                                                         "$ref": "#/components/schemas/TransactionId"
                                                     },
                                                     "status": {
-                                                        "$ref": "#/components/schemas/Status"
+                                                        "$ref": "#/components/schemas/TransactionStatus"
                                                     },
                                                     "resultCode": {
                                                         "type": "string",
@@ -410,7 +410,7 @@
                                                                     "example": "2004-02-12T15:19:21+00:00"
                                                                 },
                                                                 "status": {
-                                                                    "$ref": "#/components/schemas/Status"
+                                                                    "$ref": "#/components/schemas/TransactionStatus"
                                                                 }
                                                             }
                                                         }
@@ -490,7 +490,7 @@
                                             "$ref": "#/components/schemas/OrderRef"
                                         },
                                         "status": {
-                                            "$ref": "#/components/schemas/Status"
+                                            "$ref": "#/components/schemas/TransactionStatus"
                                         },
                                         "transactionId": {
                                             "$ref": "#/components/schemas/TransactionId"
@@ -638,8 +638,157 @@
                 }
             }
         },
-        "/cardcancel": {},
-        "/cardquery": {},
+        "/cardquery": {
+            "post": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "Query a saved card",
+                "description": "Get the info about a saved bankcard",
+                "operationId": "query",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The card object you would query.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CardQuery"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "cardId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "status": {
+                                            "$ref": "#/components/schemas/CardStatus"
+                                        },
+                                        "expiry": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the card expiry date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        },
+                                        "history": {
+                                            "type": "array",
+                                            "items": {
+                                                "orerRef": {
+                                                    "$ref": "#/components/schemas/OrderRef"
+                                                },
+                                                "transactionId": {
+                                                    "$ref": "#/components/schemas/TansactionId"
+                                                },
+                                                "status": {
+                                                    "$ref": "#/components/schemas/TransactionStatus"
+                                                },
+                                                "paymentDate": {
+                                                    "type": "string",
+                                                    "description": "The ISO 8601 format of the payment date.",
+                                                    "example": "2004-02-12T15:19:21+00:00"
+                                                },
+                                                "finishDate": {
+                                                    "type": "string",
+                                                    "description": "The ISO 8601 format of the finish date.",
+                                                    "example": "2004-02-12T15:19:21+00:00"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cardcancel": {
+            "post": {
+                "tags": [
+                    "Card"
+                ],
+                "summary": "Cancel a saved card",
+                "description": "Cancel a saved bankcard",
+                "operationId": "cancel",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The card object you would cancel.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CardCancel"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "cardId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "status": {
+                                            "$ref": "#/components/schemas/CardStatus"
+                                        },
+                                        "expiry": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the card expiry date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tokenquery": {},
         "/tokencancel": {},
         "/starteam": {},
         "/startapplepay": {},
@@ -900,7 +1049,7 @@
                     "CARD", "EAM", "WIRE"
                 ]
             },
-            "Status": {
+            "TransactionStatus": {
                 "type": "string",
                 "enum": [
                     "INIT", "TIMEOUT", "CANCELLED", "NOTAUTHORIZED", "INPAYMENT", "INFRAUD", "AUTHORIZED", "REVERSED", "FINISHED"
@@ -1186,6 +1335,36 @@
             "TransactionType": {
                 "type": "string",
                 "enum": ["CIT", "MIT"]
+            },
+            "CardStatus": {
+                "type": "string",
+                "enum": ["ACTIVE", "DISABLED"]
+            },
+            "CardQuery": {
+                "type": "object",
+                "required": [
+                    "cardId"
+                ],
+                "properties": {
+                    "cardId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    },
+                    "history": {
+                        "type": "boolean",
+                        "default": false
+                    }
+                }
+            },
+            "CardCancel": {
+                "type": "object",
+                "required": [
+                    "cardId"
+                ],
+                "properties": {
+                    "cardId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    }
+                }
             }
         }
     }
