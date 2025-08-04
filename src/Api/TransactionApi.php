@@ -2909,7 +2909,7 @@ class TransactionApi
      *
      * Start an EAM transaction
      *
-     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaction $eamTransaction The EAM transaction object you would like to start. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startEam'] to see the possible values for this operation
      *
      * @throws ApiException on non-2xx response or if the response body is not in the expected format
@@ -2917,10 +2917,10 @@ class TransactionApi
      * @return \Cone\SimplePay\Model\StartEam200Response
      */
     public function startEam(
-        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        \Cone\SimplePay\Model\EamTransaction $eamTransaction,
         string $contentType = self::contentTypes['startEam'][0]
     ): \Cone\SimplePay\Model\StartEam200Response {
-        list($response) = $this->startEamWithHttpInfo($eamTransaciton, $contentType);
+        list($response) = $this->startEamWithHttpInfo($eamTransaction, $contentType);
         return $response;
     }
 
@@ -2929,7 +2929,7 @@ class TransactionApi
      *
      * Start an EAM transaction
      *
-     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaction $eamTransaction The EAM transaction object you would like to start. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startEam'] to see the possible values for this operation
      *
      * @throws ApiException on non-2xx response or if the response body is not in the expected format
@@ -2937,10 +2937,10 @@ class TransactionApi
      * @return array of \Cone\SimplePay\Model\StartEam200Response, HTTP status code, HTTP response headers (array of strings)
      */
     public function startEamWithHttpInfo(
-        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        \Cone\SimplePay\Model\EamTransaction $eamTransaction,
         string $contentType = self::contentTypes['startEam'][0]
     ): array {
-        $request = $this->startEamRequest($eamTransaciton, $contentType);
+        $request = $this->startEamRequest($eamTransaction, $contentType);
 
         try {
             $options = $this->createHttpClientOption();
@@ -3013,17 +3013,17 @@ class TransactionApi
      *
      * Start an EAM transaction
      *
-     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaction $eamTransaction The EAM transaction object you would like to start. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startEam'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return PromiseInterface
      */
     public function startEamAsync(
-        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        \Cone\SimplePay\Model\EamTransaction $eamTransaction,
         string $contentType = self::contentTypes['startEam'][0]
     ): PromiseInterface {
-        return $this->startEamAsyncWithHttpInfo($eamTransaciton, $contentType)
+        return $this->startEamAsyncWithHttpInfo($eamTransaction, $contentType)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -3036,18 +3036,18 @@ class TransactionApi
      *
      * Start an EAM transaction
      *
-     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaction $eamTransaction The EAM transaction object you would like to start. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startEam'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return PromiseInterface
      */
     public function startEamAsyncWithHttpInfo(
-        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        \Cone\SimplePay\Model\EamTransaction $eamTransaction,
         string $contentType = self::contentTypes['startEam'][0]
     ): PromiseInterface {
         $returnType = '\Cone\SimplePay\Model\StartEam200Response';
-        $request = $this->startEamRequest($eamTransaciton, $contentType);
+        $request = $this->startEamRequest($eamTransaction, $contentType);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -3088,21 +3088,21 @@ class TransactionApi
     /**
      * Create request for operation 'startEam'
      *
-     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaction $eamTransaction The EAM transaction object you would like to start. (required)
      * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startEam'] to see the possible values for this operation
      *
      * @throws InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
     public function startEamRequest(
-        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        \Cone\SimplePay\Model\EamTransaction $eamTransaction,
         string $contentType = self::contentTypes['startEam'][0]
     ): Request {
 
-        // verify the required parameter 'eamTransaciton' is set
-        if ($eamTransaciton === null || (is_array($eamTransaciton) && count($eamTransaciton) === 0)) {
+        // verify the required parameter 'eamTransaction' is set
+        if ($eamTransaction === null || (is_array($eamTransaction) && count($eamTransaction) === 0)) {
             throw new InvalidArgumentException(
-                'Missing the required parameter $eamTransaciton when calling startEam'
+                'Missing the required parameter $eamTransaction when calling startEam'
             );
         }
 
@@ -3125,12 +3125,12 @@ class TransactionApi
         );
 
         // for model (json/xml)
-        if (isset($eamTransaciton)) {
+        if (isset($eamTransaction)) {
             if (stripos($headers['Content-Type'], 'application/json') !== false) {
                 // if Content-Type contains "application/json", json_encode the body
-                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($eamTransaciton));
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($eamTransaction));
             } else {
-                $httpBody = $eamTransaciton;
+                $httpBody = $eamTransaction;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
