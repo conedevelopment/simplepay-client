@@ -641,11 +641,11 @@
         "/cardquery": {
             "post": {
                 "tags": [
-                    "Card"
+                    "Transaction"
                 ],
                 "summary": "Query a saved card",
                 "description": "Get the info about a saved bankcard",
-                "operationId": "query",
+                "operationId": "cardquery",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/Signature"
@@ -696,24 +696,27 @@
                                         "history": {
                                             "type": "array",
                                             "items": {
-                                                "orerRef": {
-                                                    "$ref": "#/components/schemas/OrderRef"
-                                                },
-                                                "transactionId": {
-                                                    "$ref": "#/components/schemas/TansactionId"
-                                                },
-                                                "status": {
-                                                    "$ref": "#/components/schemas/TransactionStatus"
-                                                },
-                                                "paymentDate": {
-                                                    "type": "string",
-                                                    "description": "The ISO 8601 format of the payment date.",
-                                                    "example": "2004-02-12T15:19:21+00:00"
-                                                },
-                                                "finishDate": {
-                                                    "type": "string",
-                                                    "description": "The ISO 8601 format of the finish date.",
-                                                    "example": "2004-02-12T15:19:21+00:00"
+                                                "type": "object",
+                                                "properties": {
+                                                    "orerRef": {
+                                                        "$ref": "#/components/schemas/OrderRef"
+                                                    },
+                                                    "transactionId": {
+                                                        "$ref": "#/components/schemas/TransactionId"
+                                                    },
+                                                    "status": {
+                                                        "$ref": "#/components/schemas/TransactionStatus"
+                                                    },
+                                                    "paymentDate": {
+                                                        "type": "string",
+                                                        "description": "The ISO 8601 format of the payment date.",
+                                                        "example": "2004-02-12T15:19:21+00:00"
+                                                    },
+                                                    "finishDate": {
+                                                        "type": "string",
+                                                        "description": "The ISO 8601 format of the finish date.",
+                                                        "example": "2004-02-12T15:19:21+00:00"
+                                                    }
                                                 }
                                             }
                                         }
@@ -728,11 +731,11 @@
         "/cardcancel": {
             "post": {
                 "tags": [
-                    "Card"
+                    "Transaction"
                 ],
                 "summary": "Cancel a saved card",
                 "description": "Cancel a saved bankcard",
-                "operationId": "cancel",
+                "operationId": "cardcancel",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/Signature"
