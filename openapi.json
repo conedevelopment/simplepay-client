@@ -876,7 +876,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/EamTransaciton"
+                                "$ref": "#/components/schemas/EamTransaction"
                             }
                         }
                     }
@@ -1702,7 +1702,7 @@
                     }
                 }
             },
-            "EamTransaciton": {
+            "EamTransaction": {
                 "allOf": [
                     {
                         "$ref": "#/components/schemas/Transaction"
