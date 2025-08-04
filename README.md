@@ -45,3 +45,14 @@ $client->api()->doApplePay(...);
 > [!NOTE]
 > The client automatically adds the `merchant`, `salt` and `sdkVersion` parameters to the body as well as the `Signature` header to the request.
 
+### Error Handling
+
+SimplePay responses with `HTTP 200` even if the operation is failed or an error occured. The handle this properly the Client has a built-in middleware that checks whether the response contains any errors, if so, it throws an `ApiException`.
+
+```php
+try {
+    $client->api()->start(...);
+} catch (ApiException $exception) {
+    Log::info()
+}
+```

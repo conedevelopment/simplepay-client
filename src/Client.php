@@ -18,7 +18,7 @@ class Client
     /**
      * The client version.
      */
-    public const VERSION = '1.0.0';
+    public const VERSION = '0.1.1';
 
     /**
      * The transaction API instance.
@@ -96,9 +96,11 @@ class Client
             $body = json_decode($body, true) ?? [];
 
             if (empty($body['redirectUrl'] ?? '') && ! empty($body['errorCodes'] ?? [])) {
+                $code = (int) ($body['errorCodes'][0] ?? 999);
+
                 throw new ApiException(
-                    'SimplePay error.',
-                    (int) $body['errorCodes'][0] ?? 999,
+                    Error::message($code),
+                    $code,
                     $response->getHeaders(),
                     $response->getBody()
                 );
