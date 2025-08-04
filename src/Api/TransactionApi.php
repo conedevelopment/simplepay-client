@@ -98,6 +98,12 @@ class TransactionApi
         'start' => [
             'application/json',
         ],
+        'tokencancel' => [
+            'application/json',
+        ],
+        'tokenquery' => [
+            'application/json',
+        ],
         'transactioncancel' => [
             'application/json',
         ],
@@ -2462,6 +2468,596 @@ class TransactionApi
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($transaction));
             } else {
                 $httpBody = $transaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation tokencancel
+     *
+     * Cancel a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenCancel $tokenCancel The token object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokencancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Tokencancel200Response
+     */
+    public function tokencancel(
+        string $signature,
+        \Cone\SimplePay\Model\TokenCancel $tokenCancel,
+        string $contentType = self::contentTypes['tokencancel'][0]
+    ): \Cone\SimplePay\Model\Tokencancel200Response {
+        list($response) = $this->tokencancelWithHttpInfo($signature, $tokenCancel, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation tokencancelWithHttpInfo
+     *
+     * Cancel a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenCancel $tokenCancel The token object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokencancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Tokencancel200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function tokencancelWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenCancel $tokenCancel,
+        string $contentType = self::contentTypes['tokencancel'][0]
+    ): array {
+        $request = $this->tokencancelRequest($signature, $tokenCancel, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Tokencancel200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Tokencancel200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Tokencancel200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation tokencancelAsync
+     *
+     * Cancel a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenCancel $tokenCancel The token object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokencancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function tokencancelAsync(
+        string $signature,
+        \Cone\SimplePay\Model\TokenCancel $tokenCancel,
+        string $contentType = self::contentTypes['tokencancel'][0]
+    ): PromiseInterface {
+        return $this->tokencancelAsyncWithHttpInfo($signature, $tokenCancel, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation tokencancelAsyncWithHttpInfo
+     *
+     * Cancel a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenCancel $tokenCancel The token object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokencancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function tokencancelAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenCancel $tokenCancel,
+        string $contentType = self::contentTypes['tokencancel'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Tokencancel200Response';
+        $request = $this->tokencancelRequest($signature, $tokenCancel, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'tokencancel'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenCancel $tokenCancel The token object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokencancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function tokencancelRequest(
+        string $signature,
+        \Cone\SimplePay\Model\TokenCancel $tokenCancel,
+        string $contentType = self::contentTypes['tokencancel'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling tokencancel'
+            );
+        }
+
+        // verify the required parameter 'tokenCancel' is set
+        if ($tokenCancel === null || (is_array($tokenCancel) && count($tokenCancel) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $tokenCancel when calling tokencancel'
+            );
+        }
+
+
+        $resourcePath = '/tokencancel';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($tokenCancel)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($tokenCancel));
+            } else {
+                $httpBody = $tokenCancel;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation tokenquery
+     *
+     * Query a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenQuery $tokenQuery The token object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokenquery'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Tokenquery200Response
+     */
+    public function tokenquery(
+        string $signature,
+        \Cone\SimplePay\Model\TokenQuery $tokenQuery,
+        string $contentType = self::contentTypes['tokenquery'][0]
+    ): \Cone\SimplePay\Model\Tokenquery200Response {
+        list($response) = $this->tokenqueryWithHttpInfo($signature, $tokenQuery, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation tokenqueryWithHttpInfo
+     *
+     * Query a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenQuery $tokenQuery The token object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokenquery'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Tokenquery200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function tokenqueryWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenQuery $tokenQuery,
+        string $contentType = self::contentTypes['tokenquery'][0]
+    ): array {
+        $request = $this->tokenqueryRequest($signature, $tokenQuery, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Tokenquery200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Tokenquery200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Tokenquery200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation tokenqueryAsync
+     *
+     * Query a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenQuery $tokenQuery The token object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokenquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function tokenqueryAsync(
+        string $signature,
+        \Cone\SimplePay\Model\TokenQuery $tokenQuery,
+        string $contentType = self::contentTypes['tokenquery'][0]
+    ): PromiseInterface {
+        return $this->tokenqueryAsyncWithHttpInfo($signature, $tokenQuery, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation tokenqueryAsyncWithHttpInfo
+     *
+     * Query a saved token
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenQuery $tokenQuery The token object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokenquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function tokenqueryAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenQuery $tokenQuery,
+        string $contentType = self::contentTypes['tokenquery'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Tokenquery200Response';
+        $request = $this->tokenqueryRequest($signature, $tokenQuery, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'tokenquery'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenQuery $tokenQuery The token object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['tokenquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function tokenqueryRequest(
+        string $signature,
+        \Cone\SimplePay\Model\TokenQuery $tokenQuery,
+        string $contentType = self::contentTypes['tokenquery'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling tokenquery'
+            );
+        }
+
+        // verify the required parameter 'tokenQuery' is set
+        if ($tokenQuery === null || (is_array($tokenQuery) && count($tokenQuery) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $tokenQuery when calling tokenquery'
+            );
+        }
+
+
+        $resourcePath = '/tokenquery';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($tokenQuery)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($tokenQuery));
+            } else {
+                $httpBody = $tokenQuery;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

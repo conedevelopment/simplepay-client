@@ -33,7 +33,12 @@ src/Model/Refund.php
 src/Model/Refund200Response.php
 src/Model/RefundStatus.php
 src/Model/Start200Response.php
+src/Model/TokenCancel.php
+src/Model/TokenQuery.php
+src/Model/TokenStatus.php
 src/Model/TokenTransaction.php
+src/Model/Tokencancel200Response.php
+src/Model/Tokenquery200Response.php
 src/Model/Transaction.php
 src/Model/TransactionCancel.php
 src/Model/TransactionStatus.php
@@ -70,7 +75,12 @@ tests/Model/Refund200ResponseTest.php
 tests/Model/RefundStatusTest.php
 tests/Model/RefundTest.php
 tests/Model/Start200ResponseTest.php
+tests/Model/TokenCancelTest.php
+tests/Model/TokenQueryTest.php
+tests/Model/TokenStatusTest.php
 tests/Model/TokenTransactionTest.php
+tests/Model/Tokencancel200ResponseTest.php
+tests/Model/Tokenquery200ResponseTest.php
 tests/Model/TransactionCancelTest.php
 tests/Model/TransactionStatusTest.php
 tests/Model/TransactionTest.php
