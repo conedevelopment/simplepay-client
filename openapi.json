@@ -999,8 +999,192 @@
                 }
             }
         },
-        "/startapplepay": {},
-        "/doapplepay": {}
+        "/startapplepay": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Start an ApplePay session",
+                "description": "Start an ApplePay session using the given parameters",
+                "operationId": "starteam",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The ApplePay session object you would like to start.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApplePaySession"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "timeout": {
+                                            "type": "string",
+                                            "description": "The ISO 8601 format of the timeout date.",
+                                            "example": "2004-02-12T15:19:21+00:00"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        },
+                                        "applePaySession": {
+                                            "type": "object",
+                                            "properties": {
+                                                "epochTimestamp": {
+                                                    "type": "integer",
+                                                    "example": 1749017418352,
+                                                    "description": "The timestamp of the session start."
+                                                },
+                                                "expiresAt": {
+                                                    "type": "integer",
+                                                    "example": 1749017418352,
+                                                    "description": "The timestamp of the session expiration."
+                                                },
+                                                "merchantSessionIdentifier": {
+                                                    "type": "string",
+                                                    "example": "SSHCE5A2091BEC546FD8FACC2A313A2E8AF_2101F68F6980DFE07DEFE987B1CAF2961766C119C8FDCBB33566B1A97F33C9C3"
+                                                },
+                                                "nonce": {
+                                                    "type": "string",
+                                                    "example": "836a2281"
+                                                },
+                                                "merchantIdentifier": {
+                                                    "type": "string",
+                                                    "example": "D4D7D4CCCD55649F9B1BC1F06432938F62FE991826M4F4CD6829F058F422A26A",
+                                                    "description": "The ApplePay merchant ID."
+                                                },
+                                                "domainName": {
+                                                    "type": "string",
+                                                    "example": "samehost.example.com",
+                                                    "description": "The FQDN."
+                                                },
+                                                "displayName": {
+                                                    "type": "string",
+                                                    "example": "My Webshop"
+                                                },
+                                                "signature": {
+                                                    "type": "string",
+                                                    "example": "308008…………………0000000"
+                                                },
+                                                "operationalAnalyticsIdentifier": {
+                                                    "type": "string",
+                                                    "example": "My Webshop:D4D7D4CCCD55649F4B1BC1F06432938E62FE99182604F4CD6829F058F422A26A"
+                                                },
+                                                "retries": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "pspId": {
+                                                    "type": "string",
+                                                    "example": "2A7CFE1FC43C6DE9FC90CA89E46C067DB94C570AF75A7355CD754BF1B683B6C5"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/doapplepay": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Start an ApplePay transaction",
+                "description": "Start an ApplePay transaction using the given parameters",
+                "operationId": "starteam",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The ApplePay transaction object you would like to start.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApplePayTransaction"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        },
+                                        "applePayStatus": {
+                                            "type": "string",
+                                            "example": "STATUS_SUCCESS"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     "components": {
         "headers": {
@@ -1619,6 +1803,45 @@
                         }
                     }
                 ]
+            },
+            "ApplePaySession": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Transaction"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "domain"
+                        ],
+                        "properties": {
+                            "domain": {
+                                "type": "string",
+                                "example": "samehost.example.com",
+                                "description": "The FQDN registered for ApplePay."
+                            }
+                        }
+                    }
+                ]
+            },
+            "ApplePayTransaction": {
+                "type": "object",
+                "required": [
+                    "applePayToken"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "$ref": "#/components/schemas/TransactionId"
+                    },
+                    "currecy": {
+                        "$ref": "#/components/schemas/Currency"
+                    },
+                    "applePayToken": {
+                        "type": "string",
+                        "example": "eyJwYX…………………J9fQ==",
+                        "description": "The base64 encoded value of the applePaySession object in the startapplepay call response."
+                    }
+                }
             }
         }
     }
