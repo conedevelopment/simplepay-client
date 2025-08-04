@@ -19,7 +19,7 @@ src/Model/Delivery.php
 src/Model/Do200Response.php
 src/Model/DoApplePay200Response.php
 src/Model/DoRecurring200Response.php
-src/Model/EamTransaciton.php
+src/Model/EamTransaction.php
 src/Model/Finish200Response.php
 src/Model/Invoice.php
 src/Model/Item.php
@@ -69,7 +69,7 @@ tests/Model/DeliveryTest.php
 tests/Model/Do200ResponseTest.php
 tests/Model/DoApplePay200ResponseTest.php
 tests/Model/DoRecurring200ResponseTest.php
-tests/Model/EamTransacitonTest.php
+tests/Model/EamTransactionTest.php
 tests/Model/Finish200ResponseTest.php
 tests/Model/InvoiceTest.php
 tests/Model/ItemTest.php

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * EamTransaciton
+ * EamTransaction
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * EamTransaciton Class Doc Comment
+ * EamTransaction Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class EamTransaciton implements ModelInterface, ArrayAccess, JsonSerializable
+class EamTransaction implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class EamTransaciton implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'EamTransaciton';
+    protected static string $openAPIModelName = 'EamTransaction';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -805,7 +805,7 @@ class EamTransaciton implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($discount < 0)) {
-            throw new InvalidArgumentException('invalid value for $discount when calling EamTransaciton., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $discount when calling EamTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['discount'] = $discount;
@@ -837,7 +837,7 @@ class EamTransaciton implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($shippingCost < 0)) {
-            throw new InvalidArgumentException('invalid value for $shippingCost when calling EamTransaciton., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $shippingCost when calling EamTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['shippingCost'] = $shippingCost;
@@ -869,7 +869,7 @@ class EamTransaciton implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($total <= 0)) {
-            throw new InvalidArgumentException('invalid value for $total when calling EamTransaciton., must be bigger than 0.');
+            throw new InvalidArgumentException('invalid value for $total when calling EamTransaction., must be bigger than 0.');
         }
 
         $this->container['total'] = $total;
