@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Startapplepay200ResponseApplePaySession
+ * StartEam200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Startapplepay200ResponseApplePaySession Class Doc Comment
+ * StartEam200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAccess, JsonSerializable
+class StartEam200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'startapplepay_200_response_applePaySession';
+    protected static string $openAPIModelName = 'startEam_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,17 +58,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'epochTimestamp' => 'int',
-        'expiresAt' => 'int',
-        'merchantSessionIdentifier' => 'string',
-        'nonce' => 'string',
-        'merchantIdentifier' => 'string',
-        'domainName' => 'string',
-        'displayName' => 'string',
-        'signature' => 'string',
-        'operationalAnalyticsIdentifier' => 'string',
-        'retries' => 'int',
-        'pspId' => 'string',
+        'salt' => 'string',
+        'merchant' => 'string',
+        'orderRef' => 'string',
+        'currency' => '\Cone\SimplePay\Model\Currency',
+        'transactionId' => 'float',
+        'timeout' => 'string',
+        'total' => 'float',
+        'eam' => 'string',
+        'tokens' => 'string[]',
     ];
 
     /**
@@ -77,17 +75,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'epochTimestamp' => null,
-        'expiresAt' => null,
-        'merchantSessionIdentifier' => null,
-        'nonce' => null,
-        'merchantIdentifier' => null,
-        'domainName' => null,
-        'displayName' => null,
-        'signature' => null,
-        'operationalAnalyticsIdentifier' => null,
-        'retries' => null,
-        'pspId' => null,
+        'salt' => null,
+        'merchant' => null,
+        'orderRef' => null,
+        'currency' => null,
+        'transactionId' => null,
+        'timeout' => null,
+        'total' => null,
+        'eam' => null,
+        'tokens' => null,
     ];
 
     /**
@@ -96,17 +92,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'epochTimestamp' => false,
-        'expiresAt' => false,
-        'merchantSessionIdentifier' => false,
-        'nonce' => false,
-        'merchantIdentifier' => false,
-        'domainName' => false,
-        'displayName' => false,
-        'signature' => false,
-        'operationalAnalyticsIdentifier' => false,
-        'retries' => false,
-        'pspId' => false,
+        'salt' => false,
+        'merchant' => false,
+        'orderRef' => false,
+        'currency' => false,
+        'transactionId' => false,
+        'timeout' => false,
+        'total' => false,
+        'eam' => false,
+        'tokens' => false,
     ];
 
     /**
@@ -195,17 +189,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'epochTimestamp' => 'epochTimestamp',
-        'expiresAt' => 'expiresAt',
-        'merchantSessionIdentifier' => 'merchantSessionIdentifier',
-        'nonce' => 'nonce',
-        'merchantIdentifier' => 'merchantIdentifier',
-        'domainName' => 'domainName',
-        'displayName' => 'displayName',
-        'signature' => 'signature',
-        'operationalAnalyticsIdentifier' => 'operationalAnalyticsIdentifier',
-        'retries' => 'retries',
-        'pspId' => 'pspId',
+        'salt' => 'salt',
+        'merchant' => 'merchant',
+        'orderRef' => 'orderRef',
+        'currency' => 'currency',
+        'transactionId' => 'transactionId',
+        'timeout' => 'timeout',
+        'total' => 'total',
+        'eam' => 'eam',
+        'tokens' => 'tokens',
     ];
 
     /**
@@ -214,17 +206,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, string>
      */
     protected static array $setters = [
-        'epochTimestamp' => 'setEpochTimestamp',
-        'expiresAt' => 'setExpiresAt',
-        'merchantSessionIdentifier' => 'setMerchantSessionIdentifier',
-        'nonce' => 'setNonce',
-        'merchantIdentifier' => 'setMerchantIdentifier',
-        'domainName' => 'setDomainName',
-        'displayName' => 'setDisplayName',
-        'signature' => 'setSignature',
-        'operationalAnalyticsIdentifier' => 'setOperationalAnalyticsIdentifier',
-        'retries' => 'setRetries',
-        'pspId' => 'setPspId',
+        'salt' => 'setSalt',
+        'merchant' => 'setMerchant',
+        'orderRef' => 'setOrderRef',
+        'currency' => 'setCurrency',
+        'transactionId' => 'setTransactionId',
+        'timeout' => 'setTimeout',
+        'total' => 'setTotal',
+        'eam' => 'setEam',
+        'tokens' => 'setTokens',
     ];
 
     /**
@@ -233,17 +223,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      * @var array<string, string>
      */
     protected static array $getters = [
-        'epochTimestamp' => 'getEpochTimestamp',
-        'expiresAt' => 'getExpiresAt',
-        'merchantSessionIdentifier' => 'getMerchantSessionIdentifier',
-        'nonce' => 'getNonce',
-        'merchantIdentifier' => 'getMerchantIdentifier',
-        'domainName' => 'getDomainName',
-        'displayName' => 'getDisplayName',
-        'signature' => 'getSignature',
-        'operationalAnalyticsIdentifier' => 'getOperationalAnalyticsIdentifier',
-        'retries' => 'getRetries',
-        'pspId' => 'getPspId',
+        'salt' => 'getSalt',
+        'merchant' => 'getMerchant',
+        'orderRef' => 'getOrderRef',
+        'currency' => 'getCurrency',
+        'transactionId' => 'getTransactionId',
+        'timeout' => 'getTimeout',
+        'total' => 'getTotal',
+        'eam' => 'getEam',
+        'tokens' => 'getTokens',
     ];
 
     /**
@@ -302,17 +290,15 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('epochTimestamp', $data ?? [], null);
-        $this->setIfExists('expiresAt', $data ?? [], null);
-        $this->setIfExists('merchantSessionIdentifier', $data ?? [], null);
-        $this->setIfExists('nonce', $data ?? [], null);
-        $this->setIfExists('merchantIdentifier', $data ?? [], null);
-        $this->setIfExists('domainName', $data ?? [], null);
-        $this->setIfExists('displayName', $data ?? [], null);
-        $this->setIfExists('signature', $data ?? [], null);
-        $this->setIfExists('operationalAnalyticsIdentifier', $data ?? [], null);
-        $this->setIfExists('retries', $data ?? [], null);
-        $this->setIfExists('pspId', $data ?? [], null);
+        $this->setIfExists('salt', $data ?? [], null);
+        $this->setIfExists('merchant', $data ?? [], null);
+        $this->setIfExists('orderRef', $data ?? [], null);
+        $this->setIfExists('currency', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('total', $data ?? [], null);
+        $this->setIfExists('eam', $data ?? [], null);
+        $this->setIfExists('tokens', $data ?? [], null);
     }
 
     /**
@@ -358,298 +344,244 @@ class Startapplepay200ResponseApplePaySession implements ModelInterface, ArrayAc
 
 
     /**
-     * Gets epochTimestamp
-     *
-     * @return int|null
-     */
-    public function getEpochTimestamp(): ?int
-    {
-        return $this->container['epochTimestamp'];
-    }
-
-    /**
-     * Sets epochTimestamp
-     *
-     * @param int|null $epochTimestamp The timestamp of the session start.
-     *
-     * @return $this
-     */
-    public function setEpochTimestamp(?int $epochTimestamp): static
-    {
-        if (is_null($epochTimestamp)) {
-            throw new InvalidArgumentException('non-nullable epochTimestamp cannot be null');
-        }
-        $this->container['epochTimestamp'] = $epochTimestamp;
-
-        return $this;
-    }
-
-    /**
-     * Gets expiresAt
-     *
-     * @return int|null
-     */
-    public function getExpiresAt(): ?int
-    {
-        return $this->container['expiresAt'];
-    }
-
-    /**
-     * Sets expiresAt
-     *
-     * @param int|null $expiresAt The timestamp of the session expiration.
-     *
-     * @return $this
-     */
-    public function setExpiresAt(?int $expiresAt): static
-    {
-        if (is_null($expiresAt)) {
-            throw new InvalidArgumentException('non-nullable expiresAt cannot be null');
-        }
-        $this->container['expiresAt'] = $expiresAt;
-
-        return $this;
-    }
-
-    /**
-     * Gets merchantSessionIdentifier
+     * Gets salt
      *
      * @return string|null
      */
-    public function getMerchantSessionIdentifier(): ?string
+    public function getSalt(): ?string
     {
-        return $this->container['merchantSessionIdentifier'];
+        return $this->container['salt'];
     }
 
     /**
-     * Sets merchantSessionIdentifier
+     * Sets salt
      *
-     * @param string|null $merchantSessionIdentifier merchantSessionIdentifier
+     * @param string|null $salt salt
      *
      * @return $this
      */
-    public function setMerchantSessionIdentifier(?string $merchantSessionIdentifier): static
+    public function setSalt(?string $salt): static
     {
-        if (is_null($merchantSessionIdentifier)) {
-            throw new InvalidArgumentException('non-nullable merchantSessionIdentifier cannot be null');
+        if (is_null($salt)) {
+            throw new InvalidArgumentException('non-nullable salt cannot be null');
         }
-        $this->container['merchantSessionIdentifier'] = $merchantSessionIdentifier;
+        $this->container['salt'] = $salt;
 
         return $this;
     }
 
     /**
-     * Gets nonce
+     * Gets merchant
      *
      * @return string|null
      */
-    public function getNonce(): ?string
+    public function getMerchant(): ?string
     {
-        return $this->container['nonce'];
+        return $this->container['merchant'];
     }
 
     /**
-     * Sets nonce
+     * Sets merchant
      *
-     * @param string|null $nonce nonce
+     * @param string|null $merchant merchant
      *
      * @return $this
      */
-    public function setNonce(?string $nonce): static
+    public function setMerchant(?string $merchant): static
     {
-        if (is_null($nonce)) {
-            throw new InvalidArgumentException('non-nullable nonce cannot be null');
+        if (is_null($merchant)) {
+            throw new InvalidArgumentException('non-nullable merchant cannot be null');
         }
-        $this->container['nonce'] = $nonce;
+        $this->container['merchant'] = $merchant;
 
         return $this;
     }
 
     /**
-     * Gets merchantIdentifier
+     * Gets orderRef
      *
      * @return string|null
      */
-    public function getMerchantIdentifier(): ?string
+    public function getOrderRef(): ?string
     {
-        return $this->container['merchantIdentifier'];
+        return $this->container['orderRef'];
     }
 
     /**
-     * Sets merchantIdentifier
+     * Sets orderRef
      *
-     * @param string|null $merchantIdentifier The ApplePay merchant ID.
+     * @param string|null $orderRef orderRef
      *
      * @return $this
      */
-    public function setMerchantIdentifier(?string $merchantIdentifier): static
+    public function setOrderRef(?string $orderRef): static
     {
-        if (is_null($merchantIdentifier)) {
-            throw new InvalidArgumentException('non-nullable merchantIdentifier cannot be null');
+        if (is_null($orderRef)) {
+            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
         }
-        $this->container['merchantIdentifier'] = $merchantIdentifier;
+        $this->container['orderRef'] = $orderRef;
 
         return $this;
     }
 
     /**
-     * Gets domainName
+     * Gets currency
+     *
+     * @return \Cone\SimplePay\Model\Currency|null
+     */
+    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
+    {
+        return $this->container['currency'];
+    }
+
+    /**
+     * Sets currency
+     *
+     * @param \Cone\SimplePay\Model\Currency|null $currency currency
+     *
+     * @return $this
+     */
+    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
+    {
+        if (is_null($currency)) {
+            throw new InvalidArgumentException('non-nullable currency cannot be null');
+        }
+        $this->container['currency'] = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Gets transactionId
+     *
+     * @return float|null
+     */
+    public function getTransactionId(): ?float
+    {
+        return $this->container['transactionId'];
+    }
+
+    /**
+     * Sets transactionId
+     *
+     * @param float|null $transactionId transactionId
+     *
+     * @return $this
+     */
+    public function setTransactionId(?float $transactionId): static
+    {
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        }
+        $this->container['transactionId'] = $transactionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets timeout
      *
      * @return string|null
      */
-    public function getDomainName(): ?string
+    public function getTimeout(): ?string
     {
-        return $this->container['domainName'];
+        return $this->container['timeout'];
     }
 
     /**
-     * Sets domainName
+     * Sets timeout
      *
-     * @param string|null $domainName The FQDN.
+     * @param string|null $timeout The ISO 8601 format of the timeout date.
      *
      * @return $this
      */
-    public function setDomainName(?string $domainName): static
+    public function setTimeout(?string $timeout): static
     {
-        if (is_null($domainName)) {
-            throw new InvalidArgumentException('non-nullable domainName cannot be null');
+        if (is_null($timeout)) {
+            throw new InvalidArgumentException('non-nullable timeout cannot be null');
         }
-        $this->container['domainName'] = $domainName;
+        $this->container['timeout'] = $timeout;
 
         return $this;
     }
 
     /**
-     * Gets displayName
+     * Gets total
+     *
+     * @return float|null
+     */
+    public function getTotal(): ?float
+    {
+        return $this->container['total'];
+    }
+
+    /**
+     * Sets total
+     *
+     * @param float|null $total total
+     *
+     * @return $this
+     */
+    public function setTotal(?float $total): static
+    {
+        if (is_null($total)) {
+            throw new InvalidArgumentException('non-nullable total cannot be null');
+        }
+        $this->container['total'] = $total;
+
+        return $this;
+    }
+
+    /**
+     * Gets eam
      *
      * @return string|null
      */
-    public function getDisplayName(): ?string
+    public function getEam(): ?string
     {
-        return $this->container['displayName'];
+        return $this->container['eam'];
     }
 
     /**
-     * Sets displayName
+     * Sets eam
      *
-     * @param string|null $displayName displayName
+     * @param string|null $eam The deeplink.
      *
      * @return $this
      */
-    public function setDisplayName(?string $displayName): static
+    public function setEam(?string $eam): static
     {
-        if (is_null($displayName)) {
-            throw new InvalidArgumentException('non-nullable displayName cannot be null');
+        if (is_null($eam)) {
+            throw new InvalidArgumentException('non-nullable eam cannot be null');
         }
-        $this->container['displayName'] = $displayName;
+        $this->container['eam'] = $eam;
 
         return $this;
     }
 
     /**
-     * Gets signature
+     * Gets tokens
      *
-     * @return string|null
+     * @return string[]|null
      */
-    public function getSignature(): ?string
+    public function getTokens(): ?array
     {
-        return $this->container['signature'];
+        return $this->container['tokens'];
     }
 
     /**
-     * Sets signature
+     * Sets tokens
      *
-     * @param string|null $signature signature
+     * @param string[]|null $tokens The recurring payment tokens. Provided only for the initial recurring payment.
      *
      * @return $this
      */
-    public function setSignature(?string $signature): static
+    public function setTokens(?array $tokens): static
     {
-        if (is_null($signature)) {
-            throw new InvalidArgumentException('non-nullable signature cannot be null');
+        if (is_null($tokens)) {
+            throw new InvalidArgumentException('non-nullable tokens cannot be null');
         }
-        $this->container['signature'] = $signature;
-
-        return $this;
-    }
-
-    /**
-     * Gets operationalAnalyticsIdentifier
-     *
-     * @return string|null
-     */
-    public function getOperationalAnalyticsIdentifier(): ?string
-    {
-        return $this->container['operationalAnalyticsIdentifier'];
-    }
-
-    /**
-     * Sets operationalAnalyticsIdentifier
-     *
-     * @param string|null $operationalAnalyticsIdentifier operationalAnalyticsIdentifier
-     *
-     * @return $this
-     */
-    public function setOperationalAnalyticsIdentifier(?string $operationalAnalyticsIdentifier): static
-    {
-        if (is_null($operationalAnalyticsIdentifier)) {
-            throw new InvalidArgumentException('non-nullable operationalAnalyticsIdentifier cannot be null');
-        }
-        $this->container['operationalAnalyticsIdentifier'] = $operationalAnalyticsIdentifier;
-
-        return $this;
-    }
-
-    /**
-     * Gets retries
-     *
-     * @return int|null
-     */
-    public function getRetries(): ?int
-    {
-        return $this->container['retries'];
-    }
-
-    /**
-     * Sets retries
-     *
-     * @param int|null $retries retries
-     *
-     * @return $this
-     */
-    public function setRetries(?int $retries): static
-    {
-        if (is_null($retries)) {
-            throw new InvalidArgumentException('non-nullable retries cannot be null');
-        }
-        $this->container['retries'] = $retries;
-
-        return $this;
-    }
-
-    /**
-     * Gets pspId
-     *
-     * @return string|null
-     */
-    public function getPspId(): ?string
-    {
-        return $this->container['pspId'];
-    }
-
-    /**
-     * Sets pspId
-     *
-     * @param string|null $pspId pspId
-     *
-     * @return $this
-     */
-    public function setPspId(?string $pspId): static
-    {
-        if (is_null($pspId)) {
-            throw new InvalidArgumentException('non-nullable pspId cannot be null');
-        }
-        $this->container['pspId'] = $pspId;
+        $this->container['tokens'] = $tokens;
 
         return $this;
     }

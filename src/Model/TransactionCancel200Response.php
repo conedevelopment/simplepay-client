@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cardquery200ResponseHistoryInner
+ * TransactionCancel200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Cardquery200ResponseHistoryInner Class Doc Comment
+ * TransactionCancel200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, JsonSerializable
+class TransactionCancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'cardquery_200_response_history_inner';
+    protected static string $openAPIModelName = 'transactionCancel_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,11 +58,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'orerRef' => 'string',
-        'transactionId' => 'float',
+        'salt' => 'string',
+        'merchant' => 'string',
+        'orderRef' => 'string',
         'status' => '\Cone\SimplePay\Model\TransactionStatus',
-        'paymentDate' => 'string',
-        'finishDate' => 'string',
+        'transactionId' => 'float',
     ];
 
     /**
@@ -71,11 +71,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'orerRef' => null,
-        'transactionId' => null,
+        'salt' => null,
+        'merchant' => null,
+        'orderRef' => null,
         'status' => null,
-        'paymentDate' => null,
-        'finishDate' => null,
+        'transactionId' => null,
     ];
 
     /**
@@ -84,11 +84,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'orerRef' => false,
-        'transactionId' => false,
+        'salt' => false,
+        'merchant' => false,
+        'orderRef' => false,
         'status' => false,
-        'paymentDate' => false,
-        'finishDate' => false,
+        'transactionId' => false,
     ];
 
     /**
@@ -177,11 +177,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'orerRef' => 'orerRef',
-        'transactionId' => 'transactionId',
+        'salt' => 'salt',
+        'merchant' => 'merchant',
+        'orderRef' => 'orderRef',
         'status' => 'status',
-        'paymentDate' => 'paymentDate',
-        'finishDate' => 'finishDate',
+        'transactionId' => 'transactionId',
     ];
 
     /**
@@ -190,11 +190,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, string>
      */
     protected static array $setters = [
-        'orerRef' => 'setOrerRef',
-        'transactionId' => 'setTransactionId',
+        'salt' => 'setSalt',
+        'merchant' => 'setMerchant',
+        'orderRef' => 'setOrderRef',
         'status' => 'setStatus',
-        'paymentDate' => 'setPaymentDate',
-        'finishDate' => 'setFinishDate',
+        'transactionId' => 'setTransactionId',
     ];
 
     /**
@@ -203,11 +203,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      * @var array<string, string>
      */
     protected static array $getters = [
-        'orerRef' => 'getOrerRef',
-        'transactionId' => 'getTransactionId',
+        'salt' => 'getSalt',
+        'merchant' => 'getMerchant',
+        'orderRef' => 'getOrderRef',
         'status' => 'getStatus',
-        'paymentDate' => 'getPaymentDate',
-        'finishDate' => 'getFinishDate',
+        'transactionId' => 'getTransactionId',
     ];
 
     /**
@@ -266,11 +266,11 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('orerRef', $data ?? [], null);
-        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('salt', $data ?? [], null);
+        $this->setIfExists('merchant', $data ?? [], null);
+        $this->setIfExists('orderRef', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('paymentDate', $data ?? [], null);
-        $this->setIfExists('finishDate', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
     }
 
     /**
@@ -316,55 +316,82 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
 
 
     /**
-     * Gets orerRef
+     * Gets salt
      *
      * @return string|null
      */
-    public function getOrerRef(): ?string
+    public function getSalt(): ?string
     {
-        return $this->container['orerRef'];
+        return $this->container['salt'];
     }
 
     /**
-     * Sets orerRef
+     * Sets salt
      *
-     * @param string|null $orerRef orerRef
+     * @param string|null $salt salt
      *
      * @return $this
      */
-    public function setOrerRef(?string $orerRef): static
+    public function setSalt(?string $salt): static
     {
-        if (is_null($orerRef)) {
-            throw new InvalidArgumentException('non-nullable orerRef cannot be null');
+        if (is_null($salt)) {
+            throw new InvalidArgumentException('non-nullable salt cannot be null');
         }
-        $this->container['orerRef'] = $orerRef;
+        $this->container['salt'] = $salt;
 
         return $this;
     }
 
     /**
-     * Gets transactionId
+     * Gets merchant
      *
-     * @return float|null
+     * @return string|null
      */
-    public function getTransactionId(): ?float
+    public function getMerchant(): ?string
     {
-        return $this->container['transactionId'];
+        return $this->container['merchant'];
     }
 
     /**
-     * Sets transactionId
+     * Sets merchant
      *
-     * @param float|null $transactionId transactionId
+     * @param string|null $merchant merchant
      *
      * @return $this
      */
-    public function setTransactionId(?float $transactionId): static
+    public function setMerchant(?string $merchant): static
     {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        if (is_null($merchant)) {
+            throw new InvalidArgumentException('non-nullable merchant cannot be null');
         }
-        $this->container['transactionId'] = $transactionId;
+        $this->container['merchant'] = $merchant;
+
+        return $this;
+    }
+
+    /**
+     * Gets orderRef
+     *
+     * @return string|null
+     */
+    public function getOrderRef(): ?string
+    {
+        return $this->container['orderRef'];
+    }
+
+    /**
+     * Sets orderRef
+     *
+     * @param string|null $orderRef orderRef
+     *
+     * @return $this
+     */
+    public function setOrderRef(?string $orderRef): static
+    {
+        if (is_null($orderRef)) {
+            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
+        }
+        $this->container['orderRef'] = $orderRef;
 
         return $this;
     }
@@ -397,55 +424,28 @@ class Cardquery200ResponseHistoryInner implements ModelInterface, ArrayAccess, J
     }
 
     /**
-     * Gets paymentDate
+     * Gets transactionId
      *
-     * @return string|null
+     * @return float|null
      */
-    public function getPaymentDate(): ?string
+    public function getTransactionId(): ?float
     {
-        return $this->container['paymentDate'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets paymentDate
+     * Sets transactionId
      *
-     * @param string|null $paymentDate The ISO 8601 format of the payment date.
+     * @param float|null $transactionId transactionId
      *
      * @return $this
      */
-    public function setPaymentDate(?string $paymentDate): static
+    public function setTransactionId(?float $transactionId): static
     {
-        if (is_null($paymentDate)) {
-            throw new InvalidArgumentException('non-nullable paymentDate cannot be null');
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['paymentDate'] = $paymentDate;
-
-        return $this;
-    }
-
-    /**
-     * Gets finishDate
-     *
-     * @return string|null
-     */
-    public function getFinishDate(): ?string
-    {
-        return $this->container['finishDate'];
-    }
-
-    /**
-     * Sets finishDate
-     *
-     * @param string|null $finishDate The ISO 8601 format of the finish date.
-     *
-     * @return $this
-     */
-    public function setFinishDate(?string $finishDate): static
-    {
-        if (is_null($finishDate)) {
-            throw new InvalidArgumentException('non-nullable finishDate cannot be null');
-        }
-        $this->container['finishDate'] = $finishDate;
+        $this->container['transactionId'] = $transactionId;
 
         return $this;
     }

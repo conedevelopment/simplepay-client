@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cardcancel200Response
+ * CardCancel200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Cardcancel200Response Class Doc Comment
+ * CardCancel200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Cardcancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class CardCancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Cardcancel200Response implements ModelInterface, ArrayAccess, JsonSerializ
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'cardcancel_200_response';
+    protected static string $openAPIModelName = 'cardCancel_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization

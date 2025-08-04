@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dorecurring200Response
+ * TokenCancel200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Dorecurring200Response Class Doc Comment
+ * TokenCancel200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class TokenCancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'dorecurring_200_response';
+    protected static string $openAPIModelName = 'tokenCancel_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,10 +60,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'transactionId' => 'float',
-        'orderRef' => 'string',
-        'currency' => '\Cone\SimplePay\Model\Currency',
-        'total' => 'float',
+        'token' => 'string',
+        'status' => '\Cone\SimplePay\Model\TokenStatus',
+        'expiry' => 'string',
     ];
 
     /**
@@ -74,10 +73,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'transactionId' => null,
-        'orderRef' => null,
-        'currency' => null,
-        'total' => null,
+        'token' => null,
+        'status' => null,
+        'expiry' => null,
     ];
 
     /**
@@ -88,10 +86,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'transactionId' => false,
-        'orderRef' => false,
-        'currency' => false,
-        'total' => false,
+        'token' => false,
+        'status' => false,
+        'expiry' => false,
     ];
 
     /**
@@ -182,10 +179,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'transactionId' => 'transactionId',
-        'orderRef' => 'orderRef',
-        'currency' => 'currency',
-        'total' => 'total',
+        'token' => 'token',
+        'status' => 'status',
+        'expiry' => 'expiry',
     ];
 
     /**
@@ -196,10 +192,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'transactionId' => 'setTransactionId',
-        'orderRef' => 'setOrderRef',
-        'currency' => 'setCurrency',
-        'total' => 'setTotal',
+        'token' => 'setToken',
+        'status' => 'setStatus',
+        'expiry' => 'setExpiry',
     ];
 
     /**
@@ -210,10 +205,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'transactionId' => 'getTransactionId',
-        'orderRef' => 'getOrderRef',
-        'currency' => 'getCurrency',
-        'total' => 'getTotal',
+        'token' => 'getToken',
+        'status' => 'getStatus',
+        'expiry' => 'getExpiry',
     ];
 
     /**
@@ -274,10 +268,9 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('transactionId', $data ?? [], null);
-        $this->setIfExists('orderRef', $data ?? [], null);
-        $this->setIfExists('currency', $data ?? [], null);
-        $this->setIfExists('total', $data ?? [], null);
+        $this->setIfExists('token', $data ?? [], null);
+        $this->setIfExists('status', $data ?? [], null);
+        $this->setIfExists('expiry', $data ?? [], null);
     }
 
     /**
@@ -377,109 +370,82 @@ class Dorecurring200Response implements ModelInterface, ArrayAccess, JsonSeriali
     }
 
     /**
-     * Gets transactionId
-     *
-     * @return float|null
-     */
-    public function getTransactionId(): ?float
-    {
-        return $this->container['transactionId'];
-    }
-
-    /**
-     * Sets transactionId
-     *
-     * @param float|null $transactionId transactionId
-     *
-     * @return $this
-     */
-    public function setTransactionId(?float $transactionId): static
-    {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
-        }
-        $this->container['transactionId'] = $transactionId;
-
-        return $this;
-    }
-
-    /**
-     * Gets orderRef
+     * Gets token
      *
      * @return string|null
      */
-    public function getOrderRef(): ?string
+    public function getToken(): ?string
     {
-        return $this->container['orderRef'];
+        return $this->container['token'];
     }
 
     /**
-     * Sets orderRef
+     * Sets token
      *
-     * @param string|null $orderRef orderRef
+     * @param string|null $token token
      *
      * @return $this
      */
-    public function setOrderRef(?string $orderRef): static
+    public function setToken(?string $token): static
     {
-        if (is_null($orderRef)) {
-            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
+        if (is_null($token)) {
+            throw new InvalidArgumentException('non-nullable token cannot be null');
         }
-        $this->container['orderRef'] = $orderRef;
+        $this->container['token'] = $token;
 
         return $this;
     }
 
     /**
-     * Gets currency
+     * Gets status
      *
-     * @return \Cone\SimplePay\Model\Currency|null
+     * @return \Cone\SimplePay\Model\TokenStatus|null
      */
-    public function getCurrency(): ?\Cone\SimplePay\Model\Currency
+    public function getStatus(): ?\Cone\SimplePay\Model\TokenStatus
     {
-        return $this->container['currency'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets currency
+     * Sets status
      *
-     * @param \Cone\SimplePay\Model\Currency|null $currency currency
+     * @param \Cone\SimplePay\Model\TokenStatus|null $status status
      *
      * @return $this
      */
-    public function setCurrency(?\Cone\SimplePay\Model\Currency $currency): static
+    public function setStatus(?\Cone\SimplePay\Model\TokenStatus $status): static
     {
-        if (is_null($currency)) {
-            throw new InvalidArgumentException('non-nullable currency cannot be null');
+        if (is_null($status)) {
+            throw new InvalidArgumentException('non-nullable status cannot be null');
         }
-        $this->container['currency'] = $currency;
+        $this->container['status'] = $status;
 
         return $this;
     }
 
     /**
-     * Gets total
+     * Gets expiry
      *
-     * @return float|null
+     * @return string|null
      */
-    public function getTotal(): ?float
+    public function getExpiry(): ?string
     {
-        return $this->container['total'];
+        return $this->container['expiry'];
     }
 
     /**
-     * Sets total
+     * Sets expiry
      *
-     * @param float|null $total total
+     * @param string|null $expiry The ISO 8601 format of the card expiry date.
      *
      * @return $this
      */
-    public function setTotal(?float $total): static
+    public function setExpiry(?string $expiry): static
     {
-        if (is_null($total)) {
-            throw new InvalidArgumentException('non-nullable total cannot be null');
+        if (is_null($expiry)) {
+            throw new InvalidArgumentException('non-nullable expiry cannot be null');
         }
-        $this->container['total'] = $total;
+        $this->container['expiry'] = $expiry;
 
         return $this;
     }

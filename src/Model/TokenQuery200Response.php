@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Transactioncancel200Response
+ * TokenQuery200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Transactioncancel200Response Class Doc Comment
+ * TokenQuery200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonSerializable
+class TokenQuery200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'transactioncancel_200_response';
+    protected static string $openAPIModelName = 'tokenQuery_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -60,9 +60,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $openAPITypes = [
         'salt' => 'string',
         'merchant' => 'string',
-        'orderRef' => 'string',
-        'status' => '\Cone\SimplePay\Model\TransactionStatus',
-        'transactionId' => 'float',
+        'token' => 'string',
+        'status' => '\Cone\SimplePay\Model\TokenStatus',
+        'expiry' => 'string',
     ];
 
     /**
@@ -73,9 +73,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $openAPIFormats = [
         'salt' => null,
         'merchant' => null,
-        'orderRef' => null,
+        'token' => null,
         'status' => null,
-        'transactionId' => null,
+        'expiry' => null,
     ];
 
     /**
@@ -86,9 +86,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $openAPINullables = [
         'salt' => false,
         'merchant' => false,
-        'orderRef' => false,
+        'token' => false,
         'status' => false,
-        'transactionId' => false,
+        'expiry' => false,
     ];
 
     /**
@@ -179,9 +179,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $attributeMap = [
         'salt' => 'salt',
         'merchant' => 'merchant',
-        'orderRef' => 'orderRef',
+        'token' => 'token',
         'status' => 'status',
-        'transactionId' => 'transactionId',
+        'expiry' => 'expiry',
     ];
 
     /**
@@ -192,9 +192,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $setters = [
         'salt' => 'setSalt',
         'merchant' => 'setMerchant',
-        'orderRef' => 'setOrderRef',
+        'token' => 'setToken',
         'status' => 'setStatus',
-        'transactionId' => 'setTransactionId',
+        'expiry' => 'setExpiry',
     ];
 
     /**
@@ -205,9 +205,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     protected static array $getters = [
         'salt' => 'getSalt',
         'merchant' => 'getMerchant',
-        'orderRef' => 'getOrderRef',
+        'token' => 'getToken',
         'status' => 'getStatus',
-        'transactionId' => 'getTransactionId',
+        'expiry' => 'getExpiry',
     ];
 
     /**
@@ -268,9 +268,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     {
         $this->setIfExists('salt', $data ?? [], null);
         $this->setIfExists('merchant', $data ?? [], null);
-        $this->setIfExists('orderRef', $data ?? [], null);
+        $this->setIfExists('token', $data ?? [], null);
         $this->setIfExists('status', $data ?? [], null);
-        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('expiry', $data ?? [], null);
     }
 
     /**
@@ -370,28 +370,28 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     }
 
     /**
-     * Gets orderRef
+     * Gets token
      *
      * @return string|null
      */
-    public function getOrderRef(): ?string
+    public function getToken(): ?string
     {
-        return $this->container['orderRef'];
+        return $this->container['token'];
     }
 
     /**
-     * Sets orderRef
+     * Sets token
      *
-     * @param string|null $orderRef orderRef
+     * @param string|null $token token
      *
      * @return $this
      */
-    public function setOrderRef(?string $orderRef): static
+    public function setToken(?string $token): static
     {
-        if (is_null($orderRef)) {
-            throw new InvalidArgumentException('non-nullable orderRef cannot be null');
+        if (is_null($token)) {
+            throw new InvalidArgumentException('non-nullable token cannot be null');
         }
-        $this->container['orderRef'] = $orderRef;
+        $this->container['token'] = $token;
 
         return $this;
     }
@@ -399,9 +399,9 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     /**
      * Gets status
      *
-     * @return \Cone\SimplePay\Model\TransactionStatus|null
+     * @return \Cone\SimplePay\Model\TokenStatus|null
      */
-    public function getStatus(): ?\Cone\SimplePay\Model\TransactionStatus
+    public function getStatus(): ?\Cone\SimplePay\Model\TokenStatus
     {
         return $this->container['status'];
     }
@@ -409,11 +409,11 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     /**
      * Sets status
      *
-     * @param \Cone\SimplePay\Model\TransactionStatus|null $status status
+     * @param \Cone\SimplePay\Model\TokenStatus|null $status status
      *
      * @return $this
      */
-    public function setStatus(?\Cone\SimplePay\Model\TransactionStatus $status): static
+    public function setStatus(?\Cone\SimplePay\Model\TokenStatus $status): static
     {
         if (is_null($status)) {
             throw new InvalidArgumentException('non-nullable status cannot be null');
@@ -424,28 +424,28 @@ class Transactioncancel200Response implements ModelInterface, ArrayAccess, JsonS
     }
 
     /**
-     * Gets transactionId
+     * Gets expiry
      *
-     * @return float|null
+     * @return string|null
      */
-    public function getTransactionId(): ?float
+    public function getExpiry(): ?string
     {
-        return $this->container['transactionId'];
+        return $this->container['expiry'];
     }
 
     /**
-     * Sets transactionId
+     * Sets expiry
      *
-     * @param float|null $transactionId transactionId
+     * @param string|null $expiry The ISO 8601 format of the token expiry date.
      *
      * @return $this
      */
-    public function setTransactionId(?float $transactionId): static
+    public function setExpiry(?string $expiry): static
     {
-        if (is_null($transactionId)) {
-            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        if (is_null($expiry)) {
+            throw new InvalidArgumentException('non-nullable expiry cannot be null');
         }
-        $this->container['transactionId'] = $transactionId;
+        $this->container['expiry'] = $expiry;
 
         return $this;
     }
