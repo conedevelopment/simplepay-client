@@ -1006,7 +1006,7 @@
                 ],
                 "summary": "Start an ApplePay session",
                 "description": "Start an ApplePay session using the given parameters",
-                "operationId": "starteam",
+                "operationId": "startapplepay",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/Signature"
@@ -1123,7 +1123,7 @@
                 ],
                 "summary": "Start an ApplePay transaction",
                 "description": "Start an ApplePay transaction using the given parameters",
-                "operationId": "starteam",
+                "operationId": "doapplepay",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/Signature"
