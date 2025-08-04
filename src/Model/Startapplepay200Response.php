@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TokenCancel
+ * Startapplepay200Response
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * TokenCancel Class Doc Comment
+ * Startapplepay200Response Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
+class Startapplepay200Response implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'TokenCancel';
+    protected static string $openAPIModelName = 'startapplepay_200_response';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,7 +58,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'token' => 'string',
+        'salt' => 'string',
+        'merchant' => 'string',
+        'transactionId' => 'float',
+        'timeout' => 'string',
+        'total' => 'float',
+        'applePaySession' => '\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession',
     ];
 
     /**
@@ -67,7 +72,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'token' => null,
+        'salt' => null,
+        'merchant' => null,
+        'transactionId' => null,
+        'timeout' => null,
+        'total' => null,
+        'applePaySession' => null,
     ];
 
     /**
@@ -76,7 +86,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'token' => false,
+        'salt' => false,
+        'merchant' => false,
+        'transactionId' => false,
+        'timeout' => false,
+        'total' => false,
+        'applePaySession' => false,
     ];
 
     /**
@@ -165,7 +180,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'token' => 'token',
+        'salt' => 'salt',
+        'merchant' => 'merchant',
+        'transactionId' => 'transactionId',
+        'timeout' => 'timeout',
+        'total' => 'total',
+        'applePaySession' => 'applePaySession',
     ];
 
     /**
@@ -174,7 +194,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $setters = [
-        'token' => 'setToken',
+        'salt' => 'setSalt',
+        'merchant' => 'setMerchant',
+        'transactionId' => 'setTransactionId',
+        'timeout' => 'setTimeout',
+        'total' => 'setTotal',
+        'applePaySession' => 'setApplePaySession',
     ];
 
     /**
@@ -183,7 +208,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $getters = [
-        'token' => 'getToken',
+        'salt' => 'getSalt',
+        'merchant' => 'getMerchant',
+        'transactionId' => 'getTransactionId',
+        'timeout' => 'getTimeout',
+        'total' => 'getTotal',
+        'applePaySession' => 'getApplePaySession',
     ];
 
     /**
@@ -242,7 +272,12 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
+        $this->setIfExists('salt', $data ?? [], null);
+        $this->setIfExists('merchant', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('total', $data ?? [], null);
+        $this->setIfExists('applePaySession', $data ?? [], null);
     }
 
     /**
@@ -272,9 +307,6 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -291,28 +323,163 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
 
 
     /**
-     * Gets token
+     * Gets salt
      *
-     * @return string
+     * @return string|null
      */
-    public function getToken(): string
+    public function getSalt(): ?string
     {
-        return $this->container['token'];
+        return $this->container['salt'];
     }
 
     /**
-     * Sets token
+     * Sets salt
      *
-     * @param string $token token
+     * @param string|null $salt salt
      *
      * @return $this
      */
-    public function setToken(string $token): static
+    public function setSalt(?string $salt): static
     {
-        if (is_null($token)) {
-            throw new InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($salt)) {
+            throw new InvalidArgumentException('non-nullable salt cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['salt'] = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Gets merchant
+     *
+     * @return string|null
+     */
+    public function getMerchant(): ?string
+    {
+        return $this->container['merchant'];
+    }
+
+    /**
+     * Sets merchant
+     *
+     * @param string|null $merchant merchant
+     *
+     * @return $this
+     */
+    public function setMerchant(?string $merchant): static
+    {
+        if (is_null($merchant)) {
+            throw new InvalidArgumentException('non-nullable merchant cannot be null');
+        }
+        $this->container['merchant'] = $merchant;
+
+        return $this;
+    }
+
+    /**
+     * Gets transactionId
+     *
+     * @return float|null
+     */
+    public function getTransactionId(): ?float
+    {
+        return $this->container['transactionId'];
+    }
+
+    /**
+     * Sets transactionId
+     *
+     * @param float|null $transactionId transactionId
+     *
+     * @return $this
+     */
+    public function setTransactionId(?float $transactionId): static
+    {
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
+        }
+        $this->container['transactionId'] = $transactionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets timeout
+     *
+     * @return string|null
+     */
+    public function getTimeout(): ?string
+    {
+        return $this->container['timeout'];
+    }
+
+    /**
+     * Sets timeout
+     *
+     * @param string|null $timeout The ISO 8601 format of the timeout date.
+     *
+     * @return $this
+     */
+    public function setTimeout(?string $timeout): static
+    {
+        if (is_null($timeout)) {
+            throw new InvalidArgumentException('non-nullable timeout cannot be null');
+        }
+        $this->container['timeout'] = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * Gets total
+     *
+     * @return float|null
+     */
+    public function getTotal(): ?float
+    {
+        return $this->container['total'];
+    }
+
+    /**
+     * Sets total
+     *
+     * @param float|null $total total
+     *
+     * @return $this
+     */
+    public function setTotal(?float $total): static
+    {
+        if (is_null($total)) {
+            throw new InvalidArgumentException('non-nullable total cannot be null');
+        }
+        $this->container['total'] = $total;
+
+        return $this;
+    }
+
+    /**
+     * Gets applePaySession
+     *
+     * @return \Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession|null
+     */
+    public function getApplePaySession(): ?\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession
+    {
+        return $this->container['applePaySession'];
+    }
+
+    /**
+     * Sets applePaySession
+     *
+     * @param \Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession|null $applePaySession applePaySession
+     *
+     * @return $this
+     */
+    public function setApplePaySession(?\Cone\SimplePay\Model\Startapplepay200ResponseApplePaySession $applePaySession): static
+    {
+        if (is_null($applePaySession)) {
+            throw new InvalidArgumentException('non-nullable applePaySession cannot be null');
+        }
+        $this->container['applePaySession'] = $applePaySession;
 
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TokenCancel
+ * ApplePayTransaction
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * TokenCancel Class Doc Comment
+ * ApplePayTransaction Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
+class ApplePayTransaction implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'TokenCancel';
+    protected static string $openAPIModelName = 'ApplePayTransaction';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -58,7 +58,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $openAPITypes = [
-        'token' => 'string',
+        'transactionId' => 'float',
+        'currecy' => '\Cone\SimplePay\Model\Currency',
+        'applePayToken' => 'string',
     ];
 
     /**
@@ -67,7 +69,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string|null>
      */
     protected static array $openAPIFormats = [
-        'token' => null,
+        'transactionId' => null,
+        'currecy' => null,
+        'applePayToken' => null,
     ];
 
     /**
@@ -76,7 +80,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, bool>
      */
     protected static array $openAPINullables = [
-        'token' => false,
+        'transactionId' => false,
+        'currecy' => false,
+        'applePayToken' => false,
     ];
 
     /**
@@ -165,7 +171,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $attributeMap = [
-        'token' => 'token',
+        'transactionId' => 'transactionId',
+        'currecy' => 'currecy',
+        'applePayToken' => 'applePayToken',
     ];
 
     /**
@@ -174,7 +182,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $setters = [
-        'token' => 'setToken',
+        'transactionId' => 'setTransactionId',
+        'currecy' => 'setCurrecy',
+        'applePayToken' => 'setApplePayToken',
     ];
 
     /**
@@ -183,7 +193,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      * @var array<string, string>
      */
     protected static array $getters = [
-        'token' => 'getToken',
+        'transactionId' => 'getTransactionId',
+        'currecy' => 'getCurrecy',
+        'applePayToken' => 'getApplePayToken',
     ];
 
     /**
@@ -242,7 +254,9 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
      */
     public function __construct(?array $data = null)
     {
-        $this->setIfExists('token', $data ?? [], null);
+        $this->setIfExists('transactionId', $data ?? [], null);
+        $this->setIfExists('currecy', $data ?? [], null);
+        $this->setIfExists('applePayToken', $data ?? [], null);
     }
 
     /**
@@ -272,8 +286,8 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
     {
         $invalidProperties = [];
 
-        if ($this->container['token'] === null) {
-            $invalidProperties[] = "'token' can't be null";
+        if ($this->container['applePayToken'] === null) {
+            $invalidProperties[] = "'applePayToken' can't be null";
         }
         return $invalidProperties;
     }
@@ -291,28 +305,82 @@ class TokenCancel implements ModelInterface, ArrayAccess, JsonSerializable
 
 
     /**
-     * Gets token
+     * Gets transactionId
      *
-     * @return string
+     * @return float|null
      */
-    public function getToken(): string
+    public function getTransactionId(): ?float
     {
-        return $this->container['token'];
+        return $this->container['transactionId'];
     }
 
     /**
-     * Sets token
+     * Sets transactionId
      *
-     * @param string $token token
+     * @param float|null $transactionId transactionId
      *
      * @return $this
      */
-    public function setToken(string $token): static
+    public function setTransactionId(?float $transactionId): static
     {
-        if (is_null($token)) {
-            throw new InvalidArgumentException('non-nullable token cannot be null');
+        if (is_null($transactionId)) {
+            throw new InvalidArgumentException('non-nullable transactionId cannot be null');
         }
-        $this->container['token'] = $token;
+        $this->container['transactionId'] = $transactionId;
+
+        return $this;
+    }
+
+    /**
+     * Gets currecy
+     *
+     * @return \Cone\SimplePay\Model\Currency|null
+     */
+    public function getCurrecy(): ?\Cone\SimplePay\Model\Currency
+    {
+        return $this->container['currecy'];
+    }
+
+    /**
+     * Sets currecy
+     *
+     * @param \Cone\SimplePay\Model\Currency|null $currecy currecy
+     *
+     * @return $this
+     */
+    public function setCurrecy(?\Cone\SimplePay\Model\Currency $currecy): static
+    {
+        if (is_null($currecy)) {
+            throw new InvalidArgumentException('non-nullable currecy cannot be null');
+        }
+        $this->container['currecy'] = $currecy;
+
+        return $this;
+    }
+
+    /**
+     * Gets applePayToken
+     *
+     * @return string
+     */
+    public function getApplePayToken(): string
+    {
+        return $this->container['applePayToken'];
+    }
+
+    /**
+     * Sets applePayToken
+     *
+     * @param string $applePayToken The base64 encoded value of the applePaySession object in the startapplepay call response.
+     *
+     * @return $this
+     */
+    public function setApplePayToken(string $applePayToken): static
+    {
+        if (is_null($applePayToken)) {
+            throw new InvalidArgumentException('non-nullable applePayToken cannot be null');
+        }
+        $this->container['applePayToken'] = $applePayToken;
 
         return $this;
     }
