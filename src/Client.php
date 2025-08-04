@@ -103,7 +103,7 @@ class Client
 
             $body = json_decode($body, true) ?? [];
 
-            if (! empty($body['errorCodes'] ?? [])) {
+            if (empty($body['redirectUrl'] ?? '') && ! empty($body['errorCodes'] ?? [])) {
                 throw new ApiException(
                     'SimplePay error.',
                     (int) $body['errorCodes'][0] ?? 999,
