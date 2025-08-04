@@ -12,8 +12,9 @@ This provides an OpenAPI schema and an auto-generated PHP client as a composer p
 
 ## Installation
 
-- Composer
-- Manual
+```sh
+composer require conedevelopment/simplepay-php
+```
 
 ## Configuration
 
