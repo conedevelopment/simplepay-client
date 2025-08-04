@@ -2,6 +2,8 @@
 
 Provides an OpenAPI schema and an auto-generated PHP client as a Composer package.
 
+SimplePay is a payment gateway provided by OTP Mobil Kft.
+
 > [!WARNING]
 > This is not an official package.
 
