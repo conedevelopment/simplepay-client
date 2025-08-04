@@ -1,6 +1,6 @@
 # SimplePay PHP Client
 
-This provides an OpenAPI schema and an auto-generated PHP client as a composer package.
+Provides an OpenAPI schema and an auto-generated PHP client as a Composer package.
 
 > [!WARNING]
 > This is not an official package.
@@ -47,9 +47,9 @@ $client->api()->doApplePay(...);
 
 ### Error Handling
 
-SimplePay responses with `HTTP 200` even if the operation is failed or an error occured. The handle this properly the Client has a built-in middleware that checks whether the response contains any errors, if so, it throws an `ApiException`.
+SimplePay responds with `HTTP 200` even if the operation has failed or an error has occured. To handle this properly the Client has a built-in middleware that checks whether the response contains any errors, if so, it throws an `ApiException`.
 
-The message holds the error code and the error message to make easier debugging.
+The message holds the error code and the error message to make debugging easier.
 
 ```php
 use Cone\SimplePay\ApiException;
@@ -57,7 +57,7 @@ use Cone\SimplePay\ApiException;
 try {
     $client->api()->start(...);
 } catch (ApiException $exception) {
-    // Log the message (starting with the error code)
+    // Log the message starting with the error code
     Log::info($exception->getMessage());
 
     // Log the error code only
