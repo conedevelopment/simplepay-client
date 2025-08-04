@@ -30,11 +30,6 @@
                 "summary": "Start a transaction",
                 "description": "Start a transaction using the given parameters",
                 "operationId": "start",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
                 "requestBody": {
                     "description": "The transaction object you would like to start.",
                     "required": true,
@@ -112,11 +107,6 @@
                 "summary": "Finish a two-step transaction",
                 "description": "Finish an authorized two-step transaction.",
                 "operationId": "finish",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
                 "requestBody": {
                     "description": "The authorized transaction object you would like to finish.",
                     "required": true,
@@ -177,11 +167,6 @@
                 "summary": "Refund a transaction",
                 "description": "Refund a transaction fully or partially.",
                 "operationId": "refund",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
                 "requestBody": {
                     "description": "The refund object.",
                     "required": true,
@@ -249,11 +234,6 @@
                 "summary": "Query a set transactions",
                 "description": "Get the given transactions.",
                 "operationId": "query",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
                 "requestBody": {
                     "description": "The query parameters.",
                     "required": true,
@@ -449,12 +429,7 @@
                 ],
                 "summary": "Cancel a transaction",
                 "description": "Cancel an init-ed transaction.",
-                "operationId": "transactioncancel",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "transactionCancel",
                 "requestBody": {
                     "description": "The cancel object.",
                     "required": true,
@@ -511,11 +486,6 @@
                 "summary": "Do a one-click transaction",
                 "description": "Do a one-click transaction with a saved card",
                 "operationId": "do",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
                 "requestBody": {
                     "description": "The transaction object you would init.",
                     "required": true,
@@ -580,12 +550,7 @@
                 ],
                 "summary": "Do a recurring transaction",
                 "description": "Do a recurring transaction with a saved token",
-                "operationId": "dorecurring",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "doRecurring",
                 "requestBody": {
                     "description": "The transaction object you would init.",
                     "required": true,
@@ -645,12 +610,7 @@
                 ],
                 "summary": "Query a saved card",
                 "description": "Get the info about a saved bankcard",
-                "operationId": "cardquery",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "cardQuery",
                 "requestBody": {
                     "description": "The card object you would query.",
                     "required": true,
@@ -735,12 +695,7 @@
                 ],
                 "summary": "Cancel a saved card",
                 "description": "Cancel a saved bankcard",
-                "operationId": "cardcancel",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "cardCancel",
                 "requestBody": {
                     "description": "The card object you would cancel.",
                     "required": true,
@@ -798,12 +753,7 @@
                 ],
                 "summary": "Query a saved token",
                 "description": "Get the info about a saved token",
-                "operationId": "tokenquery",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "tokenQuery",
                 "requestBody": {
                     "description": "The token object you would query.",
                     "required": true,
@@ -861,12 +811,7 @@
                 ],
                 "summary": "Cancel a saved token",
                 "description": "Cancel a saved token",
-                "operationId": "tokencancel",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "tokenCancel",
                 "requestBody": {
                     "description": "The token object you would cancel.",
                     "required": true,
@@ -924,12 +869,7 @@
                 ],
                 "summary": "Start an EAM transaction",
                 "description": "Start an EAM transaction using the given parameters",
-                "operationId": "starteam",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "startEam",
                 "requestBody": {
                     "description": "The EAM transaction object you would like to start.",
                     "required": true,
@@ -1006,12 +946,7 @@
                 ],
                 "summary": "Start an ApplePay session",
                 "description": "Start an ApplePay session using the given parameters",
-                "operationId": "startapplepay",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "startApplePay",
                 "requestBody": {
                     "description": "The ApplePay session object you would like to start.",
                     "required": true,
@@ -1123,12 +1058,7 @@
                 ],
                 "summary": "Start an ApplePay transaction",
                 "description": "Start an ApplePay transaction using the given parameters",
-                "operationId": "doapplepay",
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/Signature"
-                    }
-                ],
+                "operationId": "doApplePay",
                 "requestBody": {
                     "description": "The ApplePay transaction object you would like to start.",
                     "required": true,
@@ -1189,18 +1119,6 @@
     "components": {
         "headers": {
             "Signature": {
-                "schema": {
-                    "type": "string",
-                    "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"
-                }
-            }
-        },
-        "parameters": {
-            "Signature": {
-                "name": "Signature",
-                "in": "header",
-                "description": "The signature.",
-                "required": true,
                 "schema": {
                     "type": "string",
                     "example": "3WGqCnWJArhA224xVdUY1fPh91tpd6va6JvBrPNuHK449TZTgsRn3DBu5UBGbcTn"

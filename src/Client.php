@@ -23,7 +23,7 @@ class Client
     /**
      * The transaction API instance.
      */
-    protected ?TransactionApi $transactions = null;
+    protected ?TransactionApi $api = null;
 
     /**
      * Create a new SimplePay Client instance.
@@ -43,7 +43,7 @@ class Client
     /**
      * Sign the given data.
      */
-    public function sign(string $data): string
+    protected function sign(string $data): string
     {
         return base64_encode(
             hash_hmac('sha384', $data, $this->secretKey, true)
@@ -51,17 +51,9 @@ class Client
     }
 
     /**
-     * Validate the signature.
-     */
-    public function validateSignature(string $hash, string $data): bool
-    {
-        return hash_equals($hash, $this->sign($data));
-    }
-
-    /**
      * Get the configuration instance.
      */
-    public function config(): Configuration
+    protected function config(): Configuration
     {
         return Configuration::getDefaultConfiguration();
     }
@@ -69,7 +61,7 @@ class Client
     /**
      * Create a new Guzzle Client instance.
      */
-    public function client(): ClientInterface
+    protected function client(): ClientInterface
     {
         $stack = HandlerStack::create();
 
@@ -97,7 +89,7 @@ class Client
         $stack->push(Middleware::mapResponse(function (ResponseInterface $response): ResponseInterface {
             $body = (string) $response->getBody();
 
-            if (! $this->validateSignature($response->getHeader('Signature')[0] ?? '', $body)) {
+            if (! hash_equals($response->getHeader('Signature')[0] ?? '', $this->sign($body))) {
                 throw new ApiException('Invalid Signature.', 999, $response->getHeaders(), $response->getBody());
             }
 
@@ -123,15 +115,11 @@ class Client
     /**
      * Get the transaction API.
      */
-    public function transactions(): TransactionApi
+    public function api(): TransactionApi
     {
-        if (is_null($this->transactions)) {
-            $this->transactions = new TransactionApi(
-                $this->client(),
-                $this->config()
-            );
-        }
-
-        return $this->transactions;
+        return $this->api ??= new TransactionApi(
+            $this->client(),
+            $this->config()
+        );
     }
 }
