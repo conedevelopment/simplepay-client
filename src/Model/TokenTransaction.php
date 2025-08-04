@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Transaction
+ * TokenTransaction
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Transaction Class Doc Comment
+ * TokenTransaction Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
+class TokenTransaction implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'Transaction';
+    protected static string $openAPIModelName = 'TokenTransaction';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -77,6 +77,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => '\Cone\SimplePay\Model\Item[]',
         'methods' => '\Cone\SimplePay\Model\Method[]',
         'timeout' => 'string',
+        'threeDSReqAuthMethod' => '\Cone\SimplePay\Model\AuthMethod',
+        'type' => '\Cone\SimplePay\Model\TransactionType',
+        'token' => 'string',
     ];
 
     /**
@@ -104,6 +107,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => null,
         'methods' => null,
         'timeout' => null,
+        'threeDSReqAuthMethod' => null,
+        'type' => null,
+        'token' => null,
     ];
 
     /**
@@ -131,6 +137,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => false,
         'methods' => false,
         'timeout' => false,
+        'threeDSReqAuthMethod' => false,
+        'type' => false,
+        'token' => false,
     ];
 
     /**
@@ -238,6 +247,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'items',
         'methods' => 'methods',
         'timeout' => 'timeout',
+        'threeDSReqAuthMethod' => 'threeDSReqAuthMethod',
+        'type' => 'type',
+        'token' => 'token',
     ];
 
     /**
@@ -265,6 +277,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'setItems',
         'methods' => 'setMethods',
         'timeout' => 'setTimeout',
+        'threeDSReqAuthMethod' => 'setThreeDSReqAuthMethod',
+        'type' => 'setType',
+        'token' => 'setToken',
     ];
 
     /**
@@ -292,6 +307,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'getItems',
         'methods' => 'getMethods',
         'timeout' => 'getTimeout',
+        'threeDSReqAuthMethod' => 'getThreeDSReqAuthMethod',
+        'type' => 'getType',
+        'token' => 'getToken',
     ];
 
     /**
@@ -369,6 +387,9 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         $this->setIfExists('items', $data ?? [], null);
         $this->setIfExists('methods', $data ?? [], null);
         $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('threeDSReqAuthMethod', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('token', $data ?? [], null);
     }
 
     /**
@@ -761,7 +782,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($discount < 0)) {
-            throw new InvalidArgumentException('invalid value for $discount when calling Transaction., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $discount when calling TokenTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['discount'] = $discount;
@@ -793,7 +814,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($shippingCost < 0)) {
-            throw new InvalidArgumentException('invalid value for $shippingCost when calling Transaction., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $shippingCost when calling TokenTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['shippingCost'] = $shippingCost;
@@ -825,7 +846,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($total <= 0)) {
-            throw new InvalidArgumentException('invalid value for $total when calling Transaction., must be bigger than 0.');
+            throw new InvalidArgumentException('invalid value for $total when calling TokenTransaction., must be bigger than 0.');
         }
 
         $this->container['total'] = $total;
@@ -964,6 +985,87 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
             throw new InvalidArgumentException('non-nullable timeout cannot be null');
         }
         $this->container['timeout'] = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * Gets threeDSReqAuthMethod
+     *
+     * @return \Cone\SimplePay\Model\AuthMethod|null
+     */
+    public function getThreeDSReqAuthMethod(): ?\Cone\SimplePay\Model\AuthMethod
+    {
+        return $this->container['threeDSReqAuthMethod'];
+    }
+
+    /**
+     * Sets threeDSReqAuthMethod
+     *
+     * @param \Cone\SimplePay\Model\AuthMethod|null $threeDSReqAuthMethod threeDSReqAuthMethod
+     *
+     * @return $this
+     */
+    public function setThreeDSReqAuthMethod(?\Cone\SimplePay\Model\AuthMethod $threeDSReqAuthMethod): static
+    {
+        if (is_null($threeDSReqAuthMethod)) {
+            throw new InvalidArgumentException('non-nullable threeDSReqAuthMethod cannot be null');
+        }
+        $this->container['threeDSReqAuthMethod'] = $threeDSReqAuthMethod;
+
+        return $this;
+    }
+
+    /**
+     * Gets type
+     *
+     * @return \Cone\SimplePay\Model\TransactionType|null
+     */
+    public function getType(): ?\Cone\SimplePay\Model\TransactionType
+    {
+        return $this->container['type'];
+    }
+
+    /**
+     * Sets type
+     *
+     * @param \Cone\SimplePay\Model\TransactionType|null $type For token payments this should be always 'MIT'.
+     *
+     * @return $this
+     */
+    public function setType(?\Cone\SimplePay\Model\TransactionType $type): static
+    {
+        if (is_null($type)) {
+            throw new InvalidArgumentException('non-nullable type cannot be null');
+        }
+        $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets token
+     *
+     * @return string|null
+     */
+    public function getToken(): ?string
+    {
+        return $this->container['token'];
+    }
+
+    /**
+     * Sets token
+     *
+     * @param string|null $token token
+     *
+     * @return $this
+     */
+    public function setToken(?string $token): static
+    {
+        if (is_null($token)) {
+            throw new InvalidArgumentException('non-nullable token cannot be null');
+        }
+        $this->container['token'] = $token;
 
         return $this;
     }

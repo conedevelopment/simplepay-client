@@ -74,6 +74,12 @@ class TransactionApi
 
     /** @var string[] $contentTypes **/
     public const contentTypes = [
+        'callDo' => [
+            'application/json',
+        ],
+        'dorecurring' => [
+            'application/json',
+        ],
         'finish' => [
             'application/json',
         ],
@@ -84,6 +90,9 @@ class TransactionApi
             'application/json',
         ],
         'start' => [
+            'application/json',
+        ],
+        'transactioncancel' => [
             'application/json',
         ],
     ];
@@ -132,6 +141,596 @@ class TransactionApi
     public function getConfig(): Configuration
     {
         return $this->config;
+    }
+
+    /**
+     * Operation callDo
+     *
+     * Do a one-click transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['callDo'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Do200Response
+     */
+    public function callDo(
+        string $signature,
+        \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction,
+        string $contentType = self::contentTypes['callDo'][0]
+    ): \Cone\SimplePay\Model\Do200Response {
+        list($response) = $this->callDoWithHttpInfo($signature, $oneClickTransaction, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation callDoWithHttpInfo
+     *
+     * Do a one-click transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['callDo'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Do200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function callDoWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction,
+        string $contentType = self::contentTypes['callDo'][0]
+    ): array {
+        $request = $this->callDoRequest($signature, $oneClickTransaction, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Do200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Do200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Do200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation callDoAsync
+     *
+     * Do a one-click transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['callDo'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function callDoAsync(
+        string $signature,
+        \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction,
+        string $contentType = self::contentTypes['callDo'][0]
+    ): PromiseInterface {
+        return $this->callDoAsyncWithHttpInfo($signature, $oneClickTransaction, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation callDoAsyncWithHttpInfo
+     *
+     * Do a one-click transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['callDo'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function callDoAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction,
+        string $contentType = self::contentTypes['callDo'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Do200Response';
+        $request = $this->callDoRequest($signature, $oneClickTransaction, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'callDo'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['callDo'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function callDoRequest(
+        string $signature,
+        \Cone\SimplePay\Model\OneClickTransaction $oneClickTransaction,
+        string $contentType = self::contentTypes['callDo'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling callDo'
+            );
+        }
+
+        // verify the required parameter 'oneClickTransaction' is set
+        if ($oneClickTransaction === null || (is_array($oneClickTransaction) && count($oneClickTransaction) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $oneClickTransaction when calling callDo'
+            );
+        }
+
+
+        $resourcePath = '/do';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($oneClickTransaction)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($oneClickTransaction));
+            } else {
+                $httpBody = $oneClickTransaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation dorecurring
+     *
+     * Do a recurring transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenTransaction $tokenTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['dorecurring'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Dorecurring200Response
+     */
+    public function dorecurring(
+        string $signature,
+        \Cone\SimplePay\Model\TokenTransaction $tokenTransaction,
+        string $contentType = self::contentTypes['dorecurring'][0]
+    ): \Cone\SimplePay\Model\Dorecurring200Response {
+        list($response) = $this->dorecurringWithHttpInfo($signature, $tokenTransaction, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation dorecurringWithHttpInfo
+     *
+     * Do a recurring transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenTransaction $tokenTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['dorecurring'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Dorecurring200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function dorecurringWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenTransaction $tokenTransaction,
+        string $contentType = self::contentTypes['dorecurring'][0]
+    ): array {
+        $request = $this->dorecurringRequest($signature, $tokenTransaction, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Dorecurring200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Dorecurring200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Dorecurring200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation dorecurringAsync
+     *
+     * Do a recurring transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenTransaction $tokenTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['dorecurring'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function dorecurringAsync(
+        string $signature,
+        \Cone\SimplePay\Model\TokenTransaction $tokenTransaction,
+        string $contentType = self::contentTypes['dorecurring'][0]
+    ): PromiseInterface {
+        return $this->dorecurringAsyncWithHttpInfo($signature, $tokenTransaction, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation dorecurringAsyncWithHttpInfo
+     *
+     * Do a recurring transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenTransaction $tokenTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['dorecurring'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function dorecurringAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TokenTransaction $tokenTransaction,
+        string $contentType = self::contentTypes['dorecurring'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Dorecurring200Response';
+        $request = $this->dorecurringRequest($signature, $tokenTransaction, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'dorecurring'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TokenTransaction $tokenTransaction The transaction object you would init. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['dorecurring'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function dorecurringRequest(
+        string $signature,
+        \Cone\SimplePay\Model\TokenTransaction $tokenTransaction,
+        string $contentType = self::contentTypes['dorecurring'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling dorecurring'
+            );
+        }
+
+        // verify the required parameter 'tokenTransaction' is set
+        if ($tokenTransaction === null || (is_array($tokenTransaction) && count($tokenTransaction) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $tokenTransaction when calling dorecurring'
+            );
+        }
+
+
+        $resourcePath = '/dorecurring';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($tokenTransaction)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($tokenTransaction));
+            } else {
+                $httpBody = $tokenTransaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
     }
 
     /**
@@ -1267,6 +1866,301 @@ class TransactionApi
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($transaction));
             } else {
                 $httpBody = $transaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation transactioncancel
+     *
+     * Cancel a transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TransactionCancel $transactionCancel The cancel object. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['transactioncancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Transactioncancel200Response
+     */
+    public function transactioncancel(
+        string $signature,
+        \Cone\SimplePay\Model\TransactionCancel $transactionCancel,
+        string $contentType = self::contentTypes['transactioncancel'][0]
+    ): \Cone\SimplePay\Model\Transactioncancel200Response {
+        list($response) = $this->transactioncancelWithHttpInfo($signature, $transactionCancel, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation transactioncancelWithHttpInfo
+     *
+     * Cancel a transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TransactionCancel $transactionCancel The cancel object. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['transactioncancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Transactioncancel200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function transactioncancelWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TransactionCancel $transactionCancel,
+        string $contentType = self::contentTypes['transactioncancel'][0]
+    ): array {
+        $request = $this->transactioncancelRequest($signature, $transactionCancel, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Transactioncancel200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Transactioncancel200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Transactioncancel200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation transactioncancelAsync
+     *
+     * Cancel a transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TransactionCancel $transactionCancel The cancel object. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['transactioncancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function transactioncancelAsync(
+        string $signature,
+        \Cone\SimplePay\Model\TransactionCancel $transactionCancel,
+        string $contentType = self::contentTypes['transactioncancel'][0]
+    ): PromiseInterface {
+        return $this->transactioncancelAsyncWithHttpInfo($signature, $transactionCancel, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation transactioncancelAsyncWithHttpInfo
+     *
+     * Cancel a transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TransactionCancel $transactionCancel The cancel object. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['transactioncancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function transactioncancelAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\TransactionCancel $transactionCancel,
+        string $contentType = self::contentTypes['transactioncancel'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Transactioncancel200Response';
+        $request = $this->transactioncancelRequest($signature, $transactionCancel, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'transactioncancel'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\TransactionCancel $transactionCancel The cancel object. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['transactioncancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function transactioncancelRequest(
+        string $signature,
+        \Cone\SimplePay\Model\TransactionCancel $transactionCancel,
+        string $contentType = self::contentTypes['transactioncancel'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling transactioncancel'
+            );
+        }
+
+        // verify the required parameter 'transactionCancel' is set
+        if ($transactionCancel === null || (is_array($transactionCancel) && count($transactionCancel) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $transactionCancel when calling transactioncancel'
+            );
+        }
+
+
+        $resourcePath = '/transactioncancel';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($transactionCancel)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($transactionCancel));
+            } else {
+                $httpBody = $transactionCancel;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
