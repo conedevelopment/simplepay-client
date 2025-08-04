@@ -564,13 +564,6 @@
                                             "type": "string",
                                             "example": "https://sandbox.simplepay.hu/pay/pay/pspHU/8f4oKRec5R1B696xlxbOcj1jRhhABA2pwSLQDPW60zoGSDWzDU",
                                             "description": "The 3DS challange interface URL."
-                                        },
-                                        "tokens": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/Token"
-                                            },
-                                            "description": "The recurring payment tokens. Provided only for the initial recurring payment."
                                         }
                                     }
                                 }
@@ -580,8 +573,73 @@
                 }
             }
         },
-        "/dorecurring": {},
+        "/dorecurring": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Do a recurring transaction",
+                "description": "Do a recurring transaction with a saved token",
+                "operationId": "dorecurring",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The transaction object you would init.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenTransaction"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/cardcancel": {},
+        "/cardquery": {},
         "/tokencancel": {},
         "/starteam": {},
         "/startapplepay": {},
@@ -1096,7 +1154,7 @@
                             "threeDSReqAuthMethod": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/AuthMethod",
+                                        "$ref": "#/components/schemas/AuthMethod"
                                     },
                                     {
                                         "example": "02"
@@ -1106,7 +1164,7 @@
                             "type": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/TransactionType",
+                                        "$ref": "#/components/schemas/TransactionType"
                                     },
                                     {
                                         "example": "MIT",
