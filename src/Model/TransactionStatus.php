@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Status
+ * TransactionStatus
  *
  * PHP version 8.1
  *
@@ -29,12 +29,12 @@
 namespace Cone\SimplePay\Model;
 
 /**
- * Status Class Doc Comment
+ * TransactionStatus Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-enum Status: string
+enum TransactionStatus: string
 {
     case INIT = 'INIT';
 

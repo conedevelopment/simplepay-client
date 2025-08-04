@@ -77,6 +77,12 @@ class TransactionApi
         'callDo' => [
             'application/json',
         ],
+        'cardcancel' => [
+            'application/json',
+        ],
+        'cardquery' => [
+            'application/json',
+        ],
         'dorecurring' => [
             'application/json',
         ],
@@ -391,6 +397,596 @@ class TransactionApi
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($oneClickTransaction));
             } else {
                 $httpBody = $oneClickTransaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation cardcancel
+     *
+     * Cancel a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardCancel $cardCancel The card object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardcancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Cardcancel200Response
+     */
+    public function cardcancel(
+        string $signature,
+        \Cone\SimplePay\Model\CardCancel $cardCancel,
+        string $contentType = self::contentTypes['cardcancel'][0]
+    ): \Cone\SimplePay\Model\Cardcancel200Response {
+        list($response) = $this->cardcancelWithHttpInfo($signature, $cardCancel, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation cardcancelWithHttpInfo
+     *
+     * Cancel a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardCancel $cardCancel The card object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardcancel'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Cardcancel200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function cardcancelWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\CardCancel $cardCancel,
+        string $contentType = self::contentTypes['cardcancel'][0]
+    ): array {
+        $request = $this->cardcancelRequest($signature, $cardCancel, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Cardcancel200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Cardcancel200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Cardcancel200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation cardcancelAsync
+     *
+     * Cancel a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardCancel $cardCancel The card object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardcancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function cardcancelAsync(
+        string $signature,
+        \Cone\SimplePay\Model\CardCancel $cardCancel,
+        string $contentType = self::contentTypes['cardcancel'][0]
+    ): PromiseInterface {
+        return $this->cardcancelAsyncWithHttpInfo($signature, $cardCancel, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation cardcancelAsyncWithHttpInfo
+     *
+     * Cancel a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardCancel $cardCancel The card object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardcancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function cardcancelAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\CardCancel $cardCancel,
+        string $contentType = self::contentTypes['cardcancel'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Cardcancel200Response';
+        $request = $this->cardcancelRequest($signature, $cardCancel, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'cardcancel'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardCancel $cardCancel The card object you would cancel. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardcancel'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function cardcancelRequest(
+        string $signature,
+        \Cone\SimplePay\Model\CardCancel $cardCancel,
+        string $contentType = self::contentTypes['cardcancel'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling cardcancel'
+            );
+        }
+
+        // verify the required parameter 'cardCancel' is set
+        if ($cardCancel === null || (is_array($cardCancel) && count($cardCancel) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $cardCancel when calling cardcancel'
+            );
+        }
+
+
+        $resourcePath = '/cardcancel';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($cardCancel)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($cardCancel));
+            } else {
+                $httpBody = $cardCancel;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation cardquery
+     *
+     * Query a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardQuery $cardQuery The card object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardquery'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Cardquery200Response
+     */
+    public function cardquery(
+        string $signature,
+        \Cone\SimplePay\Model\CardQuery $cardQuery,
+        string $contentType = self::contentTypes['cardquery'][0]
+    ): \Cone\SimplePay\Model\Cardquery200Response {
+        list($response) = $this->cardqueryWithHttpInfo($signature, $cardQuery, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation cardqueryWithHttpInfo
+     *
+     * Query a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardQuery $cardQuery The card object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardquery'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Cardquery200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function cardqueryWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\CardQuery $cardQuery,
+        string $contentType = self::contentTypes['cardquery'][0]
+    ): array {
+        $request = $this->cardqueryRequest($signature, $cardQuery, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Cardquery200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Cardquery200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Cardquery200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation cardqueryAsync
+     *
+     * Query a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardQuery $cardQuery The card object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function cardqueryAsync(
+        string $signature,
+        \Cone\SimplePay\Model\CardQuery $cardQuery,
+        string $contentType = self::contentTypes['cardquery'][0]
+    ): PromiseInterface {
+        return $this->cardqueryAsyncWithHttpInfo($signature, $cardQuery, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation cardqueryAsyncWithHttpInfo
+     *
+     * Query a saved card
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardQuery $cardQuery The card object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function cardqueryAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\CardQuery $cardQuery,
+        string $contentType = self::contentTypes['cardquery'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Cardquery200Response';
+        $request = $this->cardqueryRequest($signature, $cardQuery, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'cardquery'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\CardQuery $cardQuery The card object you would query. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['cardquery'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function cardqueryRequest(
+        string $signature,
+        \Cone\SimplePay\Model\CardQuery $cardQuery,
+        string $contentType = self::contentTypes['cardquery'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling cardquery'
+            );
+        }
+
+        // verify the required parameter 'cardQuery' is set
+        if ($cardQuery === null || (is_array($cardQuery) && count($cardQuery) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $cardQuery when calling cardquery'
+            );
+        }
+
+
+        $resourcePath = '/cardquery';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($cardQuery)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($cardQuery));
+            } else {
+                $httpBody = $cardQuery;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
