@@ -83,6 +83,9 @@ class TransactionApi
         'cardquery' => [
             'application/json',
         ],
+        'doapplepay' => [
+            'application/json',
+        ],
         'dorecurring' => [
             'application/json',
         ],
@@ -96,6 +99,12 @@ class TransactionApi
             'application/json',
         ],
         'start' => [
+            'application/json',
+        ],
+        'startapplepay' => [
+            'application/json',
+        ],
+        'starteam' => [
             'application/json',
         ],
         'tokencancel' => [
@@ -993,6 +1002,301 @@ class TransactionApi
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($cardQuery));
             } else {
                 $httpBody = $cardQuery;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation doapplepay
+     *
+     * Start an ApplePay transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction The ApplePay transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['doapplepay'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Doapplepay200Response
+     */
+    public function doapplepay(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction,
+        string $contentType = self::contentTypes['doapplepay'][0]
+    ): \Cone\SimplePay\Model\Doapplepay200Response {
+        list($response) = $this->doapplepayWithHttpInfo($signature, $applePayTransaction, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation doapplepayWithHttpInfo
+     *
+     * Start an ApplePay transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction The ApplePay transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['doapplepay'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Doapplepay200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function doapplepayWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction,
+        string $contentType = self::contentTypes['doapplepay'][0]
+    ): array {
+        $request = $this->doapplepayRequest($signature, $applePayTransaction, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Doapplepay200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Doapplepay200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Doapplepay200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation doapplepayAsync
+     *
+     * Start an ApplePay transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction The ApplePay transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['doapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function doapplepayAsync(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction,
+        string $contentType = self::contentTypes['doapplepay'][0]
+    ): PromiseInterface {
+        return $this->doapplepayAsyncWithHttpInfo($signature, $applePayTransaction, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation doapplepayAsyncWithHttpInfo
+     *
+     * Start an ApplePay transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction The ApplePay transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['doapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function doapplepayAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction,
+        string $contentType = self::contentTypes['doapplepay'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Doapplepay200Response';
+        $request = $this->doapplepayRequest($signature, $applePayTransaction, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'doapplepay'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction The ApplePay transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['doapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function doapplepayRequest(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePayTransaction $applePayTransaction,
+        string $contentType = self::contentTypes['doapplepay'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling doapplepay'
+            );
+        }
+
+        // verify the required parameter 'applePayTransaction' is set
+        if ($applePayTransaction === null || (is_array($applePayTransaction) && count($applePayTransaction) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $applePayTransaction when calling doapplepay'
+            );
+        }
+
+
+        $resourcePath = '/doapplepay';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($applePayTransaction)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($applePayTransaction));
+            } else {
+                $httpBody = $applePayTransaction;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {
@@ -2468,6 +2772,596 @@ class TransactionApi
                 $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($transaction));
             } else {
                 $httpBody = $transaction;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation startapplepay
+     *
+     * Start an ApplePay session
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePaySession $applePaySession The ApplePay session object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startapplepay'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Startapplepay200Response
+     */
+    public function startapplepay(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePaySession $applePaySession,
+        string $contentType = self::contentTypes['startapplepay'][0]
+    ): \Cone\SimplePay\Model\Startapplepay200Response {
+        list($response) = $this->startapplepayWithHttpInfo($signature, $applePaySession, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation startapplepayWithHttpInfo
+     *
+     * Start an ApplePay session
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePaySession $applePaySession The ApplePay session object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startapplepay'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Startapplepay200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function startapplepayWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePaySession $applePaySession,
+        string $contentType = self::contentTypes['startapplepay'][0]
+    ): array {
+        $request = $this->startapplepayRequest($signature, $applePaySession, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Startapplepay200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Startapplepay200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Startapplepay200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation startapplepayAsync
+     *
+     * Start an ApplePay session
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePaySession $applePaySession The ApplePay session object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function startapplepayAsync(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePaySession $applePaySession,
+        string $contentType = self::contentTypes['startapplepay'][0]
+    ): PromiseInterface {
+        return $this->startapplepayAsyncWithHttpInfo($signature, $applePaySession, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation startapplepayAsyncWithHttpInfo
+     *
+     * Start an ApplePay session
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePaySession $applePaySession The ApplePay session object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function startapplepayAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePaySession $applePaySession,
+        string $contentType = self::contentTypes['startapplepay'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Startapplepay200Response';
+        $request = $this->startapplepayRequest($signature, $applePaySession, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'startapplepay'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\ApplePaySession $applePaySession The ApplePay session object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['startapplepay'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function startapplepayRequest(
+        string $signature,
+        \Cone\SimplePay\Model\ApplePaySession $applePaySession,
+        string $contentType = self::contentTypes['startapplepay'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling startapplepay'
+            );
+        }
+
+        // verify the required parameter 'applePaySession' is set
+        if ($applePaySession === null || (is_array($applePaySession) && count($applePaySession) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $applePaySession when calling startapplepay'
+            );
+        }
+
+
+        $resourcePath = '/startapplepay';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($applePaySession)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($applePaySession));
+            } else {
+                $httpBody = $applePaySession;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem,
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the form parameters
+                $httpBody = \GuzzleHttp\Utils::jsonEncode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = ObjectSerializer::buildQuery($formParams);
+            }
+        }
+
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $operationHost = $this->config->getHost();
+        $query = ObjectSerializer::buildQuery($queryParams);
+        return new Request(
+            'POST',
+            $operationHost . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation starteam
+     *
+     * Start an EAM transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['starteam'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return \Cone\SimplePay\Model\Starteam200Response
+     */
+    public function starteam(
+        string $signature,
+        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        string $contentType = self::contentTypes['starteam'][0]
+    ): \Cone\SimplePay\Model\Starteam200Response {
+        list($response) = $this->starteamWithHttpInfo($signature, $eamTransaciton, $contentType);
+        return $response;
+    }
+
+    /**
+     * Operation starteamWithHttpInfo
+     *
+     * Start an EAM transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['starteam'] to see the possible values for this operation
+     *
+     * @throws ApiException on non-2xx response or if the response body is not in the expected format
+     * @throws InvalidArgumentException
+     * @return array of \Cone\SimplePay\Model\Starteam200Response, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function starteamWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        string $contentType = self::contentTypes['starteam'][0]
+    ): array {
+        $request = $this->starteamRequest($signature, $eamTransaciton, $contentType);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            } catch (ConnectException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    (int) $e->getCode(),
+                    null,
+                    null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            switch ($statusCode) {
+                case 200:
+                    return $this->handleResponseWithDataType(
+                        '\Cone\SimplePay\Model\Starteam200Response',
+                        $request,
+                        $response,
+                    );
+            }
+
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        (string) $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    (string) $response->getBody()
+                );
+            }
+
+            return $this->handleResponseWithDataType(
+                '\Cone\SimplePay\Model\Starteam200Response',
+                $request,
+                $response,
+            );
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Cone\SimplePay\Model\Starteam200Response',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    throw $e;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation starteamAsync
+     *
+     * Start an EAM transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['starteam'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function starteamAsync(
+        string $signature,
+        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        string $contentType = self::contentTypes['starteam'][0]
+    ): PromiseInterface {
+        return $this->starteamAsyncWithHttpInfo($signature, $eamTransaciton, $contentType)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation starteamAsyncWithHttpInfo
+     *
+     * Start an EAM transaction
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['starteam'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return PromiseInterface
+     */
+    public function starteamAsyncWithHttpInfo(
+        string $signature,
+        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        string $contentType = self::contentTypes['starteam'][0]
+    ): PromiseInterface {
+        $returnType = '\Cone\SimplePay\Model\Starteam200Response';
+        $request = $this->starteamRequest($signature, $eamTransaciton, $contentType);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    if (in_array($returnType, ['\SplFileObject', '\Psr\Http\Message\StreamInterface'], true)) {
+                        $content = $response->getBody(); //stream goes to serializer
+                    } else {
+                        $content = (string) $response->getBody();
+                        if ($returnType !== 'string') {
+                            $content = json_decode($content);
+                        }
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders(),
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        (string) $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'starteam'
+     *
+     * @param  string $signature The signature. (required)
+     * @param  \Cone\SimplePay\Model\EamTransaciton $eamTransaciton The EAM transaction object you would like to start. (required)
+     * @param  string $contentType The value for the Content-Type header. Check self::contentTypes['starteam'] to see the possible values for this operation
+     *
+     * @throws InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    public function starteamRequest(
+        string $signature,
+        \Cone\SimplePay\Model\EamTransaciton $eamTransaciton,
+        string $contentType = self::contentTypes['starteam'][0]
+    ): Request {
+
+        // verify the required parameter 'signature' is set
+        if ($signature === null || (is_array($signature) && count($signature) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $signature when calling starteam'
+            );
+        }
+
+        // verify the required parameter 'eamTransaciton' is set
+        if ($eamTransaciton === null || (is_array($eamTransaciton) && count($eamTransaciton) === 0)) {
+            throw new InvalidArgumentException(
+                'Missing the required parameter $eamTransaciton when calling starteam'
+            );
+        }
+
+
+        $resourcePath = '/starteam';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+
+        // header params
+        if ($signature !== null) {
+            $headerParams['Signature'] = ObjectSerializer::toHeaderValue($signature);
+        }
+
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', ],
+            $contentType,
+            $multipart
+        );
+
+        // for model (json/xml)
+        if (isset($eamTransaciton)) {
+            if (stripos($headers['Content-Type'], 'application/json') !== false) {
+                // if Content-Type contains "application/json", json_encode the body
+                $httpBody = \GuzzleHttp\Utils::jsonEncode(ObjectSerializer::sanitizeForSerialization($eamTransaciton));
+            } else {
+                $httpBody = $eamTransaciton;
             }
         } elseif (count($formParams) > 0) {
             if ($multipart) {

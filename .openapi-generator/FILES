@@ -4,6 +4,8 @@ src/ApiException.php
 src/Configuration.php
 src/FormDataProcessor.php
 src/HeaderSelector.php
+src/Model/ApplePaySession.php
+src/Model/ApplePayTransaction.php
 src/Model/AuthMethod.php
 src/Model/AuthorizedTransaction.php
 src/Model/CardCancel.php
@@ -15,7 +17,9 @@ src/Model/Cardquery200ResponseHistoryInner.php
 src/Model/Currency.php
 src/Model/Delivery.php
 src/Model/Do200Response.php
+src/Model/Doapplepay200Response.php
 src/Model/Dorecurring200Response.php
+src/Model/EamTransaciton.php
 src/Model/Finish200Response.php
 src/Model/Invoice.php
 src/Model/Item.php
@@ -33,6 +37,9 @@ src/Model/Refund.php
 src/Model/Refund200Response.php
 src/Model/RefundStatus.php
 src/Model/Start200Response.php
+src/Model/Startapplepay200Response.php
+src/Model/Startapplepay200ResponseApplePaySession.php
+src/Model/Starteam200Response.php
 src/Model/TokenCancel.php
 src/Model/TokenQuery.php
 src/Model/TokenStatus.php
@@ -47,6 +54,8 @@ src/Model/TransactionUrls.php
 src/Model/Transactioncancel200Response.php
 src/ObjectSerializer.php
 tests/Api/TransactionApiTest.php
+tests/Model/ApplePaySessionTest.php
+tests/Model/ApplePayTransactionTest.php
 tests/Model/AuthMethodTest.php
 tests/Model/AuthorizedTransactionTest.php
 tests/Model/CardCancelTest.php
@@ -58,7 +67,9 @@ tests/Model/Cardquery200ResponseTest.php
 tests/Model/CurrencyTest.php
 tests/Model/DeliveryTest.php
 tests/Model/Do200ResponseTest.php
+tests/Model/Doapplepay200ResponseTest.php
 tests/Model/Dorecurring200ResponseTest.php
+tests/Model/EamTransacitonTest.php
 tests/Model/Finish200ResponseTest.php
 tests/Model/InvoiceTest.php
 tests/Model/ItemTest.php
@@ -75,6 +86,9 @@ tests/Model/Refund200ResponseTest.php
 tests/Model/RefundStatusTest.php
 tests/Model/RefundTest.php
 tests/Model/Start200ResponseTest.php
+tests/Model/Startapplepay200ResponseApplePaySessionTest.php
+tests/Model/Startapplepay200ResponseTest.php
+tests/Model/Starteam200ResponseTest.php
 tests/Model/TokenCancelTest.php
 tests/Model/TokenQueryTest.php
 tests/Model/TokenStatusTest.php
