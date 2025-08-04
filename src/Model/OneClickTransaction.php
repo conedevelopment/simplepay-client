@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Transaction
+ * OneClickTransaction
  *
  * PHP version 8.1
  *
@@ -35,13 +35,13 @@ use ReturnTypeWillChange;
 use Cone\SimplePay\ObjectSerializer;
 
 /**
- * Transaction Class Doc Comment
+ * OneClickTransaction Class Doc Comment
  *
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  * @implements ArrayAccess<string, mixed>
  */
-class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
+class OneClickTransaction implements ModelInterface, ArrayAccess, JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -50,7 +50,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
      *
      * @var string
      */
-    protected static string $openAPIModelName = 'Transaction';
+    protected static string $openAPIModelName = 'OneClickTransaction';
 
     /**
      * Array of property to type mappings. Used for (de)serialization
@@ -77,6 +77,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => '\Cone\SimplePay\Model\Item[]',
         'methods' => '\Cone\SimplePay\Model\Method[]',
         'timeout' => 'string',
+        'threeDSReqAuthMethod' => '\Cone\SimplePay\Model\AuthMethod',
+        'type' => '\Cone\SimplePay\Model\TransactionType',
+        'cardId' => 'float',
+        'cardSecret' => 'string',
+        'browser' => '\Cone\SimplePay\Model\OneClickTransactionAllOfBrowser',
     ];
 
     /**
@@ -104,6 +109,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => null,
         'methods' => null,
         'timeout' => null,
+        'threeDSReqAuthMethod' => null,
+        'type' => null,
+        'cardId' => null,
+        'cardSecret' => null,
+        'browser' => null,
     ];
 
     /**
@@ -131,6 +141,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => false,
         'methods' => false,
         'timeout' => false,
+        'threeDSReqAuthMethod' => false,
+        'type' => false,
+        'cardId' => false,
+        'cardSecret' => false,
+        'browser' => false,
     ];
 
     /**
@@ -238,6 +253,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'items',
         'methods' => 'methods',
         'timeout' => 'timeout',
+        'threeDSReqAuthMethod' => 'threeDSReqAuthMethod',
+        'type' => 'type',
+        'cardId' => 'cardId',
+        'cardSecret' => 'cardSecret',
+        'browser' => 'browser',
     ];
 
     /**
@@ -265,6 +285,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'setItems',
         'methods' => 'setMethods',
         'timeout' => 'setTimeout',
+        'threeDSReqAuthMethod' => 'setThreeDSReqAuthMethod',
+        'type' => 'setType',
+        'cardId' => 'setCardId',
+        'cardSecret' => 'setCardSecret',
+        'browser' => 'setBrowser',
     ];
 
     /**
@@ -292,6 +317,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         'items' => 'getItems',
         'methods' => 'getMethods',
         'timeout' => 'getTimeout',
+        'threeDSReqAuthMethod' => 'getThreeDSReqAuthMethod',
+        'type' => 'getType',
+        'cardId' => 'getCardId',
+        'cardSecret' => 'getCardSecret',
+        'browser' => 'getBrowser',
     ];
 
     /**
@@ -369,6 +399,11 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         $this->setIfExists('items', $data ?? [], null);
         $this->setIfExists('methods', $data ?? [], null);
         $this->setIfExists('timeout', $data ?? [], null);
+        $this->setIfExists('threeDSReqAuthMethod', $data ?? [], null);
+        $this->setIfExists('type', $data ?? [], null);
+        $this->setIfExists('cardId', $data ?? [], null);
+        $this->setIfExists('cardSecret', $data ?? [], null);
+        $this->setIfExists('browser', $data ?? [], null);
     }
 
     /**
@@ -761,7 +796,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($discount < 0)) {
-            throw new InvalidArgumentException('invalid value for $discount when calling Transaction., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $discount when calling OneClickTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['discount'] = $discount;
@@ -793,7 +828,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($shippingCost < 0)) {
-            throw new InvalidArgumentException('invalid value for $shippingCost when calling Transaction., must be bigger than or equal to 0.');
+            throw new InvalidArgumentException('invalid value for $shippingCost when calling OneClickTransaction., must be bigger than or equal to 0.');
         }
 
         $this->container['shippingCost'] = $shippingCost;
@@ -825,7 +860,7 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
         }
 
         if (($total <= 0)) {
-            throw new InvalidArgumentException('invalid value for $total when calling Transaction., must be bigger than 0.');
+            throw new InvalidArgumentException('invalid value for $total when calling OneClickTransaction., must be bigger than 0.');
         }
 
         $this->container['total'] = $total;
@@ -964,6 +999,141 @@ class Transaction implements ModelInterface, ArrayAccess, JsonSerializable
             throw new InvalidArgumentException('non-nullable timeout cannot be null');
         }
         $this->container['timeout'] = $timeout;
+
+        return $this;
+    }
+
+    /**
+     * Gets threeDSReqAuthMethod
+     *
+     * @return \Cone\SimplePay\Model\AuthMethod|null
+     */
+    public function getThreeDSReqAuthMethod(): ?\Cone\SimplePay\Model\AuthMethod
+    {
+        return $this->container['threeDSReqAuthMethod'];
+    }
+
+    /**
+     * Sets threeDSReqAuthMethod
+     *
+     * @param \Cone\SimplePay\Model\AuthMethod|null $threeDSReqAuthMethod threeDSReqAuthMethod
+     *
+     * @return $this
+     */
+    public function setThreeDSReqAuthMethod(?\Cone\SimplePay\Model\AuthMethod $threeDSReqAuthMethod): static
+    {
+        if (is_null($threeDSReqAuthMethod)) {
+            throw new InvalidArgumentException('non-nullable threeDSReqAuthMethod cannot be null');
+        }
+        $this->container['threeDSReqAuthMethod'] = $threeDSReqAuthMethod;
+
+        return $this;
+    }
+
+    /**
+     * Gets type
+     *
+     * @return \Cone\SimplePay\Model\TransactionType|null
+     */
+    public function getType(): ?\Cone\SimplePay\Model\TransactionType
+    {
+        return $this->container['type'];
+    }
+
+    /**
+     * Sets type
+     *
+     * @param \Cone\SimplePay\Model\TransactionType|null $type For one-click payments this should be always 'CIT'.
+     *
+     * @return $this
+     */
+    public function setType(?\Cone\SimplePay\Model\TransactionType $type): static
+    {
+        if (is_null($type)) {
+            throw new InvalidArgumentException('non-nullable type cannot be null');
+        }
+        $this->container['type'] = $type;
+
+        return $this;
+    }
+
+    /**
+     * Gets cardId
+     *
+     * @return float|null
+     */
+    public function getCardId(): ?float
+    {
+        return $this->container['cardId'];
+    }
+
+    /**
+     * Sets cardId
+     *
+     * @param float|null $cardId cardId
+     *
+     * @return $this
+     */
+    public function setCardId(?float $cardId): static
+    {
+        if (is_null($cardId)) {
+            throw new InvalidArgumentException('non-nullable cardId cannot be null');
+        }
+        $this->container['cardId'] = $cardId;
+
+        return $this;
+    }
+
+    /**
+     * Gets cardSecret
+     *
+     * @return string|null
+     */
+    public function getCardSecret(): ?string
+    {
+        return $this->container['cardSecret'];
+    }
+
+    /**
+     * Sets cardSecret
+     *
+     * @param string|null $cardSecret cardSecret
+     *
+     * @return $this
+     */
+    public function setCardSecret(?string $cardSecret): static
+    {
+        if (is_null($cardSecret)) {
+            throw new InvalidArgumentException('non-nullable cardSecret cannot be null');
+        }
+        $this->container['cardSecret'] = $cardSecret;
+
+        return $this;
+    }
+
+    /**
+     * Gets browser
+     *
+     * @return \Cone\SimplePay\Model\OneClickTransactionAllOfBrowser|null
+     */
+    public function getBrowser(): ?\Cone\SimplePay\Model\OneClickTransactionAllOfBrowser
+    {
+        return $this->container['browser'];
+    }
+
+    /**
+     * Sets browser
+     *
+     * @param \Cone\SimplePay\Model\OneClickTransactionAllOfBrowser|null $browser browser
+     *
+     * @return $this
+     */
+    public function setBrowser(?\Cone\SimplePay\Model\OneClickTransactionAllOfBrowser $browser): static
+    {
+        if (is_null($browser)) {
+            throw new InvalidArgumentException('non-nullable browser cannot be null');
+        }
+        $this->container['browser'] = $browser;
 
         return $this;
     }
