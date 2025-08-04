@@ -503,7 +503,83 @@
                 }
             }
         },
-        "/do": {},
+        "/do": {
+            "post": {
+                "tags": [
+                    "Transaction"
+                ],
+                "summary": "Do a one-click transaction",
+                "description": "Do a one-click transaction with a saved card",
+                "operationId": "do",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Signature"
+                    }
+                ],
+                "requestBody": {
+                    "description": "The transaction object you would init.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OneClickTransaction"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "headers": {
+                            "Signature": {
+                                "$ref": "#/components/headers/Signature"
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "salt": {
+                                            "type": "string",
+                                            "example": "KAC6ZRUacmQit98nFKOpjXgkwdC0Grzl"
+                                        },
+                                        "merchant": {
+                                            "type": "string",
+                                            "example": "PUBLICTESTHUF"
+                                        },
+                                        "transactionId": {
+                                            "$ref": "#/components/schemas/TransactionId"
+                                        },
+                                        "orderRef": {
+                                            "$ref": "#/components/schemas/OrderRef"
+                                        },
+                                        "currency": {
+                                            "$ref": "#/components/schemas/Currency"
+                                        },
+                                        "total": {
+                                            "type": "number",
+                                            "example": 25.0
+                                        },
+                                        "redirectUrl": {
+                                            "type": "string",
+                                            "example": "https://sandbox.simplepay.hu/pay/pay/pspHU/8f4oKRec5R1B696xlxbOcj1jRhhABA2pwSLQDPW60zoGSDWzDU",
+                                            "description": "The 3DS challange interface URL."
+                                        },
+                                        "tokens": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Token"
+                                            },
+                                            "description": "The recurring payment tokens. Provided only for the initial recurring payment."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/dorecurring": {},
         "/cardcancel": {},
         "/tokencancel": {},
@@ -535,7 +611,11 @@
         "schemas": {
             "Transaction": {
                 "required": [
-                    "currency"
+                    "currency",
+                    "language",
+                    "timeout",
+                    "methods",
+                    "customerEmail"
                 ],
                 "properties": {
                     "customer": {
@@ -916,6 +996,94 @@
                 "type": "string",
                 "example": "SPTBXPQFKRNB2NEKBNXJ42KON6VMVME7M82IK5JX3JX7HISC34KU2LVNC4NVXLLB"
             },
+            "OneClickTransaction": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Transaction"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "threeDSReqAuthMethod": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AuthMethod"
+                                    },
+                                    {
+                                        "example": "02"
+                                    }
+                                ]
+                            },
+                            "type": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/TransactionType"
+                                    },
+                                    {
+                                        "example": "CIT",
+                                        "description": "For one-click payments this should be always 'CIT'."
+                                    }
+                                ]
+                            },
+                            "cardId": {
+                                "$ref": "#/components/schemas/TransactionId"
+                            },
+                            "cardSecret": {
+                                "type": "string",
+                                "example": "secret-card-password"
+                            },
+                            "browser": {
+                                "type": "object",
+                                "properties": {
+                                    "ip": {
+                                        "type": "string",
+                                        "example": "127.0.0.1"
+                                    },
+                                    "accept": {
+                                        "type": "string",
+                                        "example": "*/*"
+                                    },
+                                    "agent": {
+                                        "type": "string",
+                                        "example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:141.0) Gecko/20100101 Firefox/141.0",
+                                        "description": "You may use 'navigator.userAgent' in JS."
+                                    },
+                                    "color": {
+                                        "type": "integer",
+                                        "example": 30,
+                                        "description": "You may use 'screen.colorDepth' in JS."
+                                    },
+                                    "height": {
+                                        "type": "integer",
+                                        "example": 900,
+                                        "description": "You may use 'screen.height' in JS."
+                                    },
+                                    "width": {
+                                        "type": "integer",
+                                        "example": 1440,
+                                        "description": "You may use 'screen.width' in JS."
+                                    },
+                                    "java": {
+                                        "type": "boolean",
+                                        "description": "You may use 'navigator.javaEnabled()' in JS."
+                                    },
+                                    "lang": {
+                                        "type": "string",
+                                        "example": "hu-HU",
+                                        "description": "You may use 'navigator.language' in JS."
+                                    },
+                                    "tz": {
+                                        "type": "integer",
+                                        "example": -120,
+                                        "description": "You may use 'new Date().getTimezoneOffset()' in JS."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
             "TokenTransaction": {
                 "type": "object",
                 "allOf": [
@@ -926,26 +1094,40 @@
                         "type": "object",
                         "properties": {
                             "threeDSReqAuthMethod": {
-                                "type": "string",
-                                "example": "02"
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/AuthMethod",
+                                    },
+                                    {
+                                        "example": "02"
+                                    }
+                                ]
                             },
                             "type": {
-                                "type": "string",
-                                "example": "MIT"
+                                "allOf": [
+                                    {
+                                        "$ref": "#/components/schemas/TransactionType",
+                                    },
+                                    {
+                                        "example": "MIT",
+                                        "description": "For token payments this should be always 'MIT'."
+                                    }
+                                ]
                             },
                             "token": {
                                 "$ref": "#/components/schemas/Token"
-                            },
-                            "total": {
-                                "type": "number",
-                                "default": 0,
-                                "exclusiveMinimum": true,
-                                "minimum": 0,
-                                "example": 25.0
                             }
                         }
                     }
                 ]
+            },
+            "AuthMethod": {
+                "type": "string",
+                "enum": ["01", "02", "05"]
+            },
+            "TransactionType": {
+                "type": "string",
+                "enum": ["CIT", "MIT"]
             }
         }
     }
